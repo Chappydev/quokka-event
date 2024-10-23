@@ -8,8 +8,9 @@ public class Event {
 
     private String eventID;
     private String eventName;
-    private String eventDate;
+    private Date eventDate;
     private String eventLocation;
+    private Date registrationDeadline;
     //private Organizer organizer;
 
     private int maxParticipants;
@@ -21,7 +22,7 @@ public class Event {
 
 
     // Constructor
-    public Event(String eventID, String eventName, String eventDate, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<Entrant> participantList, ArrayList<Entrant> waitList, ArrayList<Entrant> cancelledParticipants) {
+    public Event(String eventID, String eventName, Date eventDate, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<Entrant> participantList, Date, registrationDeadline, ArrayList<Entrant> waitList, ArrayList<Entrant> cancelledParticipants) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventDate = eventDate;
@@ -31,6 +32,7 @@ public class Event {
         this.participantList = participantList;
         this.waitList = waitList;
         this.cancelledParticipants = cancelledParticipants;
+        this.registrationDeadline = registrationDeadline;
     }
 
     public String getEventID() {
@@ -49,12 +51,20 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public String getEventDate() {
+    public Date getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(String eventDate) {
+    public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public void setRegistrationDeadline(Date registrationDeadline) {
+        this.registrationDeadline = registrationDeadline;
+    }
+
+    public Date getRegistrationDeadline() {
+        return registrationDeadline;
     }
 
     public String getEventLocation() {
