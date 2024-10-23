@@ -1,17 +1,14 @@
 package com.example.quokka_event.entrant;
 
-public class entrant {
+public class Entrant {
     private String deviceID;
     private String profileImage;
 
     private String entrantEmail;
     private String entrantPhoneNumber;
 
-
-
-
     // Constructor
-    public entrant(String deviceID, String profileImage) {
+    public Entrant(String deviceID, String profileImage) {
         this.deviceID = deviceID;
         this.profileImage = profileImage;
         this.entrantEmail = entrantEmail;
@@ -24,7 +21,7 @@ public class entrant {
 
     public void setDeviceID(String deviceID) {
         this.deviceID = deviceID;
-    }
+    } // do we need this?
 
     public String getProfileImage() {
         return profileImage;

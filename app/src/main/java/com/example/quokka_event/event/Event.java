@@ -1,11 +1,10 @@
 package com.example.quokka_event.event;
 
-import com.example.quokka_event.entrant.entrant;
+import com.example.quokka_event.entrant.Entrant;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class event {
+public class Event {
 
     private String eventID;
     private String eventName;
@@ -16,13 +15,13 @@ public class event {
     private int maxParticipants;
     private int maxWaitlist;
 
-    private ArrayList<entrant> participantList;
-    private ArrayList<entrant> waitList;
-    private ArrayList<entrant> cancelledParticipants;
+    private ArrayList<Entrant> participantList;
+    private ArrayList<Entrant> waitList;
+    private ArrayList<Entrant> cancelledParticipants;
 
 
     // Constructor
-    public event(String eventID, String eventName, String eventDate, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<entrant> participantList, ArrayList<entrant> waitList, ArrayList<entrant> cancelledParticipants) {
+    public Event(String eventID, String eventName, String eventDate, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<Entrant> participantList, ArrayList<Entrant> waitList, ArrayList<Entrant> cancelledParticipants) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventDate = eventDate;
@@ -82,27 +81,27 @@ public class event {
         this.maxWaitlist = maxWaitlist;
     }
 
-    public ArrayList<entrant> getParticipantList() {
+    public ArrayList<Entrant> getParticipantList() {
         return participantList;
     }
 
-    public void setParticipantList(ArrayList<entrant> participantList) {
+    public void setParticipantList(ArrayList<Entrant> participantList) {
         this.participantList = participantList;
     }
 
-    public ArrayList<entrant> getWaitList() {
+    public ArrayList<Entrant> getWaitList() {
         return waitList;
     }
 
-    public void setWaitList(ArrayList<entrant> waitList) {
+    public void setWaitList(ArrayList<Entrant> waitList) {
         this.waitList = waitList;
     }
 
-    public ArrayList<entrant> getCancelledParticipants() {
+    public ArrayList<Entrant> getCancelledParticipants() {
         return cancelledParticipants;
     }
 
-    public void setCancelledParticipants(ArrayList<entrant> cancelledParticipants) {
+    public void setCancelledParticipants(ArrayList<Entrant> cancelledParticipants) {
         this.cancelledParticipants = cancelledParticipants;
     }
 }
