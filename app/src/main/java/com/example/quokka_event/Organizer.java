@@ -1,6 +1,10 @@
 package com.example.quokka_event;
 
+import com.example.quokka_event.entrant.Entrant;
+import com.example.quokka_event.event.Event;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Organizer {
 
@@ -13,66 +17,6 @@ public class Organizer {
     }
 
     // Create new Event
-    protected Event createNewEvent(
-        String name,
-        Date eventDate,
-        Date registrationDeadline,
-        String location,
-        int maxSpots,
-        int maxRegistration) { //need to add poster
-
-        // Event creation succeeds
-        try {
-            Event newEvent = new Event(
-                name,
-                eventDate,
-                registrationDeadline,
-                location,
-                maxSpots,
-                maxRegistration);
-
-            //how to store this info in firebase???
-            return newEvent;
-        }
-
-        // Event creation fails
-        catch (Exception e) {
-            throw new RuntimeException(e);
-            return null;
-        }
-    }
-
-    // Edit Event
-    // If new detail is not provided, keep the original
-    protected boolean editEventDetails(
-        String name,
-        Date eventDate,
-        Date registrationDeadline,
-        String location,
-        int maxSpots,
-        int maxRegistration
-    ) {
-        if (newName != null) {
-            event.setEventName(newName);
-        }
-        if (newEventDate != null) {
-            event.setEventDate(newEventDate);
-        }
-        if (newRegistrationDeadline != null) {
-            event.setRegistrationDeadline(newRegistrationDeadline);
-        }
-        if (newLocation != null) {
-            event.setEventLocation(newLocation);
-        }
-        if (newMaxSpots != null) {
-            event.setMaxSpotsForEvent(newMaxSpots);
-        }
-        if (newMaxRegistrations != null) {
-            event.setMaxRegistrations(newMaxRegistrations);
-        }
-        return true;
-    }
-
     //calls QR code generator
     //links QR code to the event description and event poster
     protected boolean QRCodeLinking() { return false; }

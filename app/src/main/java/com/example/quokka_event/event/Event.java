@@ -3,6 +3,7 @@ package com.example.quokka_event.event;
 import com.example.quokka_event.entrant.Entrant;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Event {
 
@@ -22,7 +23,7 @@ public class Event {
 
 
     // Constructor
-    public Event(String eventID, String eventName, Date eventDate, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<Entrant> participantList, Date, registrationDeadline, ArrayList<Entrant> waitList, ArrayList<Entrant> cancelledParticipants) {
+    public Event(String eventID, String eventName, Date eventDate, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<Entrant> participantList, Date registrationDeadline, ArrayList<Entrant> waitList, ArrayList<Entrant> cancelledParticipants) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventDate = eventDate;
@@ -33,6 +34,13 @@ public class Event {
         this.waitList = waitList;
         this.cancelledParticipants = cancelledParticipants;
         this.registrationDeadline = registrationDeadline;
+    }
+
+    public Event(String name, Date eventDate, Date registrationDeadline, String location, int maxSpots, int maxRegistration) {
+    }
+
+    public Event() {
+
     }
 
     public String getEventID() {
