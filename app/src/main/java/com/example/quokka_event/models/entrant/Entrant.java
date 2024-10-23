@@ -1,4 +1,4 @@
-package com.example.quokka_event.models.admin.entrant;
+package com.example.quokka_event.models.entrant;
 
 public class Entrant {
     private String deviceID;

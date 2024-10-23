@@ -1,4 +1,4 @@
-package com.example.quokka_event.controllers.controllers;
+package com.example.quokka_event.controllers;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
