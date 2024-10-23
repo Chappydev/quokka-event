@@ -3,38 +3,22 @@ package com.example.quokka_event;
 import java.util.ArrayList;
 
 public class Organizer {
+    private ArrayList<Facility> facilityProfile;
 
-    //array list of Facilities
-    private ArrayList<Facility> facilityProfile = new ArrayList<Facility>();
-
-    //a constructor for an Organizer object
-    public Organizer(){}
+    // A constructor for an Organizer object
+    public Organizer(){
+        this.facilityProfile = new ArrayList<>();
+    }
 
     //creates new event based on values passed in arguments
     //return true if created successfully, false if not
     //could also make it return the Event instead (still haven't decided)
-    protected boolean createNewEvent() { return false; }
+    protected boolean createNewEvent(String name, String description, Date signUpDate, Date eventDate, String location, int maxSpots, String poster) { return false; }
 
     //allows organizer to edit the event details
     //specified event passed through parameters
     //either return boolean or the edited Event (haven't decided yet)
     protected boolean editEventDetails() { return false; }
-
-    //calls QR code generator
-    //links QR code to the event description and event poster
-    protected boolean QRCodeLinking() { return false; }
-
-    //to add a new Facility to ArrayList
-    //pass facility to be added thru parameters
-    protected void addNewFacility(){}
-
-    //to remove facility from ArrayList
-    //pass specified facility thru parameters
-    protected void removeFacility(){}
-
-    //to edit the details and such of a specified facility
-    //pass the specified facility thru parameters
-    protected void editSpecifiedFacility(){}
 
     //displays or retrieves the list of entrants on the waiting list of an event object
     //pass event object thru parameters
@@ -54,5 +38,27 @@ public class Organizer {
     */
     boolean sendNotificationToEntrants() { return false; }
 
+    //calls QR code generator
+    //links QR code to the event description and event poster
+    protected boolean QRCodeLinking() { return false; }
 
+    //to add a new Facility to ArrayList
+    //pass facility to be added thru parameters
+    protected void addNewFacility(){}
+
+    //to remove facility from ArrayList
+    //pass specified facility thru parameters
+    protected void removeFacility(){}
+
+    //to edit the details and such of a specified facility
+    //pass the specified facility thru parameters
+    protected void editSpecifiedFacility(){}
+
+    public ArrayList<Facility> getFacilityProfile() {
+        return facilityProfile;
+    }
+
+    public void setFacilityProfile(ArrayList<Facility> facilityProfile) {
+        this.facilityProfile = facilityProfile;
+    }
 }
