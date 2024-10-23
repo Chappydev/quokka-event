@@ -1,4 +1,4 @@
-package com.example.quokka_event;
+package com.example.quokka_event.models.admin.organizer;
 
 public class Facility {
     private String facilityName;

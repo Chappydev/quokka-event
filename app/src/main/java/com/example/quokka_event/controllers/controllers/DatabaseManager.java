@@ -1,11 +1,8 @@
-package com.example.quokka_event.databasemanager;
+package com.example.quokka_event.controllers.controllers;
 
-import com.google.firebase.Firebase;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.FileInputStream;
 // Class to interact with the firebase database to be used for admin's screen
 public class DatabaseManager {
     private FirebaseFirestore database;

@@ -1,6 +1,6 @@
-package com.example.quokka_event.event;
+package com.example.quokka_event.models.admin.event;
 
-import com.example.quokka_event.entrant.Entrant;
+import com.example.quokka_event.models.admin.entrant.Entrant;
 
 import java.util.ArrayList;
 import java.util.Date;
