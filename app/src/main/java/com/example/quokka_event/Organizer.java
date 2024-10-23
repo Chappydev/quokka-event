@@ -4,29 +4,74 @@ import java.util.ArrayList;
 
 public class Organizer {
 
-    //array list of Facilities
-    private ArrayList<Facility> facilityProfile = new ArrayList<Facility>();
-    private int maxNumberOfEntrantsAllowed;
-    private int sampleNumberOfEntrants;
+    // Array list of Facilities
+    private ArrayList<Facility> facilityProfile;
 
-    //a constructor for an Organizer object
-    public Organizer(){}
+    // Constructor for an Organizer object
+    public Organizer(){
+        this.facilityProfile = new ArrayList<>();
+    }
 
-    public int getMaxNumberOfEntrantsAllowed() { return maxNumberOfEntrantsAllowed;}
-    public void setMaxNumberOfEntrantsAllowed(int maxNumberOfEntrantsAllowed) { this.maxNumberOfEntrantsAllowed = maxNumberOfEntrantsAllowed; }
+    // Create new Event
+    protected Event createNewEvent(
+        String name,
+        Date eventDate,
+        Date registrationDeadline,
+        String location,
+        int maxSpots,
+        int maxRegistration) { //need to add poster
 
-    public int getSampleNumberOfEntrants() { return sampleNumberOfEntrants; }
-    public void setSampleNumberOfEntrants(int sampleNumberOfEntrants) { this.sampleNumberOfEntrants = sampleNumberOfEntrants; }
+        // Event creation succeeds
+        try {
+            Event newEvent = new Event(
+                name,
+                eventDate,
+                registrationDeadline,
+                location,
+                maxSpots,
+                maxRegistration);
 
-    //creates new event based on values passed in arguments
-    //return true if created successfully, false if not
-    //could also make it return the Event instead (still haven't decided)
-    protected boolean createNewEvent() { return false; }
+            //how to store this info in firebase???
+            return newEvent;
+        }
 
-    //allows organizer to edit the event details
-    //specified event passed through parameters
-    //either return boolean or the edited Event (haven't decided yet)
-    protected boolean editEventDetails() { return false; }
+        // Event creation fails
+        catch (Exception e) {
+            throw new RuntimeException(e);
+            return null;
+        }
+    }
+
+    // Edit Event
+    // If new detail is not provided, keep the original
+    protected boolean editEventDetails(
+        String name,
+        Date eventDate,
+        Date registrationDeadline,
+        String location,
+        int maxSpots,
+        int maxRegistration
+    ) {
+        if (newName != null) {
+            event.setEventName(newName);
+        }
+        if (newEventDate != null) {
+            event.setEventDate(newEventDate);
+        }
+        if (newRegistrationDeadline != null) {
+            event.setRegistrationDeadline(newRegistrationDeadline);
+        }
+        if (newLocation != null) {
+            event.setEventLocation(newLocation);
+        }
+        if (newMaxSpots != null) {
+            event.setMaxSpotsForEvent(newMaxSpots);
+        }
+        if (newMaxRegistrations != null) {
+            event.setMaxRegistrations(newMaxRegistrations);
+        }
+        return true;
+    }
 
     //calls QR code generator
     //links QR code to the event description and event poster
