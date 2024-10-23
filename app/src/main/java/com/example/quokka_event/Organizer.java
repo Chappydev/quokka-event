@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Organizer {
 
     //array list of Facilities
-    private ArrayList<Facility> facilityProfile = new ArrayList<Facility>;
+    private ArrayList<Facility> facilityProfile = new ArrayList<Facility>();
 
     //a constructor for an Organizer object
     public Organizer(){}
