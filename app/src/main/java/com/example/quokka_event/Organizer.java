@@ -6,9 +6,17 @@ public class Organizer {
 
     //array list of Facilities
     private ArrayList<Facility> facilityProfile = new ArrayList<Facility>();
+    private int maxNumberOfEntrantsAllowed;
+    private int sampleNumberOfEntrants;
 
     //a constructor for an Organizer object
     public Organizer(){}
+
+    public int getMaxNumberOfEntrantsAllowed() { return maxNumberOfEntrantsAllowed;}
+    public void setMaxNumberOfEntrantsAllowed(int maxNumberOfEntrantsAllowed) { this.maxNumberOfEntrantsAllowed = maxNumberOfEntrantsAllowed; }
+
+    public int getSampleNumberOfEntrants() { return sampleNumberOfEntrants; }
+    public void setSampleNumberOfEntrants(int sampleNumberOfEntrants) { this.sampleNumberOfEntrants = sampleNumberOfEntrants; }
 
     //creates new event based on values passed in arguments
     //return true if created successfully, false if not
@@ -43,6 +51,18 @@ public class Organizer {
     //displays the list of entrants who have been selected and are invited to apply
     //Lottery class deals w/ who was selected
     void listOfSelectedEntrants(){}
+
+    void listOfCanceledEntrants(){}
+
+    void listOfEnrolledEntrants(){}
+
+    //cancel an Entrant that didn't sign up in time for the Event
+    //pass waitlist thru parameters, cancel/ remove whichever entrant(s) you want
+    //true or false if it worked or not
+    boolean cancelEntrants(){ return false; }
+
+    //pass a waitlist thru parameter to draw a specific Entrant after a previously selected Entrant cancels/doesn't sign up
+    Entrant drawReplacementEntrant(){ return null; }
 
     //sends notifications to all entrants in a specified event's waiting list
     //pass event object through parameter
