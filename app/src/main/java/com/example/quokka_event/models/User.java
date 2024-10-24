@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.quokka_event.models.admin.ProfileSystem;
 
+// Refactor:
 // Could alternatively have a 'Profilelike' interface from which both user and ProfileSystem can draw.
 // This would prevent having to get the ProfileSystem from User and then get the Facility from
 // ProfileSystem but would increase the upfront boilerplate code in this function.
