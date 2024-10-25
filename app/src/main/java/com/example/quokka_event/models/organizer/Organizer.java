@@ -1,9 +1,10 @@
 package com.example.quokka_event.models.organizer;
 
-import com.example.quokka_event.models.entrant.Entrant;
+import com.example.quokka_event.models.entrant.EventManager;
 
 import java.util.ArrayList;
 
+// Refactor: The responsibility of this class can essentially stay the same
 public class Organizer {
 
     // Array list of Facilities
@@ -37,7 +38,7 @@ public class Organizer {
     boolean cancelEntrants(){ return false; }
 
     //pass a waitlist thru parameter to draw a specific Entrant after a previously selected Entrant cancels/doesn't sign up
-    Entrant drawReplacementEntrant(){ return null; }
+    EventManager drawReplacementEntrant(){ return null; }
 
     //sends notifications to all entrants in a specified event's waiting list
     //pass event object through parameter

@@ -12,6 +12,6 @@ public class Facility {
     public String getFacilityName() { return facilityName; }
     public String getFacilityLocation() { return facilityLocation; }
     public void setFacilityName(String facilityName) { this.facilityName = facilityName; }
-    public void setFacilityLocation(String facilityLocation) { this.facilityName = facilityLocation; }
+    public void setFacilityLocation(String facilityLocation) { this.facilityLocation = facilityLocation; }
 
 }
