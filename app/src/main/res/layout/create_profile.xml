@@ -34,6 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <EditText
+            android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name">
@@ -41,14 +42,24 @@
         </EditText>
 
         <EditText
+            android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"></EditText>
+            android:hint="Email"
+            android:inputType="textEmailAddress"></EditText>
         <EditText
+            android:id="@+id/edit_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone Number"
             android:inputType="phone"></EditText>
+
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="confirm"
+            android:layout_gravity="right"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
