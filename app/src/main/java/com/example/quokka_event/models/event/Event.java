@@ -126,18 +126,32 @@ public class Event {
         this.cancelledParticipants = cancelledParticipants;
     }
 
-    // Function checks if waitlist is full
+    /**
+     * Checks if the waitlist is full.
+     * @author Simon and Soaiba
+     * @return true if the waitlist size has reached the maximum capacity
+     */
     public boolean isWaitListFull() {
         return waitList.size() >= maxWaitlist;
     }
 
-    // Function checks if the registration deadline has passed
+    /**
+     * Checks if the registration deadline has passed.
+     * @author Soaiba
+     * @return true if the current date is after the registration deadline.
+     */
     public boolean isDeadline() {
         Date currentDate = new Date();
         return currentDate.after(getRegistrationDeadline());
     }
 
-    // Function adds Entrant to waitlist if waitlist is not full and registration deadline has not passed
+    /**
+     * Adds an entrant to the waitlist if the waitlist is not full
+     * and the registration deadline has not yet passed.
+     * @author Soaiba
+     * @param user the user to be added to the waitlist
+     * @return true if the user was successfully added to the waitlist
+     */
     public boolean addEntrantToWaitlist(User user){
         if (!isWaitListFull() && !isDeadline()) {
             waitList.add(user);
