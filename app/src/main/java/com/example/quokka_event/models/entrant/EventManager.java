@@ -24,8 +24,12 @@ public class EventManager {
     }
 
 
-    public boolean joinWaitlist(Event event, User participant) {
+    public boolean joinWaitlist(Event event, User user) {
+        boolean waitlisted = event.addEntrantToWaitlist(user);
 
+        if (waitlisted) {
+
+        }
     }
 
     public void cancelWaitlistSpot(){
