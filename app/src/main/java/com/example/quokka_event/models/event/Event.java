@@ -11,8 +11,8 @@ public class Event {
     private String eventID;
     private String eventName;
     private Date eventDate;
-    private String eventLocation;
     private Date registrationDeadline;
+    private String eventLocation;
     //private Organizer organizer;
 
     private int maxParticipants;
@@ -25,19 +25,18 @@ public class Event {
     private ArrayList<User> waitList;
     private ArrayList<User> cancelledParticipants;
 
-
     // Constructor
-    public Event(String eventID, String eventName, Date eventDate, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<User> participantList, Date registrationDeadline, ArrayList<User> waitList, ArrayList<User> cancelledParticipants) {
+    public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<User> participantList, ArrayList<User> waitList, ArrayList<User> cancelledParticipants) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventDate = eventDate;
+        this.registrationDeadline = registrationDeadline;
         this.eventLocation = eventLocation;
         this.maxParticipants = maxParticipants;
         this.maxWaitlist = maxWaitlist;
         this.participantList = participantList;
         this.waitList = waitList;
         this.cancelledParticipants = cancelledParticipants;
-        this.registrationDeadline = registrationDeadline;
     }
 
     public Event(String name, Date eventDate, Date registrationDeadline, String location, int maxSpots, int maxRegistration) {
@@ -127,16 +126,25 @@ public class Event {
         this.cancelledParticipants = cancelledParticipants;
     }
 
-    // check if waitlist is full
-    public boolean isWaitListFull(){
+    // Function checks if waitlist is full
+    public boolean isWaitListFull() {
         return waitList.size() >= maxWaitlist;
     }
 
-    // add entrant to waitlist if waitlist is not ful
-    public void addEntrantToWaitlist(User user){
-        if (isWaitListFull() != true){
-            waitList.add(user);
-        }
+    // Function checks if the registration deadline has passed
+    public boolean isDeadline() {
+        Date currentDate = new Date();
+        return currentDate.after(getRegistrationDeadline());
     }
 
+    // Function adds Entrant to waitlist if waitlist is not full and registration deadline has not passed
+    public boolean addEntrantToWaitlist(User user){
+        if (!isWaitListFull() && !isDeadline()) {
+            waitList.add(user);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

@@ -1,5 +1,10 @@
 package com.example.quokka_event.models.entrant;
 
+import com.example.quokka_event.models.User;
+import com.example.quokka_event.models.event.Event;
+
+import java.util.Date;
+
 // Refactor:
 // Remove User functionality and repurpose as an 'EventManager' class (idk about the naming) where
 // we deal with all the interactions between User and Event (joining waitlists, responding to
@@ -10,7 +15,6 @@ public class EventManager {
     public EventManager() {
     }
 
-
     // Refactor: this can stay here as long as this class doesn't become coupled to a single Event
     // I think. Otherwise we could move it to a separate class for dealing with QR Codes. Idk let's
     // wait till we figure out how the library we're using for this works maybe it's all built in
@@ -19,9 +23,8 @@ public class EventManager {
         // needs implementation
     }
 
-    // US 1.1.1
-    // Soaiba
-    public void joinWaitlist() {
+
+    public boolean joinWaitlist(Event event, User participant) {
 
     }
 
