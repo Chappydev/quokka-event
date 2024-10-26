@@ -19,7 +19,13 @@ public class EventManager {
         // needs implementation
     }
 
-    public void joinWaitlist(){
+    // US 1.1.1
+    // Soaiba
+    public void joinWaitlist() {
+
+    }
+
+    public void cancelWaitlistSpot(){
         // needs implementation
     }
 
@@ -32,10 +38,6 @@ public class EventManager {
     }
 
     public void respondToInvite(){
-        // needs implementation
-    }
-
-    public void cancelWaitlistSpot(){
         // needs implementation
     }
 }
