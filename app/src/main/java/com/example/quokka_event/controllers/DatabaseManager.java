@@ -7,19 +7,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.controllers.dbutil.SingleResponse;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.admin.ProfileSystem;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,13 +96,12 @@ public class DatabaseManager {
         usersRef.document(deviceId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                SingleResponse response = new SingleResponse();
                 if (task.isSuccessful()) {
                     Log.d("DB", "getUserMap callback: " + task.getResult().getData().toString());
-                    response.setResponse(task.getResult().getData());
+                    callback.onSuccess(task.getResult().getData());
                 } else {
                     Log.e("DB", "getUserMap callback", task.getException());
-                    response.setException(task.getException());
+                    callback.onError(task.getException());
                 }
             }
         });

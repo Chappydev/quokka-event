@@ -11,12 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.controllers.dbutil.DbResponse;
-import com.example.quokka_event.controllers.dbutil.MultipleResponse;
-import com.example.quokka_event.controllers.dbutil.SingleResponse;
 import com.example.quokka_event.models.User;
-
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,12 +31,13 @@ public class MainActivity extends AppCompatActivity {
 //        db.initDeviceUser();
         db.getUserMap(new DbCallback() {
             @Override
-            public void onCallback(SingleResponse response) {
-                if (response.getResponse() != null) {
-                    Log.d("DB", "In callback: " + response.getResponse().toString());
-                    Log.d("DB", "In callback: " + response.getResponse());
-                    // do other stuff like initializing User class based on this data
-                }
+            public void onSuccess(Object result) {
+                Log.d("DB", "In callback: " + result.toString());
+                // do other stuff like initializing User class based on this data
+            }
+            @Override
+            public void onError(Exception exception) {
+                Log.e("DB", "onError: ", exception);
             }
         });
         User user = User.getInstance(this);
