@@ -33,7 +33,7 @@ public class ProfileSystem {
 
     // Set profile image should upload the image to firebase as well
     public void setImage(@DrawableRes int newImage){
-
+        profileImage = newImage;
     }
 
     // Get profile picture from the profile
@@ -44,7 +44,7 @@ public class ProfileSystem {
 
     // Set the name for profile
     public void setName(String newName){
-
+        name = newName;
     }
 
     // Get name of profile
@@ -54,7 +54,7 @@ public class ProfileSystem {
 
     // Set an email. should check if the email is valid
     public void setEmail(String newEmail){
-
+        email = newEmail;
     }
 
     // Get email
@@ -64,7 +64,7 @@ public class ProfileSystem {
 
     // set phone number also check the valid length
     public void setPhoneNumber(int newPhoneNumber){
-
+        phoneNumber = newPhoneNumber;
     }
 
     // get phone number
@@ -74,7 +74,7 @@ public class ProfileSystem {
 
     // Set birthday check for age
     public void setBirthday(Date newBirthday) {
-
+        birthday = newBirthday;
     }
 
     // Get birthday of profile user
@@ -84,7 +84,7 @@ public class ProfileSystem {
 
     // Set an address, have specific place to write house number, city, province in UI
     public void setAddress(String newAddress){
-
+        address = newAddress;
     }
 
     // Get address
