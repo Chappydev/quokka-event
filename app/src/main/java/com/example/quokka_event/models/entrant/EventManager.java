@@ -1,5 +1,6 @@
 package com.example.quokka_event.models.entrant;
 
+import com.example.quokka_event.ProfileSystem;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.event.Event;
 
@@ -24,12 +25,9 @@ public class EventManager {
     }
 
 
-    public boolean joinWaitlist(Event event, User user) {
+    public boolean joinWaitlist(Event event, ProfileSystem user) {
         boolean waitlisted = event.addEntrantToWaitlist(user);
-
-        if (waitlisted) {
-
-        }
+        return waitlisted;
     }
 
     public void cancelWaitlistSpot(){

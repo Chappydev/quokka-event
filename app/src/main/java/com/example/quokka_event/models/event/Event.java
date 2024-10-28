@@ -1,5 +1,8 @@
 package com.example.quokka_event.models.event;
 
+import android.provider.ContactsContract;
+
+import com.example.quokka_event.ProfileSystem;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.entrant.EventManager;
 
@@ -21,12 +24,12 @@ public class Event {
 
     // The waitlist should not be arraylist of eventmanager. Since eventmanager does not
     // have any variables to differentiate two different eventmanager objects.
-    private ArrayList<User> participantList;
-    private ArrayList<User> waitList;
-    private ArrayList<User> cancelledParticipants;
+    private ArrayList<ProfileSystem> participantList;
+    private ArrayList<ProfileSystem> waitList;
+    private ArrayList<ProfileSystem> cancelledParticipants;
 
     // Constructor
-    public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<User> participantList, ArrayList<User> waitList, ArrayList<User> cancelledParticipants) {
+    public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<ProfileSystem> participantList, ArrayList<ProfileSystem> waitList, ArrayList<ProfileSystem> cancelledParticipants) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventDate = eventDate;
@@ -102,27 +105,27 @@ public class Event {
         this.maxWaitlist = maxWaitlist;
     }
 
-    public ArrayList<User> getParticipantList() {
+    public ArrayList<ProfileSystem> getParticipantList() {
         return participantList;
     }
 
-    public void setParticipantList(ArrayList<User> participantList) {
+    public void setParticipantList(ArrayList<ProfileSystem> participantList) {
         this.participantList = participantList;
     }
 
-    public ArrayList<User> getWaitList() {
+    public ArrayList<ProfileSystem> getWaitList() {
         return waitList;
     }
 
-    public void setWaitList(ArrayList<User> waitList) {
+    public void setWaitList(ArrayList<ProfileSystem> waitList) {
         this.waitList = waitList;
     }
 
-    public ArrayList<User> getCancelledParticipants() {
+    public ArrayList<ProfileSystem> getCancelledParticipants() {
         return cancelledParticipants;
     }
 
-    public void setCancelledParticipants(ArrayList<User> cancelledParticipants) {
+    public void setCancelledParticipants(ArrayList<ProfileSystem> cancelledParticipants) {
         this.cancelledParticipants = cancelledParticipants;
     }
 
@@ -152,7 +155,7 @@ public class Event {
      * @param user the user to be added to the waitlist
      * @return true if the user was successfully added to the waitlist
      */
-    public boolean addEntrantToWaitlist(User user){
+    public boolean addEntrantToWaitlist(ProfileSystem user){
         if (!isWaitListFull() && !isDeadline()) {
             waitList.add(user);
             return true;

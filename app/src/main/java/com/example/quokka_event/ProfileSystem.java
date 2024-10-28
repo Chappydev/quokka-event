@@ -17,6 +17,7 @@ public class ProfileSystem {
     private int phoneNumber;
     private Date birthday;
     private String address;
+    private String deviceID;
 
     // Constructor for profilesystem class
     public ProfileSystem(@DrawableRes int profileImage, String name, String email, int phoneNumber, Date birthday, String address){
