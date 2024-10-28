@@ -1,5 +1,9 @@
 package com.example.quokka_event.models.event;
 
+import android.provider.ContactsContract;
+
+import com.example.quokka_event.ProfileSystem;
+import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.entrant.EventManager;
 
 import java.util.ArrayList;
@@ -10,30 +14,32 @@ public class Event {
     private String eventID;
     private String eventName;
     private Date eventDate;
-    private String eventLocation;
     private Date registrationDeadline;
+    private String eventLocation;
     //private Organizer organizer;
 
     private int maxParticipants;
     private int maxWaitlist;
 
-    private ArrayList<EventManager> participantList;
-    private ArrayList<EventManager> waitList;
-    private ArrayList<EventManager> cancelledParticipants;
 
+    // The waitlist should not be arraylist of eventmanager. Since eventmanager does not
+    // have any variables to differentiate two different eventmanager objects.
+    private ArrayList<ProfileSystem> participantList;
+    private ArrayList<ProfileSystem> waitList;
+    private ArrayList<ProfileSystem> cancelledParticipants;
 
     // Constructor
-    public Event(String eventID, String eventName, Date eventDate, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<EventManager> participantList, Date registrationDeadline, ArrayList<EventManager> waitList, ArrayList<EventManager> cancelledParticipants) {
+    public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<ProfileSystem> participantList, ArrayList<ProfileSystem> waitList, ArrayList<ProfileSystem> cancelledParticipants) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventDate = eventDate;
+        this.registrationDeadline = registrationDeadline;
         this.eventLocation = eventLocation;
         this.maxParticipants = maxParticipants;
         this.maxWaitlist = maxWaitlist;
         this.participantList = participantList;
         this.waitList = waitList;
         this.cancelledParticipants = cancelledParticipants;
-        this.registrationDeadline = registrationDeadline;
     }
 
     public Event(String name, Date eventDate, Date registrationDeadline, String location, int maxSpots, int maxRegistration) {
@@ -99,27 +105,63 @@ public class Event {
         this.maxWaitlist = maxWaitlist;
     }
 
-    public ArrayList<EventManager> getParticipantList() {
+    public ArrayList<ProfileSystem> getParticipantList() {
         return participantList;
     }
 
-    public void setParticipantList(ArrayList<EventManager> participantList) {
+    public void setParticipantList(ArrayList<ProfileSystem> participantList) {
         this.participantList = participantList;
     }
 
-    public ArrayList<EventManager> getWaitList() {
+    public ArrayList<ProfileSystem> getWaitList() {
         return waitList;
     }
 
-    public void setWaitList(ArrayList<EventManager> waitList) {
+    public void setWaitList(ArrayList<ProfileSystem> waitList) {
         this.waitList = waitList;
     }
 
-    public ArrayList<EventManager> getCancelledParticipants() {
+    public ArrayList<ProfileSystem> getCancelledParticipants() {
         return cancelledParticipants;
     }
 
-    public void setCancelledParticipants(ArrayList<EventManager> cancelledParticipants) {
+    public void setCancelledParticipants(ArrayList<ProfileSystem> cancelledParticipants) {
         this.cancelledParticipants = cancelledParticipants;
+    }
+
+    /**
+     * Checks if the waitlist is full.
+     * @author Simon and Soaiba
+     * @return true if the waitlist size has reached the maximum capacity
+     */
+    public boolean isWaitListFull() {
+        return waitList.size() >= maxWaitlist;
+    }
+
+    /**
+     * Checks if the registration deadline has passed.
+     * @author Soaiba
+     * @return true if the current date is after the registration deadline.
+     */
+    public boolean isDeadline() {
+        Date currentDate = new Date();
+        return currentDate.after(getRegistrationDeadline());
+    }
+
+    /**
+     * Adds an entrant to the waitlist if the waitlist is not full
+     * and the registration deadline has not yet passed.
+     * @author Soaiba
+     * @param user the user to be added to the waitlist
+     * @return true if the user was successfully added to the waitlist
+     */
+    public boolean addEntrantToWaitlist(ProfileSystem user){
+        if (!isWaitListFull() && !isDeadline()) {
+            waitList.add(user);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

@@ -1,6 +1,10 @@
 <resources>
+    <!-- App name -->
     <string name="app_name">quokka-event</string>
 
+    <!-- Event join confirmation screen -->
+    <string name="confirmation_message">You have joined the waitlist for ...!</string>
+    <string name="exit_button_text">Exit</string>
     <!-- User Landing Page Strings -->
     <string name="organizer_events_button_text">Organizer Events</string>
     <string name="scan_qr_code_button_text">Scan QR Code</string>
@@ -9,5 +13,4 @@
     <string name="bell_icon_description">bell icon</string>
     <string name="person_icon_description">person icon</string>
     <string name="back_button_text">Back</string>
-
 </resources>
