@@ -49,20 +49,37 @@ public class DatabaseManager {
         return this;
     }
 
-    public void initDeviceUser() {
+    /**
+     * This function will either find the user or if it doesn't exist yet, it will create a new user
+     * with the deviceId.
+     * @author Chappydev
+     * @param cb An instance of the db callback interface.
+     * @param deviceId The String deviceId value of the current device.
+     * @see DbCallback
+     */
+    public void getDeviceUser(DbCallback cb, String deviceId) {
         // I'm ignoring the warning, but let's ask about which id we should use
-        User deviceUser = User.getInstance(applicationContext);
-        String deviceId = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID);
         usersRef.document(deviceId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
+                    // Successfully found the user based on the device's id:
                     if (task.getResult().exists()) {
-                        String id = task.getResult().getId();
                         Map<String, Object> document = task.getResult().getData();
                         ProfileSystem profile = getProfileSystemFromMap(document);
-                        deviceUser.initialize(task.getResult().getId(), profile, (boolean) document.get("isOrganizer"), (boolean) document.get("isAdmin"));
+                        String id = task.getResult().getId();
+
+                        // Set up the data and pass it into the callback
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("deviceID", id);
+                        userData.put("profile", profile);
+                        userData.put("organizer", document.get("isOrganizer"));
+                        userData.put("admin", document.get("isAdmin"));
+                        cb.onSuccess(userData);
+
+                    // Successful search but no such user
                     } else {
+                        // So we will create the user instead:
                         Map<String, Object> userInfo = new HashMap<>();
                         userInfo.put("name", "");
                         userInfo.put("email", "");
@@ -72,27 +89,44 @@ public class DatabaseManager {
                         usersRef.document(deviceId).set(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                // Successfully created a user with default values
                                 if (task.isSuccessful()) {
-                                    deviceUser.initialize(deviceId, new ProfileSystem(), false, false);
+                                    // Set up the data and pass it into the callback
+                                    Map<String, Object> userData = new HashMap<>();
+                                    userData.put("deviceID", deviceId);
+                                    userData.put("profile", new ProfileSystem());
+                                    userData.put("organizer", false);
+                                    userData.put("admin", false);
+                                    cb.onSuccess(userData);
+
+                                // There was an error trying to create the new user
                                 } else {
-                                    // do some better error handling here. Should probably throw and then we'll
-                                    // catch outside this class
-                                    Log.d("DB", "Write for User: something went wrong");
+                                    Log.e("DB", "Write for User: something went wrong creating the new user", task.getException());
+                                    // Can handle this error in the UI through the onError callback
+                                    cb.onError(task.getException());
                                 }
                             }
                         });
                     }
+
+                // There was an error when trying to get the user data:
                 } else {
-                    // do some better error handling here. Should probably throw and then we'll
-                    // catch outside this class
-                    Log.d("DB", "Query for User: something went wrong");
+                    Log.e("DB", "Query for User: something went wrong", task.getException());
+                    // Can handle this error in the UI through the onError callback
+                    cb.onError(task.getException());
                 }
             }
         });
     }
 
-    public void getUserMap(DbCallback callback) {
-        String deviceId = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+    /**
+     * This function will find a single user based on their deviceID.
+     * @author Chappydev
+     * @param callback An instance of the db callback interface.
+     * @param deviceId The deviceID of the user to find
+     * @see DbCallback
+     */
+    public void getUserData(DbCallback callback, String deviceId) {
         usersRef.document(deviceId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

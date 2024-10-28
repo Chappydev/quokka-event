@@ -1,6 +1,7 @@
 package com.example.quokka_event;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
@@ -12,6 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
+import com.example.quokka_event.models.admin.ProfileSystem;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,19 +32,24 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseManager db = DatabaseManager.getInstance(this);
 
-//        db.initDeviceUser();
-        db.getUserMap(new DbCallback() {
+        User user = User.getInstance(this);
+        String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        db.getDeviceUser(new DbCallback() {
             @Override
             public void onSuccess(Object result) {
-                Log.d("DB", "In callback: " + result.toString());
-                // do other stuff like initializing User class based on this data
+                Map<String, Object> map = (Map<String, Object>) result;
+                user.initialize(
+                        (String) map.get("deviceID"),
+                        (ProfileSystem) map.get("profile"),
+                        (Boolean) map.get("organizer"),
+                        (Boolean) map.get("admin")
+                );
+                Log.d("DB", "onCreate: " + user.getDeviceID());
             }
             @Override
             public void onError(Exception exception) {
                 Log.e("DB", "onError: ", exception);
             }
-        });
-        User user = User.getInstance(this);
-        Log.d("DB", "onCreate: " + user.getDeviceID() + ", ");
+        }, deviceId);
     }
 }
