@@ -1,4 +1,4 @@
-package com.example.quokka_event.controllers;
+package com.example.quokka_event;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,8 +9,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.quokka_event.R;
+import com.example.quokka_event.controllers.DatabaseManager;
+import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.controllers.dbutil.DbResponse;
+import com.example.quokka_event.controllers.dbutil.MultipleResponse;
+import com.example.quokka_event.controllers.dbutil.SingleResponse;
 import com.example.quokka_event.models.User;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,8 +33,18 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseManager db = DatabaseManager.getInstance(this);
 
-        db.initDeviceUser();
+//        db.initDeviceUser();
+        db.getUserMap(new DbCallback() {
+            @Override
+            public void onCallback(SingleResponse response) {
+                if (response.getResponse() != null) {
+                    Log.d("DB", "In callback: " + response.getResponse().toString());
+                    Log.d("DB", "In callback: " + response.getResponse());
+                    // do other stuff like initializing User class based on this data
+                }
+            }
+        });
         User user = User.getInstance(this);
-        Log.d("DB", "onCreate: " + user.getDeviceID());
+        Log.d("DB", "onCreate: " + user.getDeviceID() + ", ");
     }
 }
