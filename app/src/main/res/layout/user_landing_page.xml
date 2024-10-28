@@ -20,7 +20,7 @@
         android:id="@+id/topToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#FB9365"
+        android:background="@color/user_orange"
 
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +93,7 @@
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/landing_button"
-        android:backgroundTint="#5BC7C4"
+        android:backgroundTint="@color/organizer_blue"
         android:text="@string/organizer_events_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
