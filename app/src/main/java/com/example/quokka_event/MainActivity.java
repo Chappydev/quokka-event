@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
-import com.example.quokka_event.models.admin.ProfileSystem;
+import com.example.quokka_event.models.ProfileSystem;
 
 import java.util.Map;
 

@@ -1,10 +1,7 @@
 package com.example.quokka_event.models.entrant;
 
-import com.example.quokka_event.ProfileSystem;
-import com.example.quokka_event.models.User;
+import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
-
-import java.util.Date;
 
 // Refactor:
 // Remove User functionality and repurpose as an 'EventManager' class (idk about the naming) where

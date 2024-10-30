@@ -1,14 +1,12 @@
 package com.example.quokka_event.controllers;
 
 import android.content.Context;
-import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.models.User;
-import com.example.quokka_event.models.admin.ProfileSystem;
+import com.example.quokka_event.models.ProfileSystem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
