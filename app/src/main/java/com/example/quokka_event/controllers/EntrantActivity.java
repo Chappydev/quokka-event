@@ -3,6 +3,7 @@ package com.example.quokka_event.controllers;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class EntrantActivity extends AppCompatActivity {
         timeText = findViewById(R.id.time_text);
         locationText = findViewById(R.id.location_text);
         organizerText = findViewById(R.id.organizer_text);
+        joinButton = findViewById(R.id.join_waitlist_button);
 
         // Set up date for signup
         Date testDate = new Date();
@@ -77,9 +79,17 @@ public class EntrantActivity extends AppCompatActivity {
         String dateTextFormatted = getString(R.string.date, testDate);
         dateText.setText(event.getEventDate().toString());
 
+        joinButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When join button is clicked add the user to the event's waitlist using Event.addEntrantToWaitlist()
+             * @author Simon
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                event.addEntrantToWaitlist(currentUser.getProfile());
+            }
+        });
 
-
-
-        event.addEntrantToWaitlist(currentUser.getProfile());
     }
 }
