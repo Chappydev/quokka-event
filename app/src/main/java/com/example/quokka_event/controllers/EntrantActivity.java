@@ -37,6 +37,7 @@ public class EntrantActivity extends AppCompatActivity {
     private Button joinButton;
     private Button exitButton;
 
+    //TODO SHOULD SWITCH TO THIS ACTIVITY FROM QR CODE
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -49,7 +50,9 @@ public class EntrantActivity extends AppCompatActivity {
         locationText = findViewById(R.id.location_text);
         organizerText = findViewById(R.id.organizer_text);
 
+        // Set up date for signup
         Date testDate = new Date();
+        // Set up deadline date
         Calendar cal = Calendar.getInstance();
         cal.setTime(testDate);
         cal.add(Calendar.DATE, 6);
@@ -57,15 +60,25 @@ public class EntrantActivity extends AppCompatActivity {
         Event event = new Event("01", "Cool Event", testDate, deadline, "Edmonton",5,5,new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>());
 
         eventTitle.setText(event.getEventName());
+
+        // set up time text
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String eventTime = timeFormat.format(event.getEventDate());timeText.setText(eventTime);
+        timeText.setText(eventTime);
+
         locationText.setText(event.getEventLocation());
+
+        // Seems like Event is missing organizer name.
         organizerText.setText("organizer");
 
+        // Set date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM dd, yyyy", Locale.getDefault());
 
         String dateTextFormatted = getString(R.string.date, testDate);
         dateText.setText(event.getEventDate().toString());
+
+
+
 
         event.addEntrantToWaitlist(currentUser.getProfile());
     }
