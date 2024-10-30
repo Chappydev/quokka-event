@@ -1,6 +1,6 @@
 package com.example.quokka_event.models.event;
 
-import com.example.quokka_event.ProfileSystem;
+import com.example.quokka_event.models.ProfileSystem;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -147,9 +147,9 @@ public class Event {
     /**
      * Adds an entrant to the waitlist if the waitlist is not full
      * and the registration deadline has not yet passed.
-     *
-     * @param user the user to be added to the waitlist
      * @author Soaiba
+     * @param user the user to be added to the waitlist
+     * @return true if the user was successfully added to the waitlist
      */
     public boolean addEntrantToWaitlist(ProfileSystem user){
         if (!isWaitListFull() && !isDeadline()) {
