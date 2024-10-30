@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("DB", "onError: ", exception);
             }
         }, deviceId);
-        switchActivities();
+
     }
     private void switchActivities(){
         Intent switchActivityIntent = new Intent(this, EntrantActivity.class);

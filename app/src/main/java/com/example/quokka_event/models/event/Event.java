@@ -153,6 +153,7 @@ public class Event {
      * @return true if the user was successfully added to the waitlist
      */
     public boolean addEntrantToWaitlist(ProfileSystem user){
+        //TODO **** Update Database!! ****
         if (!isWaitListFull() && !isDeadline()) {
             waitList.add(user);
             return true;
