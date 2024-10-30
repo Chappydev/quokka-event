@@ -2,9 +2,18 @@
     <!-- App name -->
     <string name="app_name">quokka-event</string>
 
-    <!-- Event join confirmation screen -->
-    <string name="confirmation_message">You have joined the waitlist for ...!</string>
+    <!-- Event Details Screen -->
+    <string name="event_join_details">You are joining %1$s event</string>
+    <string name="date">Date: %1$s</string>
+    <string name="time">Time: %1$s</string>
+    <string name="location">Location: %1$s</string>
+    <string name="organizer">Organizer: %1$s</string>
+    <string name="join_button">Join Waiting List</string>
+
+    <!-- Event Join Confirmation Screen -->
+    <string name="confirmation_message">You have joined the waitlist for %1$s!</string>
     <string name="exit_button_text">Exit</string>
+
     <!-- User Landing Page Strings -->
     <string name="organizer_events_button_text">Organizer Events</string>
     <string name="scan_qr_code_button_text">Scan QR Code</string>
