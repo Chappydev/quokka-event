@@ -16,16 +16,13 @@ import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.entrant.EventManager;
 import com.example.quokka_event.models.event.Event;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class EntrantActivity extends AppCompatActivity {
+public class WaitlistActivity extends AppCompatActivity {
 
     private TextView eventTitle;
     private TextView dateText;
