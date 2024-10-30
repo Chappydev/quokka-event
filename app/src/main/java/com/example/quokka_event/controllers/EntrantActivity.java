@@ -57,7 +57,7 @@ public class EntrantActivity extends AppCompatActivity {
         cal.setTime(testDate);
         cal.add(Calendar.DATE, 6);
         Date deadline = cal.getTime();
-        Event event = new Event("01", "Cool Event", testDate, deadline, "Edmonton",5,5,new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>());
+        Event event = new Event("01", "Test Event", testDate, deadline, "Edmonton",5,5,new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>());
 
         eventTitle.setText(event.getEventName());
 
