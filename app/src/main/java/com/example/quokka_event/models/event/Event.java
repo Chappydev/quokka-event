@@ -81,6 +81,7 @@ public class Event {
         return eventLocation;
     }
 
+
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
     }

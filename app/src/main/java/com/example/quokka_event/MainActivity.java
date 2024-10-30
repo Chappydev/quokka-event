@@ -1,5 +1,6 @@
 package com.example.quokka_event;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -11,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quokka_event.controllers.DatabaseManager;
+import com.example.quokka_event.controllers.EntrantActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
@@ -51,5 +53,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("DB", "onError: ", exception);
             }
         }, deviceId);
+        switchActivities();
+    }
+    private void switchActivities(){
+        Intent switchActivityIntent = new Intent(this, EntrantActivity.class);
+        startActivity(switchActivityIntent);
     }
 }
