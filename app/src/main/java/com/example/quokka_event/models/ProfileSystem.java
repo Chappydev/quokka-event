@@ -1,4 +1,4 @@
-package com.example.quokka_event.models.admin;
+package com.example.quokka_event.models;
 
 
 import androidx.annotation.DrawableRes;
@@ -6,9 +6,9 @@ import androidx.annotation.DrawableRes;
 import java.util.Date;
 
 /*
- * A class to handle individual profiles
- * int for the image id
- * */
+* A class to handle individual profiles
+* int for the image id
+* */
 public class ProfileSystem {
     @DrawableRes
     private int profileImage;
