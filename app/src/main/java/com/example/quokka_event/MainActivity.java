@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("DB", "onError: ", exception);
             }
         }, deviceId);
-
+        switchActivities();
     }
 
     // Switch activity to WaitlistActivity TEMPORARY FOR TESTING WAITLIST ACTIVITY.
