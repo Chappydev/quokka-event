@@ -25,6 +25,7 @@ public class EventManager {
         // needs implementation
     }
 
+    //This function is not being used rn
     /**
      * Adds entrant's profile to the waitlist for an Event.
      * @author Soaiba

@@ -38,8 +38,6 @@ public class Lottery {
             event.setParticipantList(selectedParticipants);
             waitlist.removeAll(selectedParticipants);
             event.setWaitList(waitlist);
-
-            //TODO update database
             }
         }
 
