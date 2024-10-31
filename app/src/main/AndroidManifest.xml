@@ -21,9 +21,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.EntrantActivity"></activity>
-        <activity android:name=".models.MyEventsPageActivity"></activity>
-        <activity android:name=".NotificationPageActivity"></activity>
+        <activity
+            android:name=".controllers.EntrantActivity">
+        </activity>
+        <activity
+            android:name=".models.MyEventsPageActivity">
+        </activity>
+        <activity
+            android:name=".NotificationPageActivity">
+        </activity>
+        <activity
+            android:name=".OrganizerEventsPageActivity">
+        </activity>
     </application>
+<!--    <uses-permission android:name="android.permission.INTERNET" />-->
 
 </manifest>

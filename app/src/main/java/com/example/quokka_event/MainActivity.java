@@ -75,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(showActivity);
             }
         });
+
+        // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
+        final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
+        organizerEventsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
+                startActivity(showActivity);
+            }
+        });
     }
 
 }
