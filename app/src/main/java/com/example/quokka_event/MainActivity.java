@@ -16,11 +16,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.quokka_event.controllers.DatabaseManager;
-import com.example.quokka_event.controllers.WaitlistActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
-import com.example.quokka_event.models.event.MyEventsPageFragment;
+import com.example.quokka_event.models.event.MyEventsPageActivity;
 
 import java.util.Map;
 
@@ -64,16 +63,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }, deviceId);
 
+        myEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivities();
+            }
+        });
 
 
     }
 
     // Switch activity to WaitlistActivity TEMPORARY FOR TESTING WAITLIST ACTIVITY.
     private void switchActivities(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.my_events_page, new MyEventsPageFragment());
-        fragmentTransaction.addToBackStack(null); // Optional
-        fragmentTransaction.commit();
+        Intent intent = new Intent(this, MyEventsPageActivity.class);
+        startActivity(intent);
     }
 }
