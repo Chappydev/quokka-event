@@ -34,6 +34,10 @@ public class CreateProfileActivity extends AppCompatActivity {
 
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * @param view
+             * Changes profile details in profile system.
+             * **/
             @Override
             public void onClick(View view) {
                 String name = editName.getText().toString();
@@ -45,6 +49,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                 userProfile.setPhoneNumber(phone);
 
                 //TODO Update this info to database.
+
 
             }
         });
