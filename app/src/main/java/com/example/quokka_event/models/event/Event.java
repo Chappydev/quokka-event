@@ -108,6 +108,7 @@ public class Event {
 
     public void setParticipantList(ArrayList<ProfileSystem> participantList) {
         this.participantList = participantList;
+        //TODO update database
     }
 
     public ArrayList<ProfileSystem> getWaitList() {
@@ -116,6 +117,7 @@ public class Event {
 
     public void setWaitList(ArrayList<ProfileSystem> waitList) {
         this.waitList = waitList;
+        //TODO update database
     }
 
     public ArrayList<ProfileSystem> getCancelledParticipants() {
@@ -148,17 +150,13 @@ public class Event {
     /**
      * Adds an entrant to the waitlist if the waitlist is not full
      * and the registration deadline has not yet passed.
-     * @author Soaiba
      * @param user the user to be added to the waitlist
-     * @return true if the user was successfully added to the waitlist
+     * @author Soaiba
      */
-    public boolean addEntrantToWaitlist(ProfileSystem user){
+    public void addEntrantToWaitlist(ProfileSystem user){
+        //TODO **** Update Database!! ****
         if (!isWaitListFull() && !isDeadline()) {
             waitList.add(user);
-            return true;
-        }
-        else {
-            return false;
         }
     }
 }
