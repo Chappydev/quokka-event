@@ -87,6 +87,5 @@ public class WaitlistActivity extends AppCompatActivity {
                 event.addEntrantToWaitlist(currentUser.getProfile());
             }
         });
-
     }
 }
