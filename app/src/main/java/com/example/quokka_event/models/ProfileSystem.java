@@ -32,7 +32,12 @@ public class ProfileSystem {
 
     // Temporary empty constructor - there might be a better way to do this but not all fields are
     // required so I need an easy way to do that for now
-    public ProfileSystem(){}
+    public ProfileSystem(){
+        this.deviceID = "";
+        this.name = "";
+        this.email = "";
+
+    }
 
     // Set profile image should upload the image to firebase as well
     public void setImage(@DrawableRes int newImage){

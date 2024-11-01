@@ -44,7 +44,8 @@ public class CreateProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String name = editName.getText().toString();
                 String email = editEmail.getText().toString();
-                int phone = Integer.parseInt(editPhoneNumber.getText().toString());
+                String phoneNum = editPhoneNumber.getText().toString();
+                int phone = ((!phoneNum.isEmpty()) ? Integer.parseInt(phoneNum) : 0);
 
                 userProfile.setName(name);
                 userProfile.setEmail(email);
