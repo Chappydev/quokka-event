@@ -21,8 +21,8 @@ public class CreateProfileActivity extends AppCompatActivity {
     Button confirmButton;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.create_profile);
         // Get user instance from application context;
         User currentUser = User.getInstance(this.getApplicationContext());
