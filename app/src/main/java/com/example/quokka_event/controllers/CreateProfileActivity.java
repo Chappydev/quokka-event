@@ -26,6 +26,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.create_profile);
         // Get user instance from application context;
         User currentUser = User.getInstance(this.getApplicationContext());
+        DatabaseManager db = DatabaseManager.getInstance(this.getApplicationContext());
         ProfileSystem userProfile = currentUser.getProfile();
         editName = findViewById(R.id.edit_name);
         editEmail = findViewById(R.id.edit_email);
@@ -35,20 +36,22 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             /**
+             * Update the profile details when button is clicked.
+             * @author saimonnk
              * @param view
-             * Changes profile details in profile system.
-             * **/
+             */
             @Override
             public void onClick(View view) {
                 String name = editName.getText().toString();
                 String email = editEmail.getText().toString();
-                Integer phone = Integer.parseInt(editPhoneNumber.getText().toString());
+                int phone = Integer.parseInt(editPhoneNumber.getText().toString());
 
                 userProfile.setName(name);
                 userProfile.setEmail(email);
                 userProfile.setPhoneNumber(phone);
 
-                //TODO Update this info to database.
+                db.updateProfile(userProfile);
+
 
 
             }
