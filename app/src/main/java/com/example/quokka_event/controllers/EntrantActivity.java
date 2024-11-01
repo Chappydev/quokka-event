@@ -38,8 +38,8 @@ public class EntrantActivity extends AppCompatActivity {
     private Button exitButton;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.event_waitlist_details);
         User currentUser = User.getInstance(this.getApplicationContext());
 

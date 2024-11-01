@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_landing_page);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         User user = User.getInstance(this);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
         db.getDeviceUser(new DbCallback() {
             @Override
             public void onSuccess(Object result) {
@@ -53,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("DB", "onError: ", exception);
             }
         }, deviceId);
-        switchActivities();
+
+
+
     }
     private void switchActivities(){
         Intent switchActivityIntent = new Intent(this, EntrantActivity.class);
