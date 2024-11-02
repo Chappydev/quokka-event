@@ -23,7 +23,7 @@ import com.example.quokka_event.models.ProfileSystem;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Button myEventsButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         User user = User.getInstance(this);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        /*
         db.getDeviceUser(new DbCallback() {
             @Override
             public void onSuccess(Object result) {
@@ -58,12 +59,13 @@ public class MainActivity extends AppCompatActivity {
         }, deviceId);
 
 
+         */
+        /*
         // Switch the activity to MyEventsActivity when the myEventsButton is clicked
-        final Button myEventsButton = findViewById(R.id.my_events_button);
+        myEventsButton = findViewById(R.id.my_events_button);
         myEventsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, MyEventsPageActivity.class);
-                startActivity(showActivity);
+                epic();
             }
         });
 
@@ -71,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
         final ImageButton bellButton = findViewById(R.id.bell);
         bellButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
-                startActivity(showActivity);
+                //Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
+                //MainActivity.this.startActivity(showActivity);
             }
         });
 
@@ -80,10 +82,18 @@ public class MainActivity extends AppCompatActivity {
         final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
         organizerEventsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
-                startActivity(showActivity);
+                //Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
+                //MainActivity.this.startActivity(showActivity);
             }
         });
+
+         */
+    }
+    /*
+    void epic(){
+        Intent showActivity = new Intent(this, MyEventsPageActivity.class);
+        startActivity(showActivity);
     }
 
+     */
 }
