@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         User user = User.getInstance(this);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        /*
+
         db.getDeviceUser(new DbCallback() {
             @Override
             public void onSuccess(Object result) {
@@ -59,13 +59,12 @@ public class MainActivity extends AppCompatActivity {
         }, deviceId);
 
 
-         */
-        /*
         // Switch the activity to MyEventsActivity when the myEventsButton is clicked
         myEventsButton = findViewById(R.id.my_events_button);
         myEventsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                epic();
+                Intent showActivity = new Intent(MainActivity.this, MyEventsPageActivity.class);
+                startActivity(showActivity);
             }
         });
 
@@ -73,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         final ImageButton bellButton = findViewById(R.id.bell);
         bellButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
-                //MainActivity.this.startActivity(showActivity);
+                Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
+                MainActivity.this.startActivity(showActivity);
             }
         });
 
@@ -82,18 +81,14 @@ public class MainActivity extends AppCompatActivity {
         final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
         organizerEventsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
-                //MainActivity.this.startActivity(showActivity);
+                Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
+                MainActivity.this.startActivity(showActivity);
             }
         });
 
-         */
-    }
-    /*
-    void epic(){
-        Intent showActivity = new Intent(this, MyEventsPageActivity.class);
-        startActivity(showActivity);
+
     }
 
-     */
+
+
 }
