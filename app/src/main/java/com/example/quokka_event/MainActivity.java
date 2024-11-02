@@ -12,8 +12,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quokka_event.controllers.DatabaseManager;
-import com.example.quokka_event.controllers.WaitlistActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Switch activity to WaitlistActivity TEMPORARY FOR TESTING WAITLIST ACTIVITY.
     private void switchActivities(){
-        Intent switchActivityIntent = new Intent(this, WaitlistActivity.class);
+        Intent switchActivityIntent = new Intent(this, MyEventsActivity.class);
         startActivity(switchActivityIntent);
     }
 }
