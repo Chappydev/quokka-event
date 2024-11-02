@@ -1,8 +1,12 @@
 package com.example.quokka_event;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.MyEventsPageActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
 
@@ -51,5 +56,34 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("DB", "onError: ", exception);
             }
         }, deviceId);
+
+
+        // Switch the activity to MyEventsActivity when the myEventsButton is clicked
+        final Button myEventsButton = findViewById(R.id.my_events_button);
+        myEventsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, MyEventsPageActivity.class);
+                startActivity(showActivity);
+            }
+        });
+
+        // Switch the activity to the NotificationPageActivity when the bell icon is clicked
+        final ImageButton bellButton = findViewById(R.id.bell);
+        bellButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
+                startActivity(showActivity);
+            }
+        });
+
+        // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
+        final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
+        organizerEventsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
+                startActivity(showActivity);
+            }
+        });
     }
+
 }
