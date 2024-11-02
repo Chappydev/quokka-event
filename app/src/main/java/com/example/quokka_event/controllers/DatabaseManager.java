@@ -1,6 +1,7 @@
 package com.example.quokka_event.controllers;
 
 import android.content.Context;
+import android.media.MediaRouter;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -170,6 +171,7 @@ public class DatabaseManager {
         userInfo.put("name", profile.getName());
         userInfo.put("email", profile.getEmail());
         userInfo.put("address", profile.getAddress());
+        userInfo.put("phonenumber", profile.getPhoneNumber());
         usersRef.document(deviceId).update(userInfo);
     }
 

@@ -14,13 +14,13 @@ public class ProfileSystem {
     private int profileImage;
     private String name;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private Date birthday;
     private String address;
     private String deviceID;
 
     // Constructor for profilesystem class
-    public ProfileSystem(String deviceID,@DrawableRes int profileImage, String name, String email, int phoneNumber, Date birthday, String address){
+    public ProfileSystem(String deviceID,@DrawableRes int profileImage, String name, String email, String phoneNumber, Date birthday, String address){
         this.deviceID = deviceID;
         this.profileImage = profileImage;
         this.email = email;
@@ -71,12 +71,12 @@ public class ProfileSystem {
     }
 
     // set phone number also check the valid length
-    public void setPhoneNumber(int newPhoneNumber){
+    public void setPhoneNumber(String newPhoneNumber){
         phoneNumber = newPhoneNumber;
     }
 
     // get phone number
-    public int getPhoneNumber(){
+    public String getPhoneNumber(){
         return phoneNumber;
     }
 

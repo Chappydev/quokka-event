@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -46,13 +46,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:inputType="textEmailAddress"></EditText>
+            android:inputType="textEmailAddress" />
+
         <EditText
             android:id="@+id/edit_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone Number"
-            android:inputType="phone"></EditText>
+            android:inputType="phone"
+            android:maxLength="10"/>
 
         <Button
             android:id="@+id/confirm_button"

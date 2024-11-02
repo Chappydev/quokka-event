@@ -3,6 +3,7 @@ package com.example.quokka_event.controllers;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,11 +49,10 @@ public class CreateProfileActivity extends AppCompatActivity {
                 String name = editName.getText().toString();
                 String email = editEmail.getText().toString();
                 String phoneNum = editPhoneNumber.getText().toString();
-                int phone = ((!phoneNum.isEmpty()) ? Integer.parseInt(phoneNum) : 0);
-
+                Log.d("profile", phoneNum);
                 userProfile.setName(name);
                 userProfile.setEmail(email);
-                userProfile.setPhoneNumber(phone);
+                userProfile.setPhoneNumber(phoneNum);
 
                 db.updateProfile(userProfile);
 
