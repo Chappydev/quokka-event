@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -19,6 +20,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     EditText editEmail;
     EditText editPhoneNumber;
     Button confirmButton;
+    Button backButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         editEmail = findViewById(R.id.edit_email);
         editPhoneNumber = findViewById(R.id.edit_phone);
         confirmButton = findViewById(R.id.confirm_button);
+        backButton = findViewById(R.id.back_button);
 
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +58,12 @@ public class CreateProfileActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
