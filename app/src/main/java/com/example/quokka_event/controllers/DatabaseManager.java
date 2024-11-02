@@ -170,17 +170,7 @@ public class DatabaseManager {
         userInfo.put("name", profile.getName());
         userInfo.put("email", profile.getEmail());
         userInfo.put("address", profile.getAddress());
-        usersRef.document(deviceId).set(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Log.d("DB","Profile updated");
-                }
-                else {
-                    Log.e("DB", "Unable to update profile", task.getException());
-                }
-            }
-        });
+        usersRef.document(deviceId).update(userInfo);
     }
 
 

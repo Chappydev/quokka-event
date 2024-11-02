@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         profileButton = findViewById(R.id.profile);
         User user = User.getInstance(this);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
         db.getDeviceUser(new DbCallback() {
             @Override
             public void onSuccess(Object result) {
