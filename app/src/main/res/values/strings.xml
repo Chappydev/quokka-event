@@ -2,6 +2,10 @@
     <!-- App name -->
     <string name="app_name">quokka-event</string>
 
+    <!-- User Events Page -->
+    <string name="event_date">Date</string>
+    <string name="event_status">Status</string>
+
     <!-- Event Details Screen -->
     <string name="event_name">Event Name</string>
     <string name="date">Date: %1$s</string>

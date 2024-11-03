@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.quokka_event.R;
 import com.example.quokka_event.models.event.EventAdapter;
 import com.example.quokka_event.models.event.Event;
 
@@ -12,6 +14,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Activity that displays a list of events in a RecyclerView.
+ * Each event can be clicked to navigate to its details page.
+ */
 public class MyEventsActivity extends AppCompatActivity {
 
     @Override
@@ -19,13 +25,16 @@ public class MyEventsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_my_events_page);
 
+        // Initialize RecyclerView
         RecyclerView recyclerView = findViewById(R.id.event_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Get list of events
+        // Initialize adapter
+        // Handle item click
         List<Event> eventList = getEventList();
         EventAdapter adapter = new EventAdapter(eventList, event -> {
             Intent intent = new Intent(this, EventDetailsActivity.class);
-            intent.putExtra("event_id", event.getEventID());
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
@@ -34,7 +43,7 @@ public class MyEventsActivity extends AppCompatActivity {
     private List<Event> getEventList() {
         List<Event> events = new ArrayList<>();
         events.add(new Event("1", "Sample Event", new Date(), new Date(), "Location", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        // Populate with more events as needed
+        events.add(new Event("2", "Sample Event2", new Date(), new Date(), "Location2", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         return events;
     }
 }

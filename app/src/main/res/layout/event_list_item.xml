@@ -20,7 +20,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Date"
+        android:text="@string/event_date"
         android:textColor="#000000" />
 
     <TextView
@@ -29,6 +29,6 @@
         android:layout_weight="1"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Status"
+        android:text="@string/event_status"
         android:textColor="#000000" />
 </TableRow>

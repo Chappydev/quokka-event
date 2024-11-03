@@ -64,8 +64,8 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public CharSequence getEventDate() {
-        return (CharSequence) eventDate;
+    public Date getEventDate() {
+        return eventDate;
     }
 
     public void setEventDate(Date eventDate) {

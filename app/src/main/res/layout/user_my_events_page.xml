@@ -48,9 +48,6 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold" />
-            <!--
-            tools:layout_editor_absoluteX="131dp"
-            tools:layout_editor_absoluteY="8dp" -->
 
         <!-- Profile Button -->
         <ImageButton
