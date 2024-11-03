@@ -33,6 +33,7 @@
         <activity
             android:name=".OrganizerEventsPageActivity">
         </activity>
+        <activity android:name=".CreateEventActivity"></activity>
     </application>
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->
 

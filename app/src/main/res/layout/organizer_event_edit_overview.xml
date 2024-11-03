@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/event_edit_name"
@@ -12,55 +12,76 @@
         android:layout_marginTop="16dp"
         android:text="Event Name"
         android:textSize="34sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/date_textview"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
+        android:layout_marginTop="24dp"
+        android:text="Date:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_name" />
+
+    <TextView
+        android:id="@+id/time_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_textview" />
+
+    <TextView
+        android:id="@+id/location_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_textview" />
+
+    <EditText
+        android:id="@+id/editTextTextMultiLine4"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="0.8"
+        android:background="@drawable/box"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Event description"
+        android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_edit_name">
+        app:layout_constraintTop_toBottomOf="@+id/location_textview" />
 
-        <TextView
-            android:id="@+id/date_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine4"
+        tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/time_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+    <ImageButton
+        android:id="@+id/edit_event_name_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/edit_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/event_edit_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toEndOf="@+id/event_edit_name" />
 
-        <TextView
-            android:id="@+id/location_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+    <ImageButton
+        android:id="@+id/edit_date_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
 
-        <EditText
-            android:id="@+id/editTextTextMultiLine4"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="24dp"
-            android:layout_weight="0.8"
-            android:background="@drawable/box"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="Event description"
-            android:inputType="textMultiLine" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
-
-    </LinearLayout>
+        android:background="@drawable/edit_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/location_textview"
+        app:layout_constraintStart_toStartOf="@+id/edit_event_name_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
