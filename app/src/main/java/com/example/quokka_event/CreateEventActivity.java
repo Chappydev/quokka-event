@@ -2,6 +2,7 @@ package com.example.quokka_event;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +14,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class CreateEventActivity extends AppCompatActivity implements EditEventTitleFragment.EditTitleDialogListener {
+public class CreateEventActivity extends AppCompatActivity {
     TabLayout organizerEventsTab;
     ViewPager2 viewPager2;
     CreateEventTabsAdapter createEventAdapter;
@@ -50,10 +51,6 @@ public class CreateEventActivity extends AppCompatActivity implements EditEventT
         });
     }
 
-    @Override
-    public void editEventTitle(String eventTitle) {
-
-    }
 
     public class CreateEventTabsAdapter extends FragmentStateAdapter{
         public CreateEventTabsAdapter(@NonNull FragmentActivity fragmentActivity) {

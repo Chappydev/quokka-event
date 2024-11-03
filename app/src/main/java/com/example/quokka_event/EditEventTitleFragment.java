@@ -15,37 +15,21 @@ import android.widget.EditText;
 
 
 public class EditEventTitleFragment extends DialogFragment {
-    interface EditTitleDialogListener {
-        void editEventTitle(String eventTitle);
-    }
-
-    private EditTitleDialogListener listener;
-
-    @Override
-    public void onAttach(@NonNull Context context){
-        super.onAttach(context);
-        if(context instanceof EditTitleDialogListener){
-            listener = (EditTitleDialogListener) context;
-        } else {
-            throw new RuntimeException(context + "must implement AddCityDialogListener");
-        }
-    }
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.edit_event_title_fragment, null);
         EditText editTitle = view.findViewById(R.id.event_title_edittext);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         return builder
                 .setView(view)
-                .setTitle("Add a city")
+                .setTitle("Edit Event Name")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Confirm", (dialog,which) -> {
                     String eventTitle = editTitle.getText().toString();
-                    listener.editEventTitle(eventTitle);
-                    if (listener != null) {
-                        listener.editEventTitle(eventTitle);
-                    }
+                    Bundle result = new Bundle();
+                    result.putString("bundleKey", eventTitle);
+                    getParentFragmentManager().setFragmentResult("requestKey", result);
                 })
                 .create();
     }
