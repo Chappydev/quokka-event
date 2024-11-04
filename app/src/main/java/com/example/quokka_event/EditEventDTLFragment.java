@@ -59,7 +59,15 @@ public class EditEventDTLFragment extends DialogFragment {
                 timePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {
-                        timeTextView.setText("Time: " + hour + ":" + min);
+                        myCalendar.set(Calendar.HOUR_OF_DAY, hour);
+                        String digital = convertAMPM(hour);
+                        if (hour == 0){
+                            timeTextView.setText("Time: 12"+ ":" + min + digital);
+                        }
+                        else{
+                            timeTextView.setText("Time: " + myCalendar.get(Calendar.HOUR) + ":" + min + digital);
+                        }
+
                     }
                 }, h , m, false);
                 timePicker.setTitle("Select Event Start Time");
@@ -82,5 +90,18 @@ public class EditEventDTLFragment extends DialogFragment {
         dateTextView.setText("Date: " + dateFormat.format(myCalendar.
                 getTime()));
 
+    }
+
+    /**
+     * Return String as AM or PM from determining the hour from 24 hour clock format
+     * @param hour
+     * @return
+     */
+    String convertAMPM(int hour){
+        String digital_suffix = "AM";
+        if (hour >= 12 && hour < 24) {
+            digital_suffix = "PM";
+        }
+        return digital_suffix;
     }
 }
