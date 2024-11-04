@@ -186,9 +186,13 @@ public class DatabaseManager {
     }
 
 
-    // delete event from firebase, make sure that it also deletes any data associated with it
-    public void deleteEvent(){
-
+    // delete event from firestore, making sure that it also deletes any data associated with it
+    public void deleteEvent(String eventId, DbCallback callback){
+        eventsRef
+                .document(eventId)
+                .delete()
+                .addOnSuccessListener(response -> callback.onSuccess(response))
+                .addOnFailureListener(exception -> callback.onError(exception));
     }
 
     // delete profile from database.
