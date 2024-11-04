@@ -6,8 +6,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.quokka_event.R;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Adapter class for displaying a list of events in a RecyclerView.
@@ -16,6 +20,7 @@ import java.util.List;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
     private List<Event> eventList;
     private OnEventClickListener listener;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
 
     /**
      * Constructor for EventAdapter.
@@ -55,8 +60,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int pos) {
         Event event = eventList.get(pos);
+
         holder.eventName.setText(event.getEventName());
-        holder.eventDate.setText(event.getEventDate().toString());
+        holder.eventDate.setText(dateFormat.format(event.getEventDate()));
         //TODO figure out status
         holder.eventStatus.setText(event.isDeadline() ? "Closed" : "Open"); //how do you actually get the status?
         holder.itemView.setOnClickListener(v -> listener.onEventClick(event));

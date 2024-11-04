@@ -42,8 +42,8 @@ public class MyEventsActivity extends AppCompatActivity {
 
     private List<Event> getEventList() {
         List<Event> events = new ArrayList<>();
-        events.add(new Event("1", "Sample Event", new Date(), new Date(), "Location", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        events.add(new Event("2", "Sample Event2", new Date(), new Date(), "Location2", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        events.add(new Event("1", "Sample Event", new Date(2023 - 1900, 8, 21), new Date(), "Location", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        events.add(new Event("2", "Sample Event2", new Date(2024 - 1900, 9, 2), new Date(), "Location2", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         return events;
     }
 }
