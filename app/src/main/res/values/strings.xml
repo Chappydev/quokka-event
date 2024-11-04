@@ -8,10 +8,10 @@
 
     <!-- Event Details Screen -->
     <string name="event_name">Event Name</string>
-    <string name="date">Date: %1$s</string>
-    <string name="time">Time: %1$s</string>
-    <string name="location">Location: %1$s</string>
-    <string name="organizer">Organizer: %1$s</string>
+    <string name="date">Date: </string>
+    <string name="time">Time: </string>
+    <string name="location">Location: </string>
+    <string name="organizer">Organizer: </string>
     <string name="join_button">Join Waiting List</string>
 
     <!-- Event Join Confirmation Screen -->
