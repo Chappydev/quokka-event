@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- Event name -->
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    >
 
     <TableLayout
-        android:id="@+id/event_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:divider="@color/organizer_blue"
         android:showDividers="middle"
         android:stretchColumns="*"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
@@ -22,107 +21,126 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:padding="16dp"
-                android:text="Event Name"
-                android:textColor="#000000"
-                android:textSize="40dp"/>
+                android:text="Event Name:"
+                android:textColor="#000000" />
 
-            <ImageButton
-                android:id="@+id/edit_icon"
+            <EditText
+                android:id="@+id/edit_event_name"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom"
-                android:layout_weight="0.4"
-                android:contentDescription="edit icon"
-                android:background="@drawable/edit_icon"
-            />
+                android:layout_weight="2"
+                android:padding="16dp"
+                android:text=""
+                android:textColor="#000000"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="16dp"
+                android:text="Date:"
+                android:textColor="#000000" />
+
+            <!-- Day Spinner -->
+            <NumberPicker
+                android:id="@+id/day_picker"
+                android:layout_width="0dp"
+                android:layout_height="50dp" />
+
+            <!-- Month Spinner -->
+            <NumberPicker
+                android:id="@+id/month_picker"
+                android:layout_width="0dp"
+                android:layout_height="50dp"/>
+
+            <!-- Year Spinner -->
+            <NumberPicker
+                android:id="@+id/year_picker"
+                android:layout_width="0dp"
+                android:layout_height="50dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="16dp"
+                android:text="Time:"
+                android:textColor="#000000" />
+
+            <!-- Day Spinner -->
+            <NumberPicker
+                android:id="@+id/hour_picker"
+                android:layout_width="0dp"
+                android:layout_height="50dp" />
+
+            <!-- Month Spinner -->
+            <NumberPicker
+                android:id="@+id/minute_picker"
+                android:layout_width="0dp"
+                android:layout_height="50dp"/>
+
+            <!-- Year Spinner -->
+            <Spinner
+                android:id="@+id/ampm_spinner"
+                android:layout_width="0dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="16dp"
+                android:text="Location:"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/edit_event_location"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:padding="16dp"
+                android:text=""
+                android:textColor="#000000"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="16dp"
+                android:text="Description:"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/edit_event_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:padding="16dp"
+                android:text=""
+                android:textColor="#000000"/>
 
         </TableRow>
 
     </TableLayout>
 
-    <!-- Date Label -->
-    <TextView
-        android:id="@+id/event_date_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date:"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_name"
-        android:paddingTop="40dp"
-        android:paddingLeft="30dp"/>
 
-    <!-- Time Label -->
-    <TextView
-        android:id="@+id/event_time_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time:"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_date_label"
-        android:paddingLeft="30dp"/>
-
-    <!-- Location Label -->
-    <TextView
-        android:id="@+id/event_location_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location:"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_time_label"
-        android:paddingLeft="30dp"/>
-
-    <ImageButton
-        android:id="@+id/edit_overview_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/edit_icon"
-        android:contentDescription="edit icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_location_label" />
-
-    <!-- Description Box -->
-    <TextView
-        android:id="@+id/event_description_box"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/event_description_box"
-        android:text="THIS IS AN EVENT DESCRIPTION"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_overview_icon"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="20dp"
-        />
-
-    <ImageButton
-        android:id="@+id/edit_description_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/edit_icon"
-        android:contentDescription="edit icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_description_box" />
-
-    <!-- still need to add image -->
-
-    <!-- Done Button -->
-    <Button
-        android:id="@+id/event_done_button"
-        style="@style/landing_button_text"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:background="@drawable/organizer_button"
-        android:text="Done"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="30dp"/>
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
