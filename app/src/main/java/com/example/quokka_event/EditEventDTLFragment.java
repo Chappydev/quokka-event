@@ -25,12 +25,12 @@ public class EditEventDTLFragment extends DialogFragment {
     TextView timeTextView;
     EditText locationEditText;
     Calendar myCalendar = Calendar.getInstance();
+    Bundle result = new Bundle();
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.edit_event_date, null);
-        Bundle result = new Bundle();
 
 
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
@@ -39,7 +39,6 @@ public class EditEventDTLFragment extends DialogFragment {
         locationEditText = view.findViewById(R.id.editTextLocation);
 
         setDefaultDate();
-
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -97,7 +96,7 @@ public class EditEventDTLFragment extends DialogFragment {
                 .setTitle("Edit Event Name")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Confirm", (dialog,which) -> {
-                    result.putString("locationKey", locationEditText.getText().toString());
+                    result.putString("locationKey", checkLocationEmpty());
                     getParentFragmentManager().setFragmentResult("dateRequestKey", result);
                 })
                 .create();
@@ -125,5 +124,15 @@ public class EditEventDTLFragment extends DialogFragment {
         SimpleDateFormat tf = new SimpleDateFormat(timeFormat, Locale.CANADA);
         String timeString = tf.format(currentDate);
         timeTextView.setText("Time: " + timeString);
+
+        result.putString("dateKey", defaultDate);
+        result.putString("timeKey", timeString);
+    }
+
+    String checkLocationEmpty(){
+        if (locationEditText.getText().toString().isEmpty()){
+            return "";
+        }
+        return locationEditText.getText().toString();
     }
 }
