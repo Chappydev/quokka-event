@@ -28,9 +28,12 @@ public class EditEventDTLFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.edit_event_date, null);
+        Bundle result = new Bundle();
+
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
         dateTextView = view.findViewById(R.id.editDateTextView);
         timeTextView = view.findViewById(R.id.editTimeTextView);
+        locationEditText = view.findViewById(R.id.editTextLocation);
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -61,13 +64,15 @@ public class EditEventDTLFragment extends DialogFragment {
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {
                         myCalendar.set(Calendar.HOUR_OF_DAY, hour);
                         String digital = convertAMPM(hour);
+                        result.putInt("hourKey", hour);
+                        result.putInt("minKey", min);
                         if (hour == 0){
                             timeTextView.setText("Time: 12"+ ":" + min + digital);
                         }
                         else{
                             timeTextView.setText("Time: " + myCalendar.get(Calendar.HOUR) + ":" + min + digital);
                         }
-
+                        result.putString("timeKey", timeTextView.getText().toString());
                     }
                 }, h , m, false);
                 timePicker.setTitle("Select Event Start Time");
@@ -80,6 +85,10 @@ public class EditEventDTLFragment extends DialogFragment {
                 .setTitle("Edit Event Name")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Confirm", (dialog,which) -> {
+                    result.putString("formatKey", "MM/dd/yy");
+                    result.putString("dateKey", dateTextView.getText().toString());
+                    result.putString("locationKey", locationEditText.getText().toString());
+                    getParentFragmentManager().setFragmentResult("dateRequestKey", result);
                 })
                 .create();
     }
@@ -87,8 +96,8 @@ public class EditEventDTLFragment extends DialogFragment {
     private void setDateText(){
         String format = "MM/dd/yy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.CANADA);
-        dateTextView.setText("Date: " + dateFormat.format(myCalendar.
-                getTime()));
+        String dateString = dateFormat.format(myCalendar.getTime());
+        dateTextView.setText("Date: " + dateString);
 
     }
 
