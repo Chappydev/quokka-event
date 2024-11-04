@@ -51,8 +51,9 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OrganizerEventsPageActivity.this, CreateEventActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(OrganizerEventsPageActivity.this, CreateEventActivity.class);
+                Intent showActivity = new Intent(OrganizerEventsPageActivity.this, EventTabsActivity.class);
+                startActivity(showActivity);
             }
         });
 
