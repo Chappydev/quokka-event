@@ -120,7 +120,7 @@ public class EditEventDTLFragment extends DialogFragment {
 
         int h = myCalendar.get(Calendar.HOUR_OF_DAY);
         int m = myCalendar.get(Calendar.MINUTE);
-        String timeFormat = "h:mm a";
+        String timeFormat = "h:mm a z";
         SimpleDateFormat tf = new SimpleDateFormat(timeFormat, Locale.CANADA);
         String timeString = tf.format(currentDate);
         timeTextView.setText("Time: " + timeString);

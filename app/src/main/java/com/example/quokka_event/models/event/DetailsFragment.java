@@ -20,6 +20,10 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.event_view_details_frag, container, false);
+
+        editButton = view.findViewById(R.id.edit_event_button);
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,7 +31,7 @@ public class DetailsFragment extends Fragment {
             }
         });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.event_view_details_frag, container, false);
+        return view;
     }
 }
 
