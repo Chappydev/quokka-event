@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.quokka_event.R;
 
 public class DetailsFragment extends Fragment {
-
+    Button editButton;
     public DetailsFragment() {
         // Required empty public constructor
     }
@@ -18,6 +19,13 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.event_view_details_frag, container, false);
     }

@@ -24,11 +24,11 @@ public class EditEventDTLFragment extends DialogFragment {
     TextView timeTextView;
     EditText locationEditText;
     Calendar myCalendar = Calendar.getInstance();
+    Bundle result = new Bundle();
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.edit_event_date, null);
-        Bundle result = new Bundle();
 
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
         dateTextView = view.findViewById(R.id.editDateTextView);
@@ -85,8 +85,6 @@ public class EditEventDTLFragment extends DialogFragment {
                 .setTitle("Edit Event Name")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Confirm", (dialog,which) -> {
-                    result.putString("formatKey", "MM/dd/yy");
-                    result.putString("dateKey", dateTextView.getText().toString());
                     result.putString("locationKey", locationEditText.getText().toString());
                     getParentFragmentManager().setFragmentResult("dateRequestKey", result);
                 })
@@ -94,9 +92,11 @@ public class EditEventDTLFragment extends DialogFragment {
     }
     // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
     private void setDateText(){
-        String format = "MM/dd/yy";
+        String format = "MM/dd/yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.CANADA);
         String dateString = dateFormat.format(myCalendar.getTime());
+        result.putString("formatKey", "MM/dd/yyyy");
+        result.putString("dateKey", dateString);
         dateTextView.setText("Date: " + dateString);
 
     }

@@ -1,4 +1,5 @@
 package com.example.quokka_event.models.event;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,10 @@ import com.example.quokka_event.EditEventDTLFragment;
 import com.example.quokka_event.EditEventTitleFragment;
 import com.example.quokka_event.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 
 public class OverviewFragment extends Fragment {
@@ -23,8 +28,25 @@ public class OverviewFragment extends Fragment {
     TextView dateTextView;
     TextView timeTextView;
 
+    public interface overviewEditListener{
+        void setEventName(String eventTitle);
+        void setEventDate(Date eventDate);
+    }
+
+    private overviewEditListener listener;
+
     public OverviewFragment() {
         // leave empty
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof overviewEditListener){
+            listener = (overviewEditListener) context;
+        } else {
+            throw new RuntimeException(context + "must implement AddCityDialogListener");
+        }
     }
 
     @Override
@@ -41,6 +63,7 @@ public class OverviewFragment extends Fragment {
         dateTextView = view.findViewById(R.id.event_date_label);
         timeTextView = view.findViewById(R.id.event_time_label);
 
+
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
             /**
              * get result from event title from EditEventTitleFragment.java
@@ -51,6 +74,7 @@ public class OverviewFragment extends Fragment {
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 String eventName = result.getString("bundleKey");
                 eventNameTextView.setText(eventName);
+                listener.setEventName(eventName);
             }
         });
 
@@ -60,10 +84,18 @@ public class OverviewFragment extends Fragment {
                 String dateString = result.getString("dateKey");
                 int hour = result.getInt("hourKey");
                 int min = result.getInt("minKey");
+
                 String time = result.getString("timeKey");
 
                 dateTextView.setText(dateString);
                 timeTextView.setText(time);
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                try {
+                    Date date = format.parse(dateString + " " + String.valueOf(hour)+":"+String.valueOf(min));
+                    listener.setEventDate(date);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 

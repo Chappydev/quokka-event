@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,12 +16,18 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.ViewPagerAdapter;
+import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.event.EventTabsActivity;
+import com.example.quokka_event.models.event.OverviewFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class OrganizerEventsPageActivity extends AppCompatActivity {
+import java.util.Date;
+
+public class OrganizerEventsPageActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener {
     Button addButton;
+    Button saveButton;
+    Event event = new Event();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,7 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
         });
 
         addButton = findViewById(R.id.add_button_bottom);
+        saveButton = findViewById(R.id.save_button);
         // Set up a click listener for the back button
         Button backButton = findViewById(R.id.back_button_bottom);
 
@@ -64,7 +72,22 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
             startActivity(showActivity);
         });
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Send info to database
+            }
+        });
 
     }
 
+    @Override
+    public void setEventName(String eventTitle) {
+        event.setEventName(eventTitle);
+    }
+
+    @Override
+    public void setEventDate(Date eventDate) {
+        event.setEventDate(eventDate);
+    }
 }
