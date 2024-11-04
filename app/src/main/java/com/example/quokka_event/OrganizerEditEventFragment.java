@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentResultListener;
 
 public class OrganizerEditEventFragment extends Fragment{
     ImageButton editNameButton;
+    ImageButton editDTLButton;
     TextView eventNameTextView;
     @Nullable
     @Override
@@ -24,6 +25,7 @@ public class OrganizerEditEventFragment extends Fragment{
         View view = inflater.inflate(R.layout.organizer_event_edit_overview, container, false);
 
         editNameButton = view.findViewById(R.id.edit_event_name_button);
+        editDTLButton = view.findViewById(R.id.edit_date_button);
         eventNameTextView = view.findViewById(R.id.event_edit_name);
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
             @Override
@@ -42,6 +44,14 @@ public class OrganizerEditEventFragment extends Fragment{
                 EditEventTitleFragment titleAlert = new EditEventTitleFragment();
 
                 titleAlert.show(getChildFragmentManager(), "Edit Event Name");
+            }
+        });
+
+        editDTLButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditEventDTLFragment editDateFrag = new EditEventDTLFragment();
+                editDateFrag.show(getChildFragmentManager(), "edit event date");
             }
         });
 
