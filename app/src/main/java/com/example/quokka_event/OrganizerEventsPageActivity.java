@@ -24,10 +24,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Date;
 
-public class OrganizerEventsPageActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener {
+public class OrganizerEventsPageActivity extends AppCompatActivity {
     Button addButton;
     Button saveButton;
-    Event event = new Event();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,6 @@ public class OrganizerEventsPageActivity extends AppCompatActivity implements Ov
         });
 
         addButton = findViewById(R.id.add_button_bottom);
-        saveButton = findViewById(R.id.save_button);
         // Set up a click listener for the back button
         Button backButton = findViewById(R.id.back_button_bottom);
 
@@ -72,22 +70,7 @@ public class OrganizerEventsPageActivity extends AppCompatActivity implements Ov
             startActivity(showActivity);
         });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Send info to database
-            }
-        });
 
     }
 
-    @Override
-    public void setEventName(String eventTitle) {
-        event.setEventName(eventTitle);
-    }
-
-    @Override
-    public void setEventDate(Date eventDate) {
-        event.setEventDate(eventDate);
-    }
 }

@@ -24,11 +24,12 @@ public class EditEventDTLFragment extends DialogFragment {
     TextView timeTextView;
     EditText locationEditText;
     Calendar myCalendar = Calendar.getInstance();
-    Bundle result = new Bundle();
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.edit_event_date, null);
+        Bundle result = new Bundle();
 
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
         dateTextView = view.findViewById(R.id.editDateTextView);
@@ -40,7 +41,12 @@ public class EditEventDTLFragment extends DialogFragment {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, month);
                 myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                setDateText();
+                String format = "MM/dd/yyyy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.CANADA);
+                String dateString = dateFormat.format(myCalendar.getTime());
+                //result.putString("formatKey", "MM/dd/yyyy");
+                //result.putString("dateKey", dateString);
+                dateTextView.setText("Date: " + dateString);
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -64,15 +70,15 @@ public class EditEventDTLFragment extends DialogFragment {
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {
                         myCalendar.set(Calendar.HOUR_OF_DAY, hour);
                         String digital = convertAMPM(hour);
-                        result.putInt("hourKey", hour);
-                        result.putInt("minKey", min);
+                        //result.putInt("hourKey", hour);
+                        //result.putInt("minKey", min);
                         if (hour == 0){
                             timeTextView.setText("Time: 12"+ ":" + min + digital);
                         }
                         else{
                             timeTextView.setText("Time: " + myCalendar.get(Calendar.HOUR) + ":" + min + digital);
                         }
-                        result.putString("timeKey", timeTextView.getText().toString());
+                        //result.putString("timeKey", timeTextView.getText().toString());
                     }
                 }, h , m, false);
                 timePicker.setTitle("Select Event Start Time");
@@ -89,16 +95,6 @@ public class EditEventDTLFragment extends DialogFragment {
                     getParentFragmentManager().setFragmentResult("dateRequestKey", result);
                 })
                 .create();
-    }
-    // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
-    private void setDateText(){
-        String format = "MM/dd/yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.CANADA);
-        String dateString = dateFormat.format(myCalendar.getTime());
-        result.putString("formatKey", "MM/dd/yyyy");
-        result.putString("dateKey", dateString);
-        dateTextView.setText("Date: " + dateString);
-
     }
 
     /**

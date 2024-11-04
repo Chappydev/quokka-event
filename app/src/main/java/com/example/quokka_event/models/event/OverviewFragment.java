@@ -1,6 +1,7 @@
 package com.example.quokka_event.models.event;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +43,11 @@ public class OverviewFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        Log.d("FragmentDebug", "Context class: " + context.getClass().getName());
         if(context instanceof overviewEditListener){
             listener = (overviewEditListener) context;
         } else {
-            throw new RuntimeException(context + "must implement AddCityDialogListener");
+            throw new RuntimeException(context + "must implement overeditListener");
         }
     }
 
@@ -65,11 +67,6 @@ public class OverviewFragment extends Fragment {
 
 
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
-            /**
-             * get result from event title from EditEventTitleFragment.java
-             * @param requestKey key used to store the result
-             * @param result result passed to the callback
-             */
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 String eventName = result.getString("bundleKey");
@@ -89,6 +86,7 @@ public class OverviewFragment extends Fragment {
 
                 dateTextView.setText(dateString);
                 timeTextView.setText(time);
+
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                 try {
                     Date date = format.parse(dateString + " " + String.valueOf(hour)+":"+String.valueOf(min));
@@ -96,8 +94,13 @@ public class OverviewFragment extends Fragment {
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
+
+
             }
         });
+
+
+
 
         editNameButton.setOnClickListener(new View.OnClickListener() {
             /**

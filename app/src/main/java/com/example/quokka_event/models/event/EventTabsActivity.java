@@ -2,6 +2,7 @@ package com.example.quokka_event.models.event;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -15,7 +16,10 @@ import com.example.quokka_event.controllers.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class EventTabsActivity extends AppCompatActivity {
+import java.util.Date;
+
+public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener {
+    Button saveButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +32,7 @@ public class EventTabsActivity extends AppCompatActivity {
         // Set up the adapter
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
+        saveButton = findViewById(R.id.savebutton);
 
         // Connect TabLayout and ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
@@ -52,6 +57,16 @@ public class EventTabsActivity extends AppCompatActivity {
                 startActivity(showActivity);
             }
         });
+    }
+
+    @Override
+    public void setEventName(String eventTitle) {
+
+    }
+
+    @Override
+    public void setEventDate(Date eventDate) {
+
     }
 }
 
