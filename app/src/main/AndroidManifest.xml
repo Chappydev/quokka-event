@@ -33,6 +33,8 @@
         <activity
             android:name=".OrganizerEventsPageActivity">
         </activity>
+        <activity android:name=".models.event.EventTabsActivity" />
+
     </application>
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->
 
