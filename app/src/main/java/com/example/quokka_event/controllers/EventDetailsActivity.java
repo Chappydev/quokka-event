@@ -28,6 +28,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         String eventId = getIntent().getStringExtra("event_id");
         Event event = getEventById(eventId);
 
+        // Format date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
         String formattedDate = dateFormat.format(event.getEventDate());
 
@@ -38,16 +39,28 @@ public class EventDetailsActivity extends AppCompatActivity {
         TextView locationText = findViewById(R.id.location_text);
         TextView organizerText = findViewById(R.id.organizer_text);
         TextView statusText = findViewById(R.id.status_text);
-        Button cancelButton = findViewById(R.id.button5);
 
+        // Buttons
+        Button acceptButton = findViewById(R.id.accept_button);
+        Button cancelButton = findViewById(R.id.cancel_button);
+
+        // Display info
         eventNameText.setText(event.getEventName());
         dateText.setText("Date: " + formattedDate);
-        timeText.setText("Time: "); // event class is missing time
+        timeText.setText("Time: "); // TODO event class is missing time
         locationText.setText("Location: " + event.getEventLocation());
         organizerText.setText("Organizer: ");
         statusText.setText(event.isDeadline() ? "Closed" : "Open");
 
-        // Set the click listener for the "Cancel" button
+        // Set the click listener for the accept button
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToConfirm("Accept", event.getEventName());
+            }
+        });
+
+        // Set the click listener for the cancel button
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,18 +70,21 @@ public class EventDetailsActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Returns to event list page once cancel button is pressed.
-     * @author Soaiba
-     */
+    private Event getEventById(String eventId) {
+        return new Event(eventId, "Sample Event", new Date(), new Date(), "Sample Location", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
+    private void goToConfirm(String messageType, String eventName) {
+        Intent intent = new Intent(EventDetailsActivity.this, ConfirmationActivity.class);
+        intent.putExtra("message_type", messageType);
+        intent.putExtra("event_name", eventName);
+        startActivity(intent);
+    }
+
     private void backToEventsList() {
         Intent intent = new Intent(this, MyEventsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-    }
-
-    private Event getEventById(String eventId) {
-        return new Event(eventId, "Sample Event", new Date(), new Date(), "Sample Location", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 }

@@ -9,13 +9,16 @@
     <string name="event_status">Status</string>
 
     <!-- Strings -->
-    <string name="confirmation_message">You have joined the waitlist for Event Name!</string>
+    <string name="confirmation_message">Confirmation message</string>
 
     <!-- Buttons -->
     <string name="my_events_button_text">My Events</string>
     <string name="organizer_events_button_text">Organizer Events</string>
     <string name="scan_qr_code_button_text">Scan QR Code</string>
     <string name="join_button">Join Waiting List</string>
+    <string name="accept_button">Accept</string>
+    <string name="deny_button">Deny</string>
+    <string name="cancel_button">Cancel</string>
     <string name="exit_button_text">Exit</string>
     <string name="back_button_text">Back</string>
 

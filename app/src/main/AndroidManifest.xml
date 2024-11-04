@@ -24,6 +24,7 @@
 
         <activity android:name="com.example.quokka_event.controllers.MyEventsActivity" />
         <activity android:name="com.example.quokka_event.controllers.EventDetailsActivity" />
+        <activity android:name=".controllers.ConfirmationActivity" />
 
     </application>
 

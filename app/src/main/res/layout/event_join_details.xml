@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:paddingTop="30dp"
-            android:text="[Status]"
+            android:text="@string/event_status"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -134,24 +134,24 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/accept_button"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Accept" />
+            android:text="@string/accept_button" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/deny_button"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Deny" />
+            android:text="@string/deny_button" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/cancel_button"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Cancel" />
+            android:text="@string/cancel_button" />
     </LinearLayout>
 
 
