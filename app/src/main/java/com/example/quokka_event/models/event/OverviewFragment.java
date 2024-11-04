@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import com.example.quokka_event.R;
 
 
-
 public class OverviewFragment extends Fragment {
 
     public OverviewFragment() {
@@ -34,6 +33,7 @@ public class OverviewFragment extends Fragment {
         Button editButton = view.findViewById(R.id.event_edit_button);
         editButton.setOnClickListener(v -> {
             // need to add functionality
+
         });
 
         return view;
