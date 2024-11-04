@@ -20,6 +20,7 @@ import java.util.Date;
 
 public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener {
     Button saveButton;
+    Event event = new Event();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,12 +62,12 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
     @Override
     public void setEventName(String eventTitle) {
-
+        event.setEventName(eventTitle);
     }
 
     @Override
     public void setEventDate(Date eventDate) {
-
+        event.setEventDate(eventDate);
     }
 }
 
