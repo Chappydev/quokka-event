@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.admin.ProfileSystem;
+import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.models.organizer.Facility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -148,22 +150,74 @@ public class DatabaseManager {
         profile.setEmail((String) map.getOrDefault("email", ""));
         return profile;
     }
-    // delete event from firebase, make sure that it also deletes any data associated with it
-    public void deleteEvent(){
 
+    // Add event document to firestore
+    public void addEvent(Event event, DbCallback callback){
+        Map<String, Object> eventPayload = new HashMap<>();
+        eventPayload.put("eventId", event.getEventID());
+        eventPayload.put("eventName", event.getEventName());
+        eventPayload.put("eventDate", event.getEventDate());
+        eventPayload.put("eventLocation", event.getEventLocation());
+        eventPayload.put("registrationDeadline", event.getRegistrationDeadline());
+        eventPayload.put("maxParticipants", event.getMaxParticipants());
+        eventPayload.put("maxWaitlist", event.getMaxWaitlist());
+
+        // Pushing the payload to the collection
+        eventsRef
+                .add(eventPayload)
+                .addOnSuccessListener(documentReference -> {
+                    documentReference.update("eventId", documentReference.getId())
+                            .addOnSuccessListener(response -> callback.onSuccess(documentReference.getId()))
+                            .addOnFailureListener(exception -> callback.onError(exception));
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
+    }
+
+
+    // delete event from firestore, making sure that it also deletes any data associated with it
+    public void deleteEvent(String eventId, DbCallback callback){
+        eventsRef
+                .document(eventId)
+                .delete()
+                .addOnSuccessListener(response -> callback.onSuccess(response))
+                .addOnFailureListener(exception -> callback.onError(exception));
     }
 
     // delete profile from database.
-    public void deleteProfile(){
-
+    public void deleteProfile(String deviceId, DbCallback callback){
+        usersRef
+                .document(deviceId)
+                .delete()
+                .addOnSuccessListener(response -> callback.onSuccess(response))
+                .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    // Adds a facility profile to firestore
+    public void addFacility(Facility facility , DbCallback callback){
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("facilityName", facility.getFacilityName());
+        payload.put("facilityLocation", facility.getFacilityLocation());
+
+        facilityRef
+                .add(payload)
+                .addOnSuccessListener(DocumentReference -> {
+                    DocumentReference.update("facilityId", DocumentReference.getId())
+                            .addOnSuccessListener(v -> callback.onSuccess(DocumentReference.getId())) // TODO: possible change return value to response object post testing.
+                            .addOnFailureListener(exception -> callback.onError(exception));
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
+    }
+
+    // Delete a facility delete events that are associated it with it
+    public void deleteFacility(String facilityId, DbCallback callback){
+        facilityRef
+                .document(facilityId)
+                .delete()
+                .addOnSuccessListener(response -> callback.onSuccess(response))
+                .addOnFailureListener(exception -> callback.onError(exception));
+    }
     // Delete hashed qr code data
     public void deleteQRCode(){
-
-    }
-    // Delete a facility delete events that are associated it with it
-    public void deleteFacility(){
 
     }
 
