@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.R;
@@ -20,7 +19,15 @@ public class ConfirmationActivity extends AppCompatActivity{
         String messageType = getIntent().getStringExtra("message_type");
         String eventName = getIntent().getStringExtra("event_name");
         TextView confirmationMessage = findViewById(R.id.confirmationMessage);
-        confirmationMessage.setText("You have joined " + eventName + "!");
+
+        // Set the message based on the message type
+        if ("Accept".equals(messageType)) {
+            confirmationMessage.setText("You have joined " + eventName + "!");
+        } else if ("Deny".equals(messageType)) {
+            confirmationMessage.setText("You denied invitation to " + eventName + " :(");
+        } else if ("Cancel".equals(messageType)) {
+            confirmationMessage.setText("You have unjoined the waitlist to " + eventName + ".");
+        }
 
         // Exit button activity
         // Returns to event list page

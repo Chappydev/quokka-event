@@ -42,6 +42,7 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         // Buttons
         Button acceptButton = findViewById(R.id.accept_button);
+        Button denyButton = findViewById(R.id.deny_button);
         Button cancelButton = findViewById(R.id.cancel_button);
 
         // Display info
@@ -60,12 +61,19 @@ public class EventDetailsActivity extends AppCompatActivity {
             }
         });
 
+        // Set the click listener for the deny button
+        denyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToConfirm("Deny", event.getEventName());
+            }
+        });
+
         // Set the click listener for the cancel button
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //removeFromWaitlist();
-                backToEventsList();
+                goToConfirm("Cancel", event.getEventName());
             }
         });
     }
@@ -79,12 +87,5 @@ public class EventDetailsActivity extends AppCompatActivity {
         intent.putExtra("message_type", messageType);
         intent.putExtra("event_name", eventName);
         startActivity(intent);
-    }
-
-    private void backToEventsList() {
-        Intent intent = new Intent(this, MyEventsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 }
