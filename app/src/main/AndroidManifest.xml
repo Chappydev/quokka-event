@@ -26,6 +26,7 @@
         <activity android:name="com.example.quokka_event.controllers.EventDetailsActivity" />
         <activity android:name=".controllers.ConfirmationActivity" />
 
+        <activity android:name=".controllers.WaitlistActivity"></activity>
     </application>
 
 </manifest>
