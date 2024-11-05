@@ -19,7 +19,7 @@ public class DetailsFragment extends Fragment {
     Boolean isWaitlistLimit;
 
     public DetailsFragment() {
-        // Required empty public constructor
+        // leave empty
     }
 
     @Override
@@ -49,7 +49,9 @@ public class DetailsFragment extends Fragment {
         });
 
         // Inflate the layout for this fragment
-        return view;
+        return inflater.inflate(R.layout.event_view_details_frag, container, false);
     }
+
+
 }
 
