@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.Group
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="change_seat_button,editTextNumber" />
+        app:constraint_referenced_ids="change_seat_button,edittext_wl_cap,checkBox" />
 
     <TextView
         android:id="@+id/event_waitlist_label"
@@ -82,14 +82,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_seats_available_label" />
 
-    <TextView
-        android:id="@+id/editTextNumber"
+    <EditText
+        android:id="@+id/edittext_wl_cap"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="64dp"
         android:ems="10"
-        app:layout_constraintBottom_toBottomOf="@+id/event_waitlist_label"
+        android:hint="Waitlist Capacity"
+        android:inputType="number"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBox"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/event_waitlist_label"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintTop_toBottomOf="@+id/change_seat_button"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:text="Limit waitlist?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/change_seat_button" />
+
+    <EditText
+        android:id="@+id/edit_text_capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="59dp"
+        android:hint="Event Capacity"
+        android:ems="10"
+        android:maxLength="4"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_wl_cap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

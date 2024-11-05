@@ -12,6 +12,7 @@ public class Event {
     private Date eventDate;
     private Date registrationDeadline;
     private String eventLocation;
+    private Boolean hasWaitlistLimit;
     //private Organizer organizer;
 
     private int maxParticipants;
@@ -36,6 +37,7 @@ public class Event {
         this.participantList = participantList;
         this.waitList = waitList;
         this.cancelledParticipants = cancelledParticipants;
+        this.hasWaitlistLimit = false;
     }
 
     public Event(String name, Date eventDate, Date registrationDeadline, String location, int maxSpots, int maxRegistration) {
@@ -101,6 +103,14 @@ public class Event {
         this.maxWaitlist = maxWaitlist;
     }
 
+    public void setHasWaitlistLimit(boolean limit){
+        this.hasWaitlistLimit = limit;
+    }
+
+    public Boolean getHasWaitlistLimit(){
+        return hasWaitlistLimit;
+    }
+
     public ArrayList<ProfileSystem> getParticipantList() {
         return participantList;
     }
@@ -131,6 +141,9 @@ public class Event {
      * @return true if the waitlist size has reached the maximum capacity
      */
     public boolean isWaitListFull() {
+        if (!hasWaitlistLimit){
+            return false;
+        }
         return waitList.size() >= maxWaitlist;
     }
 

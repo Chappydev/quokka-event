@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.fragment.app.Fragment;
 
@@ -12,6 +14,10 @@ import com.example.quokka_event.R;
 
 public class DetailsFragment extends Fragment {
     Button changeSeatButton;
+    CheckBox limitWaitlistButton;
+
+    Boolean isWaitlistLimit;
+
     public DetailsFragment() {
         // Required empty public constructor
     }
@@ -30,6 +36,18 @@ public class DetailsFragment extends Fragment {
 
             }
         });
+
+        limitWaitlistButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                isWaitlistLimit = isChecked;
+                if (isChecked){
+                    // set event
+
+                }
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
