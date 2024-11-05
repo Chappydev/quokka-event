@@ -165,4 +165,8 @@ public class DatabaseManager {
 
     }
 
+    public void addUserToWaitlist(int eventID, ProfileSystem user){
+
+    }
+
 }
