@@ -15,6 +15,7 @@
         android:stretchColumns="*"
         app:layout_constraintTop_toBottomOf="parent">
 
+        <!-- Event Name -->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -36,6 +37,7 @@
 
         </TableRow>
 
+        <!-- Event Date -->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -67,6 +69,7 @@
 
         </TableRow>
 
+        <!-- Event Time -->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -97,6 +100,7 @@
 
         </TableRow>
 
+        <!-- Event Location -->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -118,6 +122,7 @@
 
         </TableRow>
 
+        <!-- Event Description -->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 import javax.annotation.Nullable;
 
-public class AddEventFragment extends DialogFragment {
+public class AddEditEventFragment extends DialogFragment {
 
     @NonNull
     @Override
