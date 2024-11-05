@@ -26,30 +26,18 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.event_view_details_frag, container, false);
 
-        changeSeatButton = view.findViewById(R.id.change_seat_button);
+        // Set up a click listener for the edit button
+        Button editButton = view.findViewById(R.id.edit_event_button);
+        editButton.setOnClickListener(v -> {
+            new EditEventDetailsFragment().show(requireActivity().getSupportFragmentManager(), "Edit Event");
 
-        changeSeatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
         });
 
-        limitWaitlistButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                isWaitlistLimit = isChecked;
-                if (isChecked){
-                    // set event
+        return view;
 
-                }
-            }
-        });
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.event_view_details_frag, container, false);
     }
 
 
