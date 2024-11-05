@@ -21,12 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name="com.example.quokka_event.controllers.MyEventsActivity" />
         <activity android:name="com.example.quokka_event.controllers.EventDetailsActivity" />
         <activity android:name=".controllers.ConfirmationActivity" />
-
-        <activity android:name=".controllers.WaitlistActivity"></activity>
+        <activity android:name=".controllers.WaitlistActivity" />
     </application>
-
 </manifest>

@@ -12,15 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
-import com.example.quokka_event.models.event.MyEventsPageActivity;
 
 import java.util.Map;
 
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Switch activity to WaitlistActivity TEMPORARY FOR TESTING WAITLIST ACTIVITY.
     private void switchActivities(){
-        Intent intent = new Intent(this, MyEventsPageActivity.class);
+        Intent intent = new Intent(this, MyEventsActivity.class);
         startActivity(intent);
     }
 }
