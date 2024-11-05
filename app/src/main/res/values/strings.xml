@@ -1,25 +1,29 @@
 <resources>
-    <!-- App name -->
+    <!-- Labels -->
     <string name="app_name">quokka-event</string>
-
-    <!-- Event Details Screen -->
     <string name="event_name">Event Name</string>
-    <string name="date">Date: %1$s</string>
-    <string name="time">Time: %1$s</string>
-    <string name="location">Location: %1$s</string>
-    <string name="organizer">Organizer: %1$s</string>
-    <string name="join_button">Join Waiting List</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
+    <string name="organizer">Organizer</string>
+    <string name="event_status">Status</string>
 
-    <!-- Event Join Confirmation Screen -->
-    <string name="confirmation_message">You have joined the waitlist for Event Name!</string>
-    <string name="exit_button_text">Exit</string>
+    <!-- Strings -->
+    <string name="confirmation_message">Confirmation message</string>
 
-    <!-- User Landing Page Strings -->
+    <!-- Buttons -->
+    <string name="my_events_button_text">My Events</string>
     <string name="organizer_events_button_text">Organizer Events</string>
     <string name="scan_qr_code_button_text">Scan QR Code</string>
-    <string name="my_events_button_text">My Events</string>
-    <string name="app_name_text">APP NAME</string>
+    <string name="join_button">Join Waiting List</string>
+    <string name="accept_button">Accept</string>
+    <string name="deny_button">Deny</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="exit_button_text">Exit</string>
+    <string name="back_button_text">Back</string>
+
+    <!-- Icons -->
     <string name="bell_icon_description">bell icon</string>
     <string name="person_icon_description">person icon</string>
-    <string name="back_button_text">Back</string>
+
 </resources>

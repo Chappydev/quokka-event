@@ -17,14 +17,24 @@ public class Event {
     private int maxParticipants;
     private int maxWaitlist;
 
-
-    // The waitlist should not be arraylist of eventmanager. Since eventmanager does not
-    // have any variables to differentiate two different eventmanager objects.
     private ArrayList<ProfileSystem> participantList;
     private ArrayList<ProfileSystem> waitList;
     private ArrayList<ProfileSystem> cancelledParticipants;
 
-    // Constructor
+    /**
+     * Constructs an Event with specified attributes.
+     * @author idk???
+     * @param eventID                identifier for the event
+     * @param eventName              name of the event
+     * @param eventDate              date of the event
+     * @param registrationDeadline   registration deadline for the event
+     * @param eventLocation          location of the event
+     * @param maxParticipants        maximum number of participants
+     * @param maxWaitlist            maximum size of the waitlist
+     * @param participantList        list of participants
+     * @param waitList               list of waitlisted entrants
+     * @param cancelledParticipants  list of cancelled participants
+     */
     public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<ProfileSystem> participantList, ArrayList<ProfileSystem> waitList, ArrayList<ProfileSystem> cancelledParticipants) {
         this.eventID = eventID;
         this.eventName = eventName;
@@ -36,13 +46,6 @@ public class Event {
         this.participantList = participantList;
         this.waitList = waitList;
         this.cancelledParticipants = cancelledParticipants;
-    }
-
-    public Event(String name, Date eventDate, Date registrationDeadline, String location, int maxSpots, int maxRegistration) {
-    }
-
-    public Event() {
-
     }
 
     public String getEventID() {
