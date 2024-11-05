@@ -20,6 +20,7 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
+import com.example.quokka_event.models.event.MyEventsPageActivity;
 
 import java.util.Map;
 
