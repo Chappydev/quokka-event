@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="change_seat_button,editTextNumber" />
+
     <TextView
         android:id="@+id/event_waitlist_label"
         android:layout_width="wrap_content"
@@ -33,12 +38,12 @@
         android:id="@+id/event_seats_available_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="30dp"
         android:text="Seats Available"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_seats_label"
-        android:paddingBottom="30dp"/>
+        app:layout_constraintTop_toBottomOf="@id/event_seats_label" />
 
     <Button
         android:id="@+id/event_draw_remaining_button"
@@ -47,11 +52,13 @@
         android:background="@drawable/event_view_button"
         android:text="Draw Remaining Seats"
         android:textColor="@color/organizer_blue"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_seats_available_label"/>
+        app:layout_constraintTop_toBottomOf="@id/event_seats_available_label" />
 
     <!-- Edit Button -->
+
     <Button
         android:id="@+id/edit_event_button"
         style="@style/landing_button_text"
@@ -63,5 +70,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/change_seat_button"
+        android:layout_width='wrap_content'
+        android:layout_height="wrap_content"
+        android:background="@drawable/event_view_button"
+        android:text="Change Available Seats"
+        android:textColor="@color/organizer_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_seats_available_label" />
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/event_waitlist_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/event_waitlist_label"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

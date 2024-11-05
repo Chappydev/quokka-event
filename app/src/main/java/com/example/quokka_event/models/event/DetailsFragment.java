@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.example.quokka_event.R;
 
 public class DetailsFragment extends Fragment {
-    Button editButton;
+    Button changeSeatButton;
     public DetailsFragment() {
         // Required empty public constructor
     }
@@ -22,9 +22,9 @@ public class DetailsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.event_view_details_frag, container, false);
 
-        editButton = view.findViewById(R.id.edit_event_button);
+        changeSeatButton = view.findViewById(R.id.change_seat_button);
 
-        editButton.setOnClickListener(new View.OnClickListener() {
+        changeSeatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
