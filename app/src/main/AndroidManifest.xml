@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controllers.WaitlistActivity"></activity>
+        <activity android:name=".models.event.MyEventsPageActivity"></activity>
     </application>
 
 </manifest>
