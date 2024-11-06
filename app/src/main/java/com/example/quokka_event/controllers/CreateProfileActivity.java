@@ -20,10 +20,10 @@ public class CreateProfileActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        setContentView(R.layout.create_profile);
-        editName = findViewById(R.id.edit_name);
-        editEmail = findViewById(R.id.edit_email);
-        editPhoneNumber = findViewById(R.id.edit_phone);
-        confirmButton = findViewById(R.id.confirm_button);
+        setContentView(R.layout.user_edit_profile);
+//        editName = findViewById(R.id.edit_name);
+//        editEmail = findViewById(R.id.edit_email);
+//        editPhoneNumber = findViewById(R.id.edit_phone);
+//        confirmButton = findViewById(R.id.confirm_button);
     }
 }

@@ -33,8 +33,16 @@
         <activity
             android:name=".OrganizerEventsPageActivity">
         </activity>
-        <activity android:name=".CreateEventActivity"></activity>
-        <activity android:name=".models.event.EventTabsActivity" />
+        <activity
+            android:name=".CreateEventActivity">
+        </activity>
+        <activity
+            android:name=".models.event.EventTabsActivity">
+        </activity>
+        <activity
+            android:name=".UserProfilePageActivity">
+
+        </activity>
 
     </application>
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->
