@@ -170,6 +170,9 @@ public class DatabaseManager {
 
     }
 
+    /**
+     * Get all users from firebase database.
+     */
     public void getAllProfiles(){
         ArrayList<ProfileSystem> users = new ArrayList<ProfileSystem>();
         usersRef.get()
