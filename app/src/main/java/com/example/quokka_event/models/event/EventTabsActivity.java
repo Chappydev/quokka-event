@@ -88,6 +88,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
                     }
                 });
+
             }
         });
     }

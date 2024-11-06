@@ -78,7 +78,7 @@ public class EditEventDTLFragment extends DialogFragment {
                 datePicker.setCanceledOnTouchOutside(false);
                 Date eventDate = myCalendar.getTime();
                 Long minDateLong = eventDate.getTime();
-                datePicker.getDatePicker().setMinDate(minDateLong);
+                datePicker.getDatePicker().setMaxDate(minDateLong);
                 datePicker.show();
                 datePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
