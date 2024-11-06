@@ -18,14 +18,15 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Date;
 
-public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener {
+public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener, DetailsFragment.detailsListener {
     Button saveButton;
-    Event event = new Event();
+    Event event;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_tabs);
+        event = new Event();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
@@ -58,6 +59,14 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 startActivity(showActivity);
             }
         });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // send event to database;
+
+            }
+        });
     }
 
     @Override
@@ -68,6 +77,12 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
     @Override
     public void setEventDate(Date eventDate) {
         event.setEventDate(eventDate);
+    }
+
+    @Override
+    public void setCapacity(int waitlistCap, int partCap) {
+        event.setMaxWaitlist(waitlistCap);
+        event.setMaxParticipants(partCap);
     }
 }
 

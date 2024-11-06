@@ -31,7 +31,7 @@ public class EditEventDTLFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = getLayoutInflater().inflate(R.layout.edit_event_date, null);
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
         dateTextView = view.findViewById(R.id.editDateTextView);
@@ -51,7 +51,6 @@ public class EditEventDTLFragment extends DialogFragment {
                 dateTextView.setText("Date: " + dateString);
             }
         };
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
         dateTextView.setOnClickListener(new View.OnClickListener() {
