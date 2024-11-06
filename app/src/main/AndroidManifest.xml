@@ -25,7 +25,7 @@
             android:name=".controllers.EntrantActivity">
         </activity>
         <activity
-            android:name=".models.MyEventsPageActivity">
+            android:name=".controllers.MyEventsPageActivity">
         </activity>
         <activity
             android:name=".NotificationPageActivity">
@@ -34,7 +34,7 @@
             android:name=".OrganizerEventsPageActivity">
         </activity>
         <activity android:name=".CreateEventActivity"></activity>
-        <activity android:name=".models.event.EventTabsActivity" />
+        <activity android:name=".controllers.EventTabsActivity" />
 
     </application>
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->

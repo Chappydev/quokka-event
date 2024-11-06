@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.quokka_event.EditEventTitleFragment;
 import com.example.quokka_event.R;
 
 public class DetailsFragment extends Fragment {
@@ -37,6 +36,9 @@ public class DetailsFragment extends Fragment {
     int currentNumParticipants = 0;
     int currentNumWaitlist;
 
+    /**
+     * Interface to set event's waitlist and participant cap at EventTabsActivity
+     */
     public interface detailsListener{
         void setCapacity(int waitlistCap, int partCap);
     }
@@ -47,6 +49,10 @@ public class DetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Attach the detailsListener listener to EventTabsActivity.java
+     * @param context
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -76,6 +82,11 @@ public class DetailsFragment extends Fragment {
         setButtonsVisibility(View.GONE);
 
         limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * Show waitlist edittext if the limit waitlist checkbox is checked.
+             * @param compoundButton
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 isWaitlistLimit = isChecked;
@@ -90,6 +101,11 @@ public class DetailsFragment extends Fragment {
         });
 
         limitParticipantCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * Show participantCapEditText if limitParticipantCheckBox is checked.
+             * @param compoundButton
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
@@ -104,6 +120,10 @@ public class DetailsFragment extends Fragment {
 
 
         changeSeatButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Show the components to edit the event and waitlist capacity
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 setButtonsVisibility(View.VISIBLE);
@@ -114,6 +134,14 @@ public class DetailsFragment extends Fragment {
         });
 
         confirmChangeSeatButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Once the confirm button is clicked, then change the capacity.
+             * If the limit participant or limit waitlist is not checked then
+             * set the capacity to max value.
+             * If the capacity is set lower than the current entrant then display a warning and
+             * do not allow user to confirm.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 // forgive me for the if else mess
@@ -158,6 +186,10 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Set the visibility of change seat components
+     * @param v the visibility
+     */
     void setButtonsVisibility(int v){
         confirmChangeSeatButton.setVisibility(v);
         limitWaitlistCheckBox.setVisibility(v);
@@ -166,6 +198,10 @@ public class DetailsFragment extends Fragment {
         participantCapEditText.setVisibility(v);
     }
 
+    /**
+     * A function to display a warning message.
+     * @param warningMessage
+     */
     void displayWarning(String warningMessage){
         new AlertDialog.Builder(getContext()).setTitle("Warning")
                 .setMessage(warningMessage)

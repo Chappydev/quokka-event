@@ -12,13 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
-import com.example.quokka_event.EditEventDTLFragment;
-import com.example.quokka_event.EditEventTitleFragment;
+import com.example.quokka_event.models.organizer.EditEventDTLFragment;
+import com.example.quokka_event.models.organizer.EditEventTitleFragment;
 import com.example.quokka_event.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
