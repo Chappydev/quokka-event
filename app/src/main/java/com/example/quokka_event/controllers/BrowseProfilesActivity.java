@@ -23,6 +23,8 @@ public class BrowseProfilesActivity extends AppCompatActivity {
         AdminBrowseProfileAdapter adapter = new AdminBrowseProfileAdapter(this);
         viewPager.setAdapter(adapter);
 
+        DatabaseManager db = DatabaseManager.getInstance(getApplicationContext());
+
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
            switch (position){
                case 0:
