@@ -20,7 +20,6 @@ import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.MyEventsPageActivity;
 import com.example.quokka_event.models.User;
-import com.example.quokka_event.models.admin.ProfileSystem;
 import com.example.quokka_event.models.ProfileSystem;
 
 import java.util.Map;
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-        }
+
 
         // Switch the activity to MyEventsActivity when the myEventsButton is clicked
         final Button myEventsButton = findViewById(R.id.my_events_button);
