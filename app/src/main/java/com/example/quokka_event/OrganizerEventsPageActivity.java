@@ -8,10 +8,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
@@ -19,14 +23,17 @@ import com.example.quokka_event.controllers.ViewPagerAdapter;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.event.EventTabsActivity;
 import com.example.quokka_event.models.event.OverviewFragment;
+import com.example.quokka_event.views.OrganizerEventsAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class OrganizerEventsPageActivity extends AppCompatActivity {
     Button addButton;
     Button saveButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +48,10 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
                 startActivity(showActivity);
             }
         });
+        ArrayList<Event> eventList = new ArrayList<Event>();
+        OrganizerEventsAdapter customAdapter = new OrganizerEventsAdapter(eventList);
+        RecyclerView recyclerView = findViewById(R.id.organizer_events_recycler);
+        recyclerView.setAdapter(customAdapter);
 
         addButton = findViewById(R.id.add_button_bottom);
         // Set up a click listener for the back button
