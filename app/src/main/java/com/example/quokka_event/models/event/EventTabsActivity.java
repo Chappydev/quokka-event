@@ -1,6 +1,7 @@
 package com.example.quokka_event.models.event;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,7 +13,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.quokka_event.NotificationPageActivity;
 import com.example.quokka_event.OrganizerEventsPageActivity;
 import com.example.quokka_event.R;
+import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.ViewPagerAdapter;
+import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -34,6 +37,8 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
+
+        DatabaseManager db = DatabaseManager.getInstance(getApplicationContext());
 
         // Set up the adapter
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
@@ -72,7 +77,17 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
             @Override
             public void onClick(View view) {
                 // send event to database;
+                db.addEvent(event, new DbCallback() {
+                    @Override
+                    public void onSuccess(Object result) {
+                        Log.d("DB", "added Event: " + event.getEventName() + " to database");
+                    }
 
+                    @Override
+                    public void onError(Exception exception) {
+
+                    }
+                });
             }
         });
     }
@@ -93,6 +108,16 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
     @Override
     public void setEventDate(Date eventDate) {
         event.setEventDate(eventDate);
+    }
+
+    @Override
+    public void setLocation(String location) {
+        event.setEventLocation(location);
+    }
+
+    @Override
+    public void setDeadline(Date deadline) {
+        event.setRegistrationDeadline(deadline);
     }
 
     /**

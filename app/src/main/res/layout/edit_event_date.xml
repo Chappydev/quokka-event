@@ -8,6 +8,16 @@
 
 
     <TextView
+        android:id="@+id/editDeadlineTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Deadline:"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTimeTextView" />
+
+    <TextView
         android:id="@+id/editDateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +36,7 @@
         android:inputType="text"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTimeTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/editDeadlineTextView" />
 
     <TextView
         android:id="@+id/editTimeTextView"

@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.type.DateTime;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +24,7 @@ import java.util.Locale;
 
 public class EditEventDTLFragment extends DialogFragment {
     TextView dateTextView;
+    TextView deadlineTextView;
     TextView timeTextView;
     EditText locationEditText;
     Calendar myCalendar = Calendar.getInstance();
@@ -37,6 +40,7 @@ public class EditEventDTLFragment extends DialogFragment {
         dateTextView = view.findViewById(R.id.editDateTextView);
         timeTextView = view.findViewById(R.id.editTimeTextView);
         locationEditText = view.findViewById(R.id.editTextLocation);
+        deadlineTextView = view.findViewById(R.id.editDeadlineTextView);
 
         setDefaultDate();
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -45,12 +49,13 @@ public class EditEventDTLFragment extends DialogFragment {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, month);
                 myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                String dateString = convertDate();
+                String dateString = convertDate(myCalendar);
                 result.putString("formatKey", "MM/dd/yyyy");
                 result.putString("dateKey", dateString);
                 dateTextView.setText("Date: " + dateString);
             }
         };
+
 
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
         dateTextView.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +65,30 @@ public class EditEventDTLFragment extends DialogFragment {
                 datePicker = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePicker.setCanceledOnTouchOutside(false);
                 datePicker.show();
+            }
+        });
+
+
+        deadlineTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar dCalendar = Calendar.getInstance();
+                DatePickerDialog datePicker;
+                datePicker = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
+                datePicker.setCanceledOnTouchOutside(false);
+                Date eventDate = myCalendar.getTime();
+                Long minDateLong = eventDate.getTime();
+                datePicker.getDatePicker().setMinDate(minDateLong);
+                datePicker.show();
+                datePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        dCalendar.set(year, month, day);
+                        String deadlineDate = convertDate(dCalendar);
+                        deadlineTextView.setText("Deadline: " + deadlineDate);
+                        result.putString("deadlineKey", deadlineDate);
+                    }
+                });
             }
         });
 
@@ -101,10 +130,10 @@ public class EditEventDTLFragment extends DialogFragment {
                 .create();
     }
 
-    String convertDate(){
+    String convertDate(Calendar cal){
         String format = "MM/dd/yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.CANADA);
-        String dateString = dateFormat.format(myCalendar.getTime());
+        String dateString = dateFormat.format(cal.getTime());
         return dateString;
     }
 

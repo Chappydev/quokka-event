@@ -28,10 +28,14 @@ public class OverviewFragment extends Fragment {
     TextView eventNameTextView;
     TextView dateTextView;
     TextView timeTextView;
+    TextView locationTextView;
+    TextView deadlineTextView;
 
     public interface overviewEditListener{
         void setEventName(String eventTitle);
         void setEventDate(Date eventDate);
+        void setLocation(String location);
+        void setDeadline(Date deadline);
     }
 
     private overviewEditListener listener;
@@ -64,6 +68,8 @@ public class OverviewFragment extends Fragment {
         eventNameTextView = view.findViewById(R.id.event_title_label);
         dateTextView = view.findViewById(R.id.event_date_label);
         timeTextView = view.findViewById(R.id.event_time_label);
+        locationTextView = view.findViewById(R.id.event_location_label);
+        deadlineTextView = view.findViewById(R.id.event_deadline_label);
 
 
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
@@ -79,6 +85,8 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 String dateString = result.getString("dateKey");
+                String location = result.getString("locationKey");
+                String deadline = result.getString("deadlineKey");
                 int hour = result.getInt("hourKey");
                 int min = result.getInt("minKey");
 
@@ -86,11 +94,16 @@ public class OverviewFragment extends Fragment {
 
                 dateTextView.setText(dateString);
                 timeTextView.setText(time);
+                locationTextView.setText(location);
+                deadlineTextView.setText("Deadline: " + deadline);
+                listener.setLocation(location);
 
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                 try {
                     Date date = format.parse(dateString + " " + String.valueOf(hour)+":"+String.valueOf(min));
+                    Date deadlineDate = format.parse(deadline + " " + "11:59 pm");
                     listener.setEventDate(date);
+                    listener.setDeadline(deadlineDate);
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
