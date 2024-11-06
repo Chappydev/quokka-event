@@ -81,39 +81,49 @@ public class DatabaseManager {
 
                     // Successful search but no such user
                     } else {
-                        // So we will create the user instead:
-                        Map<String, Object> userInfo = new HashMap<>();
-                        userInfo.put("name", "");
-                        userInfo.put("email", "");
-                        userInfo.put("address", "");
-                        userInfo.put("isOrganizer", false);
-                        userInfo.put("isAdmin", false);
-                        usersRef.document(deviceId).set(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // Successfully created a user with default values
-                                if (task.isSuccessful()) {
-                                    // Set up the data and pass it into the callback
-                                    Map<String, Object> userData = new HashMap<>();
-                                    userData.put("deviceID", deviceId);
-                                    userData.put("profile", new ProfileSystem());
-                                    userData.put("organizer", false);
-                                    userData.put("admin", false);
-                                    cb.onSuccess(userData);
-
-                                // There was an error trying to create the new user
-                                } else {
-                                    Log.e("DB", "Write for User: something went wrong creating the new user", task.getException());
-                                    // Can handle this error in the UI through the onError callback
-                                    cb.onError(task.getException());
-                                }
-                            }
-                        });
+                        createProfile(cb, deviceId);
                     }
 
                 // There was an error when trying to get the user data:
                 } else {
                     Log.e("DB", "Query for User: something went wrong", task.getException());
+                    // Can handle this error in the UI through the onError callback
+                    cb.onError(task.getException());
+                }
+            }
+        });
+    }
+
+    /**
+     * Creates a new profile in the firestore database
+     * @author Chappydev
+     * @param cb
+     * @param deviceId
+     */
+    public void createProfile(DbCallback cb, String deviceId){
+        // So we will create the user instead:
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("name", "");
+        userInfo.put("email", "");
+        userInfo.put("address", "");
+        userInfo.put("isOrganizer", false);
+        userInfo.put("isAdmin", false);
+        usersRef.document(deviceId).set(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // Successfully created a user with default values
+                if (task.isSuccessful()) {
+                    // Set up the data and pass it into the callback
+                    Map<String, Object> userData = new HashMap<>();
+                    userData.put("deviceID", deviceId);
+                    userData.put("profile", new ProfileSystem());
+                    userData.put("organizer", false);
+                    userData.put("admin", false);
+                    cb.onSuccess(userData);
+
+                    // There was an error trying to create the new user
+                } else {
+                    Log.e("DB", "Write for User: something went wrong creating the new user", task.getException());
                     // Can handle this error in the UI through the onError callback
                     cb.onError(task.getException());
                 }
