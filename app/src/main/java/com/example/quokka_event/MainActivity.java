@@ -7,6 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +23,19 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.MyEventsPageActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
+import com.example.quokka_event.models.admin.ProfileSystem;
+import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.models.organizer.Facility;
 
+import java.util.Date;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private Button myEventsButton;
+    private DatabaseManager db;
+    private static final String TAG = "DB";
+    private String lastCreatedEventId;
+    private String lastCreatedFacilityId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        DatabaseManager db = DatabaseManager.getInstance(this);
-
+        db = DatabaseManager.getInstance(this);
         User user = User.getInstance(this);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 

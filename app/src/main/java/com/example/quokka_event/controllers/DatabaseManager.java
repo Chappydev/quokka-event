@@ -9,6 +9,10 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
+import com.example.quokka_event.models.User;
+import com.example.quokka_event.models.admin.ProfileSystem;
+import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.models.organizer.Facility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -49,8 +53,6 @@ public class DatabaseManager {
         return this;
     }
 
-    // vvvv This function should be split into 2. The create user part should be its own function
-    // I made a split this function for better readability see createProfile()
     /**
      * This function will either find the user or if it doesn't exist yet, it will create a new user
      * with the deviceId.
@@ -81,7 +83,7 @@ public class DatabaseManager {
 
                     // Successful search but no such user
                     } else {
-                        createProfile(cb,deviceId);
+                        createProfile(cb, deviceId);
                     }
 
                 // There was an error when trying to get the user data:
@@ -92,36 +94,6 @@ public class DatabaseManager {
                 }
             }
         });
-    }
-
-    /**
-     * This function will find a single user based on their deviceID.
-     * @author Chappydev
-     * @param callback An instance of the db callback interface.
-     * @param deviceId The deviceID of the user to find
-     * @see DbCallback
-     */
-    public void getUserData(DbCallback callback, String deviceId) {
-        usersRef.document(deviceId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    Log.d("DB", "getUserMap callback: " + task.getResult().getData().toString());
-                    callback.onSuccess(task.getResult().getData());
-                } else {
-                    Log.e("DB", "getUserMap callback", task.getException());
-                    callback.onError(task.getException());
-                }
-            }
-        });
-    }
-
-    private ProfileSystem getProfileSystemFromMap(Map<String, Object> map) {
-        ProfileSystem profile = new ProfileSystem();
-        profile.setName((String) map.getOrDefault("name", ""));
-        profile.setAddress((String) map.getOrDefault("address", ""));
-        profile.setEmail((String) map.getOrDefault("email", ""));
-        return profile;
     }
 
     /**
@@ -162,27 +134,55 @@ public class DatabaseManager {
     }
 
     /**
-     * Updates a profile in the database
-     * @author saimonnk
-     * @param profile
+     * This function will find a single user based on their deviceID.
+     * @author Chappydev
+     * @param callback An instance of the db callback interface.
+     * @param deviceId The deviceID of the user to find
+     * @see DbCallback
      */
-    public void updateProfile(ProfileSystem profile){
-        String deviceId = profile.getDeviceID();
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("name", profile.getName());
-        userInfo.put("email", profile.getEmail());
-        userInfo.put("address", profile.getAddress());
-        usersRef.document(deviceId).set(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+    public void getUserData(DbCallback callback, String deviceId) {
+        usersRef.document(deviceId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Log.d("DB","Profile updated");
-                }
-                else {
-                    Log.e("DB", "Unable to update profile", task.getException());
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Log.d("DB", "getUserMap callback: " + task.getResult().getData().toString());
+                    callback.onSuccess(task.getResult().getData());
+                } else {
+                    Log.e("DB", "getUserMap callback", task.getException());
+                    callback.onError(task.getException());
                 }
             }
         });
+    }
+
+    private ProfileSystem getProfileSystemFromMap(Map<String, Object> map) {
+        ProfileSystem profile = new ProfileSystem();
+        profile.setName((String) map.getOrDefault("name", ""));
+        profile.setAddress((String) map.getOrDefault("address", ""));
+        profile.setEmail((String) map.getOrDefault("email", ""));
+        return profile;
+    }
+
+    // Add event document to firestore
+    public void addEvent(Event event, DbCallback callback){
+        Map<String, Object> eventPayload = new HashMap<>();
+        eventPayload.put("eventId", event.getEventID());
+        eventPayload.put("eventName", event.getEventName());
+        eventPayload.put("eventDate", event.getEventDate());
+        eventPayload.put("eventLocation", event.getEventLocation());
+        eventPayload.put("registrationDeadline", event.getRegistrationDeadline());
+        eventPayload.put("maxParticipants", event.getMaxParticipants());
+        eventPayload.put("maxWaitlist", event.getMaxWaitlist());
+
+        // Pushing the payload to the collection
+        eventsRef
+                .add(eventPayload)
+                .addOnSuccessListener(documentReference -> {
+                    documentReference.update("eventId", documentReference.getId())
+                            .addOnSuccessListener(response -> callback.onSuccess(documentReference.getId()))
+                            .addOnFailureListener(exception -> callback.onError(exception));
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
     }
 
 
@@ -232,4 +232,5 @@ public class DatabaseManager {
     public void deleteQRCode(){
 
     }
+
 }
