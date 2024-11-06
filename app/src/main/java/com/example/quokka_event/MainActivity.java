@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.quokka_event.controllers.AdminLandingPageActivity;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.MyEventsPageActivity;
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(showActivity);
             }
         });
+        Intent showAdminActivity = new Intent(MainActivity.this, AdminLandingPageActivity.class);
+        startActivity(showAdminActivity);
     }
 
 }

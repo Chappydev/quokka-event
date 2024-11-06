@@ -34,7 +34,8 @@
             android:name=".OrganizerEventsPageActivity">
         </activity>
         <activity android:name=".models.event.EventTabsActivity" />
-
+        <activity android:name=".controllers.AdminLandingPageActivity"/>
+        <activity android:name=".controllers.BrowseProfilesActivity"/>
     </application>
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->
 

@@ -22,8 +22,9 @@ public class AdminLandingPageActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.admin_landing_page);
+
+        EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.admin_landing_page), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -40,7 +41,8 @@ public class AdminLandingPageActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-
+                Intent showActivity = new Intent(AdminLandingPageActivity.this, BrowseProfilesActivity.class);
+                startActivity(showActivity);
             }
         });
 
