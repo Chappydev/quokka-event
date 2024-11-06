@@ -23,7 +23,6 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.MyEventsPageActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
-import com.example.quokka_event.models.admin.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
 
