@@ -1,4 +1,4 @@
-package com.example.quokka_event.models.admin;
+package com.example.quokka_event.models;
 
 
 import androidx.annotation.DrawableRes;
@@ -14,22 +14,30 @@ public class ProfileSystem {
     private int profileImage;
     private String name;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private Date birthday;
     private String address;
+    private String deviceID;
 
     // Constructor for profilesystem class
-    public ProfileSystem(@DrawableRes int profileImage, String name, String email, int phoneNumber, Date birthday, String address){
+    public ProfileSystem(String deviceID,@DrawableRes int profileImage, String name, String email, String phoneNumber, Date birthday, String address){
+        this.deviceID = deviceID;
         this.profileImage = profileImage;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
         this.address = address;
+
     }
 
     // Temporary empty constructor - there might be a better way to do this but not all fields are
     // required so I need an easy way to do that for now
-    public ProfileSystem(){}
+    public ProfileSystem(){
+        this.deviceID = "";
+        this.name = "";
+        this.email = "";
+
+    }
 
     // Set profile image should upload the image to firebase as well
     public void setImage(@DrawableRes int newImage){
@@ -63,12 +71,12 @@ public class ProfileSystem {
     }
 
     // set phone number also check the valid length
-    public void setPhoneNumber(int newPhoneNumber){
+    public void setPhoneNumber(String newPhoneNumber){
         phoneNumber = newPhoneNumber;
     }
 
     // get phone number
-    public int getPhoneNumber(){
+    public String getPhoneNumber(){
         return phoneNumber;
     }
 
@@ -91,5 +99,8 @@ public class ProfileSystem {
     public String getAddress(){
         return address;
     }
+
+    public void setDeviceID(String newID){deviceID = newID;}
+    public String getDeviceID(){return deviceID;}
 
 }

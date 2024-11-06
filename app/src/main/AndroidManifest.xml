@@ -36,7 +36,7 @@
         <activity android:name=".models.event.EventTabsActivity" />
         <activity android:name=".controllers.AdminLandingPageActivity"/>
         <activity android:name=".controllers.BrowseProfilesActivity"/>
+        <activity android:name=".controllers.CreateProfileActivity"></activity>
     </application>
-<!--    <uses-permission android:name="android.permission.INTERNET" />-->
 
 </manifest>

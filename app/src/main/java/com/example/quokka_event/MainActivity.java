@@ -15,16 +15,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quokka_event.controllers.AdminLandingPageActivity;
+import com.example.quokka_event.controllers.CreateProfileActivity;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.MyEventsPageActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.admin.ProfileSystem;
+import com.example.quokka_event.models.ProfileSystem;
 
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
+    private ImageButton profileButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         DatabaseManager db = DatabaseManager.getInstance(this);
-
+        profileButton = findViewById(R.id.profile);
         User user = User.getInstance(this);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         db.getDeviceUser(new DbCallback() {
@@ -58,6 +60,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }, deviceId);
 
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When the profile image is clicked open CreateProfileActivity.java
+             * @param view
+             * */
+            @Override
+                public void onClick(View view) {
+                    switchToProfileActivity();
+
+                }
+            });
+        }
 
         // Switch the activity to MyEventsActivity when the myEventsButton is clicked
         final Button myEventsButton = findViewById(R.id.my_events_button);
@@ -87,6 +102,15 @@ public class MainActivity extends AppCompatActivity {
         });
         Intent showAdminActivity = new Intent(MainActivity.this, AdminLandingPageActivity.class);
         startActivity(showAdminActivity);
+    }
+
+    /**
+     * Function to switch to CreateProfileActivity.java
+     *
+     * */
+    private void switchToProfileActivity(){
+        Intent switchActivity = new Intent(this, CreateProfileActivity.class);
+        startActivity(switchActivity);
     }
 
 }
