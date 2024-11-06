@@ -10,7 +10,6 @@ import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
 import com.example.quokka_event.models.User;
-import com.example.quokka_event.models.admin.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
 import com.google.android.gms.tasks.OnCompleteListener;
