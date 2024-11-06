@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-
 public class OverviewFragment extends Fragment {
     ImageButton editNameButton;
     ImageButton editDTLButton;
@@ -148,6 +147,8 @@ public class OverviewFragment extends Fragment {
         Button editButton = view.findViewById(R.id.event_edit_button);
         editButton.setOnClickListener(v -> {
             // need to add functionality
+            new AddEditEventFragment().show(requireActivity().getSupportFragmentManager(), "Edit Event");
+
         });
          */
 

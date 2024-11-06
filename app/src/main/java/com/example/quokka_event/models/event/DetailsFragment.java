@@ -48,129 +48,43 @@ public class DetailsFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if(context instanceof DetailsFragment.detailsListener){
-            listener = (DetailsFragment.detailsListener) context;
-        } else {
-            throw new RuntimeException(context + "must implement overeditListener");
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.event_view_details_frag, container, false);
 
-
         changeSeatButton = view.findViewById(R.id.change_seat_button);
-        confirmChangeSeatButton = view.findViewById(R.id.confirm_change_seat_button);
-        waitlistCapEditText = view.findViewById(R.id.edittext_wl_cap);
-        limitWaitlistCheckBox = view.findViewById(R.id.waitlist_limit_checkbox);
-        limitParticipantCheckBox = view.findViewById(R.id.limit_participant_checkbox);
-        participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
-        remainSeatTextView = view.findViewById(R.id.event_seats_label);
 
+        changeSeatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        setButtonsVisibility(View.GONE);
+            }
+        });
 
-        limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        limitWaitlistButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 isWaitlistLimit = isChecked;
                 if (isChecked){
                     // set event
-                    waitlistCapEditText.setVisibility(View.VISIBLE);
-                }
-                else{
-                    waitlistCapEditText.setVisibility(View.GONE);
+
                 }
             }
         });
-
-        limitParticipantCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-
-                if (isChecked){
-                    participantCapEditText.setVisibility(View.VISIBLE);
-                }
-                else{
-                    participantCapEditText.setVisibility(View.GONE);
-                }
-            }
-        });
-
-
-        changeSeatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setButtonsVisibility(View.VISIBLE);
-                limitWaitlistCheckBox.setChecked(true);
-                limitParticipantCheckBox.setChecked(true);
-                changeSeatButton.setVisibility(View.GONE);
-            }
-        });
-
-        confirmChangeSeatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // forgive me for the if else mess
-                String maxParticipant = participantCapEditText.getText().toString();
-                String maxWaitlist = waitlistCapEditText.getText().toString();
-                if ( (maxParticipant.isEmpty() && limitParticipantCheckBox.isChecked()) ||
-                        (maxWaitlist.isEmpty() && limitWaitlistCheckBox.isChecked()) ){
-                    displayWarning("Please enter a number");
-                    return;
-                }
-                if (limitWaitlistCheckBox.isChecked()){
-                    waitlistLimit = Integer.parseInt(maxWaitlist);
-                    if (waitlistLimit < currentNumWaitlist){
-                        displayWarning("Cannot set capacity lower than number of people in waitlist!");
-                        return;
-                    }
-                }
-                if (limitParticipantCheckBox.isChecked()){
-                    participantLimit = Integer.parseInt(maxParticipant);
-                    if (participantLimit < currentNumParticipants){
-                        displayWarning("Cannot set capacity lower than current number of people registered!");
-                        return;
-                    }
-                }
-
-                if (!limitWaitlistCheckBox.isChecked()){ waitlistLimit = Integer.MAX_VALUE;}
-                if (!limitParticipantCheckBox.isChecked()) {
-                    participantLimit = Integer.MAX_VALUE;
-                    remainSeatTextView.setText("Max");
-                    return;
-                }
-                changeSeatButton.setVisibility(View.VISIBLE);
-                int remainingSeat = participantLimit - currentNumParticipants;
-                remainSeatTextView.setText(Integer.toString(remainingSeat));
-                listener.setCapacity(waitlistLimit, participantLimit);
-                setButtonsVisibility(View.GONE);
-            }
-        });
-
 
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.event_view_details_frag, container, false);
+
+        // Set up a click listener for the edit button
+        Button editButton = view.findViewById(R.id.edit_event_button);
+        editButton.setOnClickListener(v -> {
+            new EditEventDetailsFragment().show(requireActivity().getSupportFragmentManager(), "Edit Event");
+
+        });
+
         return view;
-    }
 
-    void setButtonsVisibility(int v){
-        confirmChangeSeatButton.setVisibility(v);
-        limitWaitlistCheckBox.setVisibility(v);
-        limitParticipantCheckBox.setVisibility(v);
-        waitlistCapEditText.setVisibility(v);
-        participantCapEditText.setVisibility(v);
-    }
-
-    void displayWarning(String warningMessage){
-        new AlertDialog.Builder(getContext()).setTitle("Warning")
-                .setMessage(warningMessage)
-                .setNegativeButton("OK", null)
-                .show();
     }
 }
 
