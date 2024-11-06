@@ -22,6 +22,10 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
     Button saveButton;
     Event event;
 
+    /**
+     * Setup EventTabsActivity. Have three tabs for setting/display event details.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +65,10 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Save event and send to database.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 // send event to database;
@@ -69,16 +77,29 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         });
     }
 
+    /**
+     * Called from listener from overviewfragment.java to set event name
+     * @param eventTitle
+     */
     @Override
     public void setEventName(String eventTitle) {
         event.setEventName(eventTitle);
     }
 
+    /**
+     * Called from listener from DetailsFragment.java to set event date
+     * @param eventDate
+     */
     @Override
     public void setEventDate(Date eventDate) {
         event.setEventDate(eventDate);
     }
 
+    /**
+     * Called from listener in DetailsFragment.java
+     * @param waitlistCap
+     * @param partCap
+     */
     @Override
     public void setCapacity(int waitlistCap, int partCap) {
         event.setMaxWaitlist(waitlistCap);
