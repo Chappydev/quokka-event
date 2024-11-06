@@ -1,6 +1,7 @@
 package com.example.quokka_event.models.event;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.quokka_event.EditEventTitleFragment;
@@ -43,6 +45,16 @@ public class DetailsFragment extends Fragment {
 
     public DetailsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof DetailsFragment.detailsListener){
+            listener = (DetailsFragment.detailsListener) context;
+        } else {
+            throw new RuntimeException(context + "must implement overeditListener");
+        }
     }
 
     @Override
@@ -133,7 +145,6 @@ public class DetailsFragment extends Fragment {
                     remainSeatTextView.setText("Max");
                     return;
                 }
-                setButtonsVisibility(View.GONE);
                 changeSeatButton.setVisibility(View.VISIBLE);
                 int remainingSeat = participantLimit - currentNumParticipants;
                 remainSeatTextView.setText(Integer.toString(remainingSeat));
