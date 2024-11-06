@@ -5,11 +5,15 @@ import android.os.PersistableBundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.models.ProfileSystem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
 
 public class BrowseProfilesActivity extends AppCompatActivity {
     @Override
@@ -22,8 +26,6 @@ public class BrowseProfilesActivity extends AppCompatActivity {
 
         AdminBrowseProfileAdapter adapter = new AdminBrowseProfileAdapter(this);
         viewPager.setAdapter(adapter);
-
-        DatabaseManager db = DatabaseManager.getInstance(getApplicationContext());
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
            switch (position){

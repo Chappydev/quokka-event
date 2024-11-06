@@ -207,22 +207,38 @@ public class DatabaseManager {
     /**
      * Get all users from firebase database.
      */
-    public void getAllProfiles(){
+    public ArrayList<ProfileSystem> getAllProfiles() {
         ArrayList<ProfileSystem> users = new ArrayList<ProfileSystem>();
         usersRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    /**
+                     * Grab all user document from users collection in firebase database
+                     * @param task
+                     */
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                ProfileSystem user = new ProfileSystem();
-
-
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                ProfileSystem userProfile = new ProfileSystem();
+                                userProfile.setDeviceID(document.getId());
+                                String name = (String) document.get("name");
+                                String email = (String) document.get("email");
+                                String address = (String) document.get("address");
+                                Boolean isAdmin = (Boolean) document.get("isAdmin");
+                                Boolean isOrganizer = (Boolean) document.get("isOrganizer");
+                                userProfile.setName(name);
+                                userProfile.setEmail(email);
+                                userProfile.setAddress(address);
+                                userProfile.setIsAdmin(isAdmin);
+                                userProfile.setIsOrganizer(isOrganizer);
+                                users.add(userProfile);
                             }
-                        } else{
-
+                            Log.d("db", "finding all users");
+                        } else {
+                            Log.d("db", "unable to grab documents from firebase");
                         }
                     }
                 });
+        return users;
     }
 }
