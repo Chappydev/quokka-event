@@ -333,12 +333,11 @@ public class DatabaseManager {
 
 
     /**
-     * Gets list of all events
+     * Gets list of events.
      * @author speakerchef
-     * @param userId
      * @param callback
      */
-    public void getEventList(String userId, DbCallback callback) {
+    public void getEventList(DbCallback callback) {
         eventsRef.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Map<String, Object>> eventList = new ArrayList<>();
@@ -350,7 +349,6 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
-
 
     /**
      * Accepts an invite to an event
