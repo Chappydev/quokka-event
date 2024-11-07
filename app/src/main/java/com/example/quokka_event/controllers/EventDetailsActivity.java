@@ -17,22 +17,25 @@ import java.util.Date;
 import java.util.Locale;
 
 public class EventDetailsActivity extends AppCompatActivity {
-    private Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_join_details);
 
-        // Get the event by eventID
+        // Retrieve data from the Intent
         String eventId = getIntent().getStringExtra("event_id");
-        Event event = getEventById(eventId);
+        String eventName = getIntent().getStringExtra("event_name");
+        long eventDateMillis = getIntent().getLongExtra("event_date", -1);
+        Date eventDate = new Date(eventDateMillis);
+        String eventLocation = getIntent().getStringExtra("event_location");
+        boolean isDeadlinePassed = getIntent().getBooleanExtra("event_deadline_passed", false);
 
         // Format date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
-        String formattedDate = dateFormat.format(event.getEventDate());
+        String formattedDate = dateFormat.format(eventDate);
 
-        // Views
+        // Retrieve views
         TextView eventNameText = findViewById(R.id.event_name_text);
         TextView dateText = findViewById(R.id.date_text);
         TextView timeText = findViewById(R.id.time_text);
@@ -45,43 +48,23 @@ public class EventDetailsActivity extends AppCompatActivity {
         Button denyButton = findViewById(R.id.deny_button);
         Button cancelButton = findViewById(R.id.cancel_button);
 
-        // Display info
-        eventNameText.setText(event.getEventName());
+        // Display data
+        eventNameText.setText(eventName);
         dateText.setText("Date: " + formattedDate);
-        timeText.setText("Time: "); // TODO event class is missing time
-        locationText.setText("Location: " + event.getEventLocation());
-        organizerText.setText("Organizer: ");
-        statusText.setText(event.isDeadline() ? "Closed" : "Open");
+        timeText.setText("Time: TBD"); // TODO: Update once time data is available
+        locationText.setText("Location: " + eventLocation);
+        organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
+        statusText.setText(isDeadlinePassed ? "Closed" : "Open");
 
-        // Set the click listener for the accept button
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToConfirm("Accept", event.getEventName());
-            }
-        });
-
-        // Set the click listener for the deny button
-        denyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToConfirm("Deny", event.getEventName());
-            }
-        });
-
-        // Set the click listener for the cancel button
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToConfirm("Cancel", event.getEventName());
-            }
-        });
+        // Set click listeners for the buttons
+        acceptButton.setOnClickListener(v -> goToConfirm("Accept", eventName));
+        denyButton.setOnClickListener(v -> goToConfirm("Deny", eventName));
+        cancelButton.setOnClickListener(v -> goToConfirm("Cancel", eventName));
     }
 
-    private Event getEventById(String eventId) {
-        return new Event(eventId, "Sample Event", new Date(), new Date(), "Sample Location", 100, 10, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-    }
-
+    /**
+     * Navigate to the confirmation activity with a message type and event name.
+     */
     private void goToConfirm(String messageType, String eventName) {
         Intent intent = new Intent(EventDetailsActivity.this, ConfirmationActivity.class);
         intent.putExtra("message_type", messageType);

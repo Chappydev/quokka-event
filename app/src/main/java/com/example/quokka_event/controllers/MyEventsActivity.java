@@ -37,6 +37,10 @@ public class MyEventsActivity extends AppCompatActivity {
         List<Event> eventList = getEventList();
         EventAdapter adapter = new EventAdapter(eventList, event -> {
             Intent intent = new Intent(this, EventDetailsActivity.class);
+            intent.putExtra("event_id", event.getEventID());
+            intent.putExtra("event_name", event.getEventName());
+            intent.putExtra("event_date", event.getEventDate().getTime());
+            intent.putExtra("event_location", event.getEventLocation());
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
