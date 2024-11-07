@@ -7,10 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,13 +16,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.models.MyEventsPageActivity;
+import com.example.quokka_event.controllers.MyEventsPageActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
-import com.example.quokka_event.models.event.Event;
-import com.example.quokka_event.models.organizer.Facility;
 
-import java.util.Date;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {

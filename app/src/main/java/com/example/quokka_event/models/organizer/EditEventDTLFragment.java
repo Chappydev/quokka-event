@@ -1,4 +1,4 @@
-package com.example.quokka_event;
+package com.example.quokka_event.models.organizer;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -15,13 +15,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.type.DateTime;
+import com.example.quokka_event.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/** A dialog fragment that pops up when user wants to edit the date, time, and location
+ * @author saimonnk
+ */
 public class EditEventDTLFragment extends DialogFragment {
     TextView dateTextView;
     TextView deadlineTextView;
@@ -44,6 +47,13 @@ public class EditEventDTLFragment extends DialogFragment {
 
         setDefaultDate();
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            /**
+             * Select the event date once user picks a date from date picker
+             * @param datePicker
+             * @param year
+             * @param month
+             * @param day
+             */
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 myCalendar.set(Calendar.YEAR, year);
@@ -59,6 +69,10 @@ public class EditEventDTLFragment extends DialogFragment {
 
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
         dateTextView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Launch a date picker from the date text being clicked.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 DatePickerDialog datePicker;
@@ -70,17 +84,30 @@ public class EditEventDTLFragment extends DialogFragment {
 
 
         deadlineTextView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Launch a date picker when deadline text is clicked
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Calendar dCalendar = Calendar.getInstance();
                 DatePickerDialog datePicker;
                 datePicker = new DatePickerDialog(getContext(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePicker.setCanceledOnTouchOutside(false);
+
                 Date eventDate = myCalendar.getTime();
                 Long minDateLong = eventDate.getTime();
+                // Make sure the deadline is before the event date.
                 datePicker.getDatePicker().setMaxDate(minDateLong);
                 datePicker.show();
                 datePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                    /**
+                     * Set deadline date once user picks a date
+                     * @param datePicker
+                     * @param year
+                     * @param month
+                     * @param day
+                     */
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         dCalendar.set(year, month, day);
@@ -93,19 +120,31 @@ public class EditEventDTLFragment extends DialogFragment {
         });
 
         timeTextView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Launch a time picker dialog from the timetextview being clicked
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 int h = myCalendar.get(Calendar.HOUR_OF_DAY);
                 int m = myCalendar.get(Calendar.MINUTE);
                 TimePickerDialog timePicker;
                 timePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    /**
+                     * Select the time from timepicker and send the data to OverviewFragment.java
+                     * @param timePicker
+                     * @param hour
+                     * @param min
+                     */
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {
                         myCalendar.set(Calendar.HOUR_OF_DAY, hour);
                         myCalendar.set(Calendar.MINUTE, min);
+                        // Set format to digital clock
                         String timeFormat = "h:mm a";
                         SimpleDateFormat simpleTime = new SimpleDateFormat(timeFormat, Locale.CANADA);
                         String timeString = simpleTime.format(myCalendar.getTime());
+                        // Set data to bundle to send to OverviewFragment.java
                         result.putInt("hourKey", hour);
                         result.putInt("minKey", min);
                         result.putString("timezoneKey", myCalendar.getTimeZone().getID());
@@ -125,11 +164,17 @@ public class EditEventDTLFragment extends DialogFragment {
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Confirm", (dialog,which) -> {
                     result.putString("locationKey", checkLocationEmpty());
+                    // send data to OverviewFragment.java
                     getParentFragmentManager().setFragmentResult("dateRequestKey", result);
                 })
                 .create();
     }
 
+    /**
+     * Convert a date from a calendar to String
+     * @param cal
+     * @return String
+     */
     String convertDate(Calendar cal){
         String format = "MM/dd/yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.CANADA);
@@ -144,6 +189,7 @@ public class EditEventDTLFragment extends DialogFragment {
         Date currentDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         String defaultDate = df.format(currentDate);
+        String defaultDeadline = df.format(currentDate);
         dateTextView.setText("Date: "+defaultDate);
 
         int h = myCalendar.get(Calendar.HOUR_OF_DAY);
@@ -153,10 +199,17 @@ public class EditEventDTLFragment extends DialogFragment {
         String timeString = tf.format(currentDate);
         timeTextView.setText("Time: " + timeString);
 
+        deadlineTextView.setText("Deadline: " + defaultDeadline);
+
         result.putString("dateKey", defaultDate);
         result.putString("timeKey", timeString);
+        result.putString("deadlineKey", defaultDeadline);
     }
 
+    /**
+     * Check if the locationEditText is empty to avoid sending a null value.
+     * @return String
+     */
     String checkLocationEmpty(){
         if (locationEditText.getText().toString().isEmpty()){
             return "";

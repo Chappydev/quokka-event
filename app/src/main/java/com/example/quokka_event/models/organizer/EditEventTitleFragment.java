@@ -1,20 +1,27 @@
-package com.example.quokka_event;
+package com.example.quokka_event.models.organizer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.quokka_event.R;
+
 
 public class EditEventTitleFragment extends DialogFragment {
+    /**
+     * Show a dialog to edit event name
+     * @param savedInstanceState The last saved instance state of the Fragment,
+     * or null if this is a freshly created Fragment.
+     *
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

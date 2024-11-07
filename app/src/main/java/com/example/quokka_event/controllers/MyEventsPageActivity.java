@@ -1,8 +1,7 @@
-package com.example.quokka_event.models;
+package com.example.quokka_event.controllers;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;

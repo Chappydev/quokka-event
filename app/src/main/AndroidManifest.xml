@@ -25,7 +25,7 @@
             android:name=".controllers.EntrantActivity">
         </activity>
         <activity
-            android:name=".models.MyEventsPageActivity">
+            android:name=".controllers.MyEventsPageActivity">
         </activity>
         <activity
             android:name=".NotificationPageActivity">

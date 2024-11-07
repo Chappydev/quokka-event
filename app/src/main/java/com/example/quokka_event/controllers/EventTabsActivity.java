@@ -1,4 +1,4 @@
-package com.example.quokka_event.models.event;
+package com.example.quokka_event.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.NotificationPageActivity;
-import com.example.quokka_event.OrganizerEventsPageActivity;
 import com.example.quokka_event.R;
-import com.example.quokka_event.controllers.DatabaseManager;
-import com.example.quokka_event.controllers.ViewPagerAdapter;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.event.DetailsFragment;
+import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.models.event.OverviewFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -34,6 +34,11 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_tabs);
         event = new Event();
+        Date currentDate = new Date();
+        event.setEventName("Event");
+        event.setEventLocation("Location");
+        event.setEventDate(currentDate);
+        event.setRegistrationDeadline(currentDate);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
@@ -88,7 +93,9 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
                     }
                 });
-
+                // db add organizer to event as an organizer so this event can be shown to organizer
+                // to view and edit.
+                finish();
             }
         });
     }
@@ -111,11 +118,19 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setEventDate(eventDate);
     }
 
+    /**
+     * Set event location called from a listener from DetailsFragment.java
+     * @param location
+     */
     @Override
     public void setLocation(String location) {
         event.setEventLocation(location);
     }
 
+    /**
+     * Set event deadline called from a listener in DetailsFragment.java
+     * @param deadline
+     */
     @Override
     public void setDeadline(Date deadline) {
         event.setRegistrationDeadline(deadline);
