@@ -189,6 +189,7 @@ public class EditEventDTLFragment extends DialogFragment {
         Date currentDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         String defaultDate = df.format(currentDate);
+        String defaultDeadline = df.format(currentDate);
         dateTextView.setText("Date: "+defaultDate);
 
         int h = myCalendar.get(Calendar.HOUR_OF_DAY);
@@ -198,8 +199,11 @@ public class EditEventDTLFragment extends DialogFragment {
         String timeString = tf.format(currentDate);
         timeTextView.setText("Time: " + timeString);
 
+        deadlineTextView.setText("Deadline: " + defaultDeadline);
+
         result.putString("dateKey", defaultDate);
         result.putString("timeKey", timeString);
+        result.putString("deadlineKey", defaultDeadline);
     }
 
     /**
