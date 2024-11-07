@@ -1,14 +1,12 @@
 package com.example.quokka_event.controllers;
 
 import android.content.Context;
-import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
-import com.example.quokka_event.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -19,11 +17,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * interface to retrieve data into fragments.
+ */
+interface RetrieveData {
+    /**
+     * Retrieve profiles once firebase grabs the documents
+     * @param profiles
+     */
+    void onProfilesLoaded(ArrayList<Map<String, Object>> profiles);
+}
 
 // Class to interact with the firebase database to be used for admin's screen
 public class DatabaseManager {
@@ -208,9 +213,10 @@ public class DatabaseManager {
     /**
      * Get all users from firebase database.
      */
-    public ArrayList<Map<String, Object>> getAllProfiles() {
-        final ArrayList<Map<String, Object>> profiles = new ArrayList();
+    public void getAllProfiles(RetrieveData callback) {
+        final ArrayList<Map<String, Object>> usersList = new ArrayList();
         Map<String, Object> userInfo = new HashMap<>();
+
         usersRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     /**
@@ -219,14 +225,14 @@ public class DatabaseManager {
                      */
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         if (task.isSuccessful()) {
-                            ArrayList<Map<String, Object>> usersList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                profiles.add(document.getData());
+                                usersList.add(document.getData());
 
                             }
-                            Log.d("db", Integer.toString(usersList.size()));
-
+                            // Load profiles in ProfileListFragment.java
+                            callback.onProfilesLoaded(usersList);
                         }
                         else {
                             Log.d("db", "unable to grab documents from firebase");
@@ -234,7 +240,5 @@ public class DatabaseManager {
                     }
 
                 });
-        Log.d("DBEPIC", Integer.toString(profiles.size()));
-        return profiles;
     }
 }

@@ -29,9 +29,6 @@ public class BrowseProfilesActivity extends AppCompatActivity {
 
         AdminBrowseProfileAdapter adapter = new AdminBrowseProfileAdapter(this);
         viewPager.setAdapter(adapter);
-        db = DatabaseManager.getInstance(this);
-        ArrayList<Map<String, Object>> users = db.getAllProfiles();
-        Log.d("findDB", Integer.toString(users.size()));
 
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
