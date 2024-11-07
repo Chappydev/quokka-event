@@ -2,28 +2,32 @@ package com.example.quokka_event.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.quokka_event.models.ProfileSystem;
-import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.R;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * This activity displays a details of an event.
+ * @author Soaiba
+ */
 public class EventDetailsActivity extends AppCompatActivity {
-
     @Override
+    /**
+     * This method displays a info on event based on which event user interacted with on my events page.
+     * Handles accept, deny, cancel button activity.
+     * @author Soaiba
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_join_details);
 
-        // Retrieve data from the Intent
+        // Get data from Intent
         String eventId = getIntent().getStringExtra("event_id");
         String eventName = getIntent().getStringExtra("event_name");
         long eventDateMillis = getIntent().getLongExtra("event_date", -1);
@@ -35,7 +39,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
         String formattedDate = dateFormat.format(eventDate);
 
-        // Retrieve views
+        // Initialize Views
         TextView eventNameText = findViewById(R.id.event_name_text);
         TextView dateText = findViewById(R.id.date_text);
         TextView timeText = findViewById(R.id.time_text);
@@ -43,7 +47,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         TextView organizerText = findViewById(R.id.organizer_text);
         TextView statusText = findViewById(R.id.status_text);
 
-        // Buttons
+        // Initialize buttons
         Button acceptButton = findViewById(R.id.accept_button);
         Button denyButton = findViewById(R.id.deny_button);
         Button cancelButton = findViewById(R.id.cancel_button);
@@ -64,6 +68,9 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     /**
      * Navigate to the confirmation activity with a message type and event name.
+     * @author Soaiba
+     * @param eventName name of event user is interacting with
+     * @param messageType which button they are interacting with
      */
     private void goToConfirm(String messageType, String eventName) {
         Intent intent = new Intent(EventDetailsActivity.this, ConfirmationActivity.class);

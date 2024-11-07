@@ -9,16 +9,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.quokka_event.R;
 
 /**
- * This class displays a message based on what button the user interacted with from the events detail page.
- * Handles activity for the exit button.
+ * This activity displays a message based on what button the user interacted with from the events detail page.
  * @author Soaiba
  */
 public class ConfirmationActivity extends AppCompatActivity{
     @Override
+    /**
+     * This method displays a message based on message type passed from event details page.
+     * Handles exit button activity.
+     * @author Soaiba
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_confirmation);
 
+        // Get data from intent
         String messageType = getIntent().getStringExtra("message_type");
         String eventName = getIntent().getStringExtra("event_name");
 
