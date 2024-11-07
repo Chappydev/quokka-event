@@ -37,7 +37,7 @@
             android:name=".CreateEventActivity">
         </activity>
         <activity
-            android:name=".models.event.EventTabsActivity">
+            android:name=".controllers.EventTabsActivity">
         </activity>
         <activity
             android:name=".UserProfilePageActivity">
