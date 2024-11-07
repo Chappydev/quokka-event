@@ -18,6 +18,7 @@ import com.example.quokka_event.models.ProfileAdapter;
 import com.example.quokka_event.models.ProfileSystem;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ProfileListFragment extends Fragment {
     @Nullable
@@ -27,11 +28,10 @@ public class ProfileListFragment extends Fragment {
         RecyclerView profilesRecyclerView = view.findViewById(R.id.admin_profile_recycler);
         DatabaseManager db = DatabaseManager.getInstance(getContext());
 
-        ArrayList<ProfileSystem> users = db.getAllProfiles();
+        ArrayList<Map<String, Object>> users = db.getAllProfiles();
         ProfileAdapter adapter = new ProfileAdapter(users);
         ProfileSystem test = new ProfileSystem();
         test.setName("test admin");
-        users.add(test);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         profilesRecyclerView.setLayoutManager(layoutManager);
         profilesRecyclerView.setAdapter(adapter);

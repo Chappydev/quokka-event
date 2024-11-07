@@ -13,10 +13,11 @@ import com.example.quokka_event.R;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
 
-    private ArrayList<ProfileSystem> localDataSet;
+    private ArrayList<Map<String, Object>> localDataSet;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -43,7 +44,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
      * @param dataSet arraylist containing all profilesystem objects
      * by RecyclerView
      */
-    public ProfileAdapter(ArrayList<ProfileSystem> dataSet) {
+    public ProfileAdapter(ArrayList<Map<String, Object>> dataSet) {
         localDataSet = dataSet;
     }
 
@@ -63,7 +64,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextView().setText(localDataSet.get(position).getName());
+        viewHolder.getTextView().setText((String)localDataSet.get(position).get("name"));
     }
 
     // Return the size of your dataset (invoked by the layout manager)

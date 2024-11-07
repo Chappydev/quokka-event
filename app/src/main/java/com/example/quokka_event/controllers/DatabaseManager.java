@@ -208,8 +208,9 @@ public class DatabaseManager {
     /**
      * Get all users from firebase database.
      */
-    public ArrayList<ProfileSystem> getAllProfiles() {
-        ArrayList<ProfileSystem> users = new ArrayList<ProfileSystem>();
+    public ArrayList<Map<String, Object>> getAllProfiles() {
+        ArrayList<Map<String, Object>> profiles = new ArrayList();
+        Map<String, Object> userInfo = new HashMap<>();
         usersRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     /**
@@ -219,22 +220,12 @@ public class DatabaseManager {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            ArrayList<Map<String, Object>> profiles = new ArrayList<>();
-                            ProfileSystem userProfile = new ProfileSystem();
+                            ArrayList<Map<String, Object>> usersList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Object> userInfo = new HashMap<>();
-                                userInfo = document.getData();
-                                userProfile.setDeviceID(document.getId());
-                                String name = (String) userInfo.get("name");
-                                String email = (String) userInfo.get("email");
-                                String address = (String) userInfo.get("address");
-                                Boolean isAdmin = (Boolean) userInfo.get("isAdmin");
-                                Boolean isOrganizer = (Boolean) userInfo.get("isOrganizer");
-                                users.add(userProfile);
-                                Log.d("DBEPIC", userProfile.getName());
-                            }
+                                profiles.add(document.getData());
 
-                            Log.d("db", Integer.toString(profiles.size()));
+                            }
+                            Log.d("db", Integer.toString(usersList.size()));
 
                         }
                         else {
@@ -243,7 +234,7 @@ public class DatabaseManager {
                     }
 
                 });
-        Log.d("DBEPIC", Integer.toString(users.size()));
-        return users;
+        Log.d("DBEPIC", Integer.toString(profiles.size()));
+        return profiles;
     }
 }

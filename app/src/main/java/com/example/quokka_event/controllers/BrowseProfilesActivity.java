@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class BrowseProfilesActivity extends AppCompatActivity {
     DatabaseManager db;
@@ -29,7 +30,7 @@ public class BrowseProfilesActivity extends AppCompatActivity {
         AdminBrowseProfileAdapter adapter = new AdminBrowseProfileAdapter(this);
         viewPager.setAdapter(adapter);
         db = DatabaseManager.getInstance(this);
-        ArrayList<ProfileSystem> users = db.getAllProfiles();
+        ArrayList<Map<String, Object>> users = db.getAllProfiles();
         Log.d("findDB", Integer.toString(users.size()));
 
 
