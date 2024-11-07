@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +22,9 @@ import java.util.Map;
 /**
  * A fragment that contains the recyclerview to display all profiles in database.
  */
-public class ProfileListFragment extends Fragment {
+public class ProfileListFragment extends Fragment implements ProfileAdapter.ProfileAdapterListener {
     private ArrayList<Map<String, Object>> profileList;
+    private ProfileAdapter adapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,24 +34,30 @@ public class ProfileListFragment extends Fragment {
         profileList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         profilesRecyclerView.setLayoutManager(layoutManager);
-        db.getAllProfiles(new RetrieveData() {
-            /**
-             * Retrieve profiles from database and fill the recycler with profiles in database.
-             * @param profiles
-             */
+        adapter = new ProfileAdapter(profileList, this);
+        db.getAllProfiles(new DatabaseManager.RetrieveData() {
             @Override
             public void onProfilesLoaded(ArrayList<Map<String, Object>> profiles) {
-                Log.d("dbSize", "called"+Integer.toString(profiles.size()));
-                profileList.clear();
                 profileList.addAll(profiles);
-                Log.d("dbSize", "profiles"+ Integer.toString(profileList.size()));
-                ProfileAdapter adapter = new ProfileAdapter(profileList);
+                adapter.setLocalDataSet(profileList);
                 profilesRecyclerView.setAdapter(adapter);
             }
         });
 
 
 
+
         return view;
     }
+
+    @Override
+    public void viewButtonClick(int pos) {
+        Log.d("test", "viewbuttonclick at" + Integer.toString(pos));
+        Intent activity = new Intent(getContext(), BrowseProfileDetailsActivity.class);
+        startActivity(activity);
+    }
+    void test(ArrayList<Map<String, Object>> profiles, ArrayList<Map<String, Object>> copyProfiles){
+
+    }
+
 }

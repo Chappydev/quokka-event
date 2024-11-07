@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.models.ProfileAdapter;
 import com.example.quokka_event.models.ProfileSystem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -17,7 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class BrowseProfilesActivity extends AppCompatActivity {
+public class BrowseProfilesActivity extends AppCompatActivity{
     DatabaseManager db;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,4 +44,5 @@ public class BrowseProfilesActivity extends AppCompatActivity {
 
 
     }
+    
 }

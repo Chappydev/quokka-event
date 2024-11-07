@@ -9,6 +9,9 @@ import com.example.quokka_event.models.event.DetailsFragment;
 import com.example.quokka_event.models.event.OverviewFragment;
 import com.example.quokka_event.models.event.QRFragment;
 
+/**
+ * A tab adapter for fragment to show all profiles or violations.
+ */
 public class AdminBrowseProfileAdapter extends FragmentStateAdapter{
     public AdminBrowseProfileAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);

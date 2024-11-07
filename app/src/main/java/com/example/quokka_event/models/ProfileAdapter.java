@@ -4,16 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
+
 
 /**
  * Profile Adapter to class for recycler view to hold a list of profiles.
@@ -21,20 +21,31 @@ import java.util.Map;
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
 
     private ArrayList<Map<String, Object>> localDataSet;
+    ProfileAdapterListener profileAdapterListener;
+    public ProfileAdapter(ArrayList<Map<String, Object>> dataList, ProfileAdapterListener profileAdapterListener){
+        this.localDataSet = dataList;
+        this.profileAdapterListener = profileAdapterListener;
+    }
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder)
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
+        private Button viewButton;
+        private ProfileAdapterListener listener;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view, ProfileAdapterListener adapterListener) {
             super(view);
             // Define click listener for the ViewHolder's View
-
             textView = (TextView) view.findViewById(R.id.profile_name);
+            viewButton = (Button) view.findViewById(R.id.admin_view_profile_button);
+            viewButton.setOnClickListener(this);
+            listener = adapterListener;
         }
+        @Override
+        public void onClick(View view) { listener.viewButtonClick(getAdapterPosition()); }
 
         public TextView getTextView() {
             return textView;
@@ -65,7 +76,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.profile_list_content, viewGroup, false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, profileAdapterListener);
     }
 
     /**
@@ -85,6 +96,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
     @Override
     public int getItemCount() {
         return localDataSet.size();
+    }
+
+    public void setLocalDataSet(ArrayList<Map<String, Object>> data){
+        localDataSet = data;
+    }
+
+    public interface ProfileAdapterListener {
+        void viewButtonClick(int pos);
     }
 }
 

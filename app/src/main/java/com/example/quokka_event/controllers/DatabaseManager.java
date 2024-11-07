@@ -19,16 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * interface to retrieve data into fragments.
- */
-interface RetrieveData {
-    /**
-     * Retrieve profiles once firebase grabs the documents
-     * @param profiles
-     */
-    void onProfilesLoaded(ArrayList<Map<String, Object>> profiles);
-}
+
 
 // Class to interact with the firebase database to be used for admin's screen
 public class DatabaseManager {
@@ -59,6 +50,16 @@ public class DatabaseManager {
         facilityRef = db.collection("Facility");
         eventsRef = db.collection("Events");
         return this;
+    }
+    /**
+     * interface to retrieve data into fragments.
+     */
+    public interface RetrieveData {
+        /**
+         * Retrieve profiles once firebase grabs the documents
+         * @param profiles
+         */
+        void onProfilesLoaded(ArrayList<Map<String, Object>> profiles);
     }
 
     // vvvv This function should be split into 2. The create user part should be its own function
