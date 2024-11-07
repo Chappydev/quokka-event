@@ -49,6 +49,9 @@ public class Event {
         this.cancelledParticipants = cancelledParticipants;
     }
 
+    public Event(){
+    }
+
     public String getEventID() {
         return eventID;
     }

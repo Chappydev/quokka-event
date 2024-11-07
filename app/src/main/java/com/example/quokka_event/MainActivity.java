@@ -31,7 +31,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseManager db;
-    private Button myEventsButton;
+    private Button myEventButton;
     private String lastCreatedEventId;
     private String lastCreatedFacilityId;
     @Override
@@ -69,6 +69,42 @@ public class MainActivity extends AppCompatActivity {
             initUser(currentUser.getUid());
         }
 
+        // Switch the activity to MyEventsActivity when the myEventsButton is clicked
+        myEventButton = findViewById(R.id.my_events_button);
+        myEventButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, MyEventsActivity.class);
+                startActivity(showActivity);
+            }
+        });
+
+        // Switch the activity to the NotificationPageActivity when the bell icon is clicked
+        final ImageButton bellButton = findViewById(R.id.bell);
+        bellButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
+                MainActivity.this.startActivity(showActivity);
+            }
+        });
+
+        // Switch the activity to the UserProfilePageActivity when the person icon is clicked
+        final ImageButton profileButton = findViewById(R.id.profile);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, UserProfilePageActivity.class);
+                MainActivity.this.startActivity(showActivity);
+            }
+        });
+
+        // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
+        final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
+        organizerEventsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
+                MainActivity.this.startActivity(showActivity);
+            }
+        });
+
     }
 
 //    @Override
@@ -102,12 +138,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }, deviceId);
 
-        myEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivities();
-            }
-        });
 
 
     }
@@ -116,45 +146,13 @@ public class MainActivity extends AppCompatActivity {
     private void switchActivities(){
         Intent intent = new Intent(this, MyEventsActivity.class);
         startActivity(intent);
-        }, uid);
-
-
-        // Switch the activity to MyEventsActivity when the myEventsButton is clicked
-        myEventsButton = findViewById(R.id.my_events_button);
-        myEventsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, MyEventsPageActivity.class);
-                startActivity(showActivity);
-            }
-        });
-
-        // Switch the activity to the NotificationPageActivity when the bell icon is clicked
-        final ImageButton bellButton = findViewById(R.id.bell);
-        bellButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
-                MainActivity.this.startActivity(showActivity);
-            }
-        });
-
-        // Switch the activity to the UserProfilePageActivity when the person icon is clicked
-        final ImageButton profileButton = findViewById(R.id.profile);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, UserProfilePageActivity.class);
-                MainActivity.this.startActivity(showActivity);
-            }
-        });
-
-        // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
-        final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
-        organizerEventsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
-                MainActivity.this.startActivity(showActivity);
-            }
-        });
-
     }
+
+
+
+
+
+
+
 
 }
