@@ -432,7 +432,6 @@ public class DatabaseManager {
      * @param phone
      * @param callback
      */
-
     public void updateProfile(String deviceId, String name, String email, String phone, Boolean notificationPreference, DbCallback callback) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", name);
