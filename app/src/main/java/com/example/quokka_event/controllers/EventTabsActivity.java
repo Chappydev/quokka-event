@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
 
+        auth = FirebaseAuth.getInstance();
         DatabaseManager db = DatabaseManager.getInstance(getApplicationContext());
 
         // Set up the adapter
@@ -78,28 +80,27 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Save event and send to database.
-             * @param view
-             */
             @Override
             public void onClick(View view) {
-                String deviceId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-                // send event to database;
+                String deviceId = auth.getCurrentUser().getUid();
                 db.addEvent(event, deviceId, new DbCallback() {
                     @Override
                     public void onSuccess(Object result) {
                         Log.d("DB", "added Event: " + event.getEventName() + " to database");
+                        Toast.makeText(EventTabsActivity.this,
+                                "Event created successfully",
+                                Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
                     public void onError(Exception exception) {
-
+                        Log.e("DB", "Error creating event: ", exception);
+                        Toast.makeText(EventTabsActivity.this,
+                                "Error creating event",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
-                // db add organizer to event as an organizer so this event can be shown to organizer
-                // to view and edit.
-                finish();
             }
         });
     }
