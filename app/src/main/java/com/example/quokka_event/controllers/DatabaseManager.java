@@ -52,7 +52,7 @@ public class DatabaseManager {
         return this;
     }
     /**
-     * interface to retrieve data into fragments.
+     * interface to send data to other classes.
      */
     public interface RetrieveData {
         /**
@@ -212,7 +212,8 @@ public class DatabaseManager {
     }
 
     /**
-     * Get all users from firebase database.
+     * Get all users from firebase database and send it to other classes using RetrieveData
+     * interface listener.
      */
     public void getAllProfiles(RetrieveData callback) {
         final ArrayList<Map<String, Object>> usersList = new ArrayList();

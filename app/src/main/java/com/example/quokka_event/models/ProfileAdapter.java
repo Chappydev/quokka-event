@@ -22,6 +22,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     private ArrayList<Map<String, Object>> localDataSet;
     ProfileAdapterListener profileAdapterListener;
+
+    /**
+     * Constructor to set the profiles arraylist and interface listener
+     * @param dataList
+     * @param profileAdapterListener
+     */
     public ProfileAdapter(ArrayList<Map<String, Object>> dataList, ProfileAdapterListener profileAdapterListener){
         this.localDataSet = dataList;
         this.profileAdapterListener = profileAdapterListener;
@@ -36,6 +42,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         private Button viewButton;
         private ProfileAdapterListener listener;
 
+        /**
+         * Viewholder constructor. Set view and view button click listener.
+         * @param view
+         * @param adapterListener
+         */
         public ViewHolder(View view, ProfileAdapterListener adapterListener) {
             super(view);
             // Define click listener for the ViewHolder's View
@@ -44,6 +55,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             viewButton.setOnClickListener(this);
             listener = adapterListener;
         }
+
+        /**
+         * Call a listener once the view button is clicked.
+         * @param view
+         */
         @Override
         public void onClick(View view) { listener.viewButtonClick(getAdapterPosition()); }
 
@@ -102,7 +118,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         localDataSet = data;
     }
 
+    /**
+     * Interface to call once viewbutton is clicked to display profile details to admin.
+     */
     public interface ProfileAdapterListener {
+        /**
+         * Send index of the list as a parameter.
+         * @param pos
+         */
         void viewButtonClick(int pos);
     }
 }

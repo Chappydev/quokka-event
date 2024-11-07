@@ -52,12 +52,15 @@ public class MainActivity extends AppCompatActivity {
                         (Boolean) map.get("admin")
                 );
                 Log.d("DB", "onCreate: " + user.getDeviceID());
+                // Switch to landing page.
+                switchToAdminLandingPage(user);
             }
             @Override
             public void onError(Exception exception) {
                 Log.e("DB", "onError: ", exception);
             }
         }, deviceId);
+
 
 
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(showActivity);
             }
         });
-        Intent showAdminActivity = new Intent(MainActivity.this, AdminLandingPageActivity.class);
-        startActivity(showAdminActivity);
     }
 
     /**
@@ -110,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
     private void switchToProfileActivity(){
         Intent switchActivity = new Intent(this, CreateProfileActivity.class);
         startActivity(switchActivity);
+    }
+
+    private void switchToAdminLandingPage(User user){
+        if (user.isAdmin()){
+            Intent adminActivity = new Intent(this, AdminLandingPageActivity.class);
+            startActivity(adminActivity);
+        }
+        Log.d("isAdmin", user.getDeviceID() + ": "+ Boolean.toString(user.isAdmin()));
     }
 
 }

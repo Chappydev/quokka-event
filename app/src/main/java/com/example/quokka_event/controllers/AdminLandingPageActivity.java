@@ -15,10 +15,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.quokka_event.R;
 
+/**
+ * Landing page for admins.
+ */
 public class AdminLandingPageActivity extends AppCompatActivity {
 
     Button browse_profile_button;
 
+    /**
+     * Create landing page for admins.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +38,11 @@ public class AdminLandingPageActivity extends AppCompatActivity {
             return insets;
         });
 
-        DatabaseManager db = DatabaseManager.getInstance(this);
         browse_profile_button = findViewById(R.id.browse_profile_button);
 
         browse_profile_button.setOnClickListener(new View.OnClickListener() {
             /**
-             * Browse Profiles
+             * Browse all profiles from database. start {@link BrowseProfilesActivity }
              * @param view
              */
             @Override

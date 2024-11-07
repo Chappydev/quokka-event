@@ -16,6 +16,12 @@ public class AdminBrowseProfileAdapter extends FragmentStateAdapter{
     public AdminBrowseProfileAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
+
+    /**
+     * Show a fragment depending on tab
+     * @param position
+     * @return
+     */
     @NonNull
     @Override
     public Fragment createFragment(int position) {
