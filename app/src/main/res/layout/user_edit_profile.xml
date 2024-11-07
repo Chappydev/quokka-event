@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/topToolbar"
+        layout="@layout/user_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@+id/topToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <!-- Circular Image -->
+            <!-- reference: https://stackoverflow.com/questions/22105775/imageview-in-circular-through-xml -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/user_profile_image"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_marginTop="75dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="250dp"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/topToolbar">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="250dp">
+
+                    <ImageView
+                        android:layout_width="125dp"
+                        android:layout_height="125dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/edit_icon" />
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Name Label -->
+            <TextView
+                android:id="@+id/user_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="John Doe"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_profile_image" />
+
+            <!-- Email Field -->
+            <EditText
+                android:id="@+id/user_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="12dp"
+                android:hint="Email"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/user_name_label"/>
+
+            <!-- Name Field -->
+            <EditText
+                android:id="@+id/user_name_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="12dp"
+                android:hint="Name"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/user_email"/>
+
+            <!-- Phone Field -->
+            <EditText
+                android:id="@+id/user_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="12dp"
+                android:hint="Phone Number"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/user_name_field"/>
+
+            <!-- Notification Check box -->
+            <CheckBox
+                android:id="@+id/user_notifications_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Receive Notifications from Organizers"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/user_phone_number" />
+
+            <View
+                android:id="@+id/profile_divider"
+                android:layout_width="350dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="35dp"
+                android:background="@color/user_orange"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/user_notifications_checkbox" />
+
+            <!-- Facility Name Label -->
+            <TextView
+                android:id="@+id/facility_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="35dp"
+                android:text="Facility Name"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_divider"/>
+
+            <!-- Facility Name Field -->
+            <EditText
+                android:id="@+id/facility_name_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="12dp"
+                android:hint="Name"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/facility_name_label"/>
+
+            <!-- Facility Adress Field -->
+            <EditText
+                android:id="@+id/facility_address_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="12dp"
+                android:hint="Address"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/facility_name_field"/>
+
+            <!-- Facility Image -->
+            <ImageView
+                android:id="@+id/facility_image"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edit_icon"
+                android:scaleType="centerInside"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/facility_address_field" />
+
+            <!-- Back Button -->
+            <Button
+                android:id="@+id/back_button_bottom"
+                style="@style/landing_button_text"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:background="@drawable/landing_button"
+                android:text="@string/back_button_text"
+                app:layout_constraintTop_toBottomOf="@+id/facility_image"
+                android:layout_gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="30dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
