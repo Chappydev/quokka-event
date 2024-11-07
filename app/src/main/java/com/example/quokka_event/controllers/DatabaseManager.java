@@ -227,9 +227,5 @@ public class DatabaseManager {
                 .addOnSuccessListener(response -> callback.onSuccess(response))
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
-    // Delete hashed qr code data
-    public void deleteQRCode(){
-
-    }
 
 }

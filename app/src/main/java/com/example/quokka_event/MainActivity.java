@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseManager db;
     private Button myEventsButton;
-    private DatabaseManager db;
-    private static final String TAG = "DB";
     private String lastCreatedEventId;
     private String lastCreatedFacilityId;
     @Override
