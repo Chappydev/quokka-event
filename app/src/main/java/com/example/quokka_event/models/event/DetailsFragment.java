@@ -73,7 +73,7 @@ public class DetailsFragment extends Fragment {
         limitWaitlistCheckBox = view.findViewById(R.id.waitlist_limit_checkbox);
         limitParticipantCheckBox = view.findViewById(R.id.limit_participant_checkbox);
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
-        remainSeatTextView = view.findViewById(R.id.event_seats_label);+++++++++++++++
+        remainSeatTextView = view.findViewById(R.id.event_seats_label);
 
 
         setButtonsVisibility(View.GONE);
