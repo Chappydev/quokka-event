@@ -218,26 +218,33 @@ public class DatabaseManager {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            ArrayList<ProfileSystem> profiles = new ArrayList<ProfileSystem>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> userInfo = new HashMap<>();
+                                userInfo = document.getData();
                                 ProfileSystem userProfile = new ProfileSystem();
                                 userProfile.setDeviceID(document.getId());
-                                String name = (String) document.get("name");
-                                String email = (String) document.get("email");
-                                String address = (String) document.get("address");
-                                Boolean isAdmin = (Boolean) document.get("isAdmin");
-                                Boolean isOrganizer = (Boolean) document.get("isOrganizer");
+                                String name = (String) userInfo.get("name");
+                                String email = (String) userInfo.get("email");
+                                String address = (String) userInfo.get("address");
+                                Boolean isAdmin = (Boolean) userInfo.get("isAdmin");
+                                Boolean isOrganizer = (Boolean) userInfo.get("isOrganizer");
                                 userProfile.setName(name);
                                 userProfile.setEmail(email);
                                 userProfile.setAddress(address);
                                 userProfile.setIsAdmin(isAdmin);
                                 userProfile.setIsOrganizer(isOrganizer);
-                                users.add(userProfile);
+                                profiles.add(userProfile);
                             }
-                            Log.d("db", "finding all users");
-                        } else {
+
+                            Log.d("db", Integer.toString(profiles.size()));
+
+                        }
+                        else {
                             Log.d("db", "unable to grab documents from firebase");
                         }
                     }
+
                 });
         return users;
     }

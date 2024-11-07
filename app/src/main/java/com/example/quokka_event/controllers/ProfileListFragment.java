@@ -1,6 +1,7 @@
 package com.example.quokka_event.controllers;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class ProfileListFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         profilesRecyclerView.setLayoutManager(layoutManager);
         profilesRecyclerView.setAdapter(adapter);
+        Log.d("size", Integer.toString(users.size()));
 
 
         return view;
