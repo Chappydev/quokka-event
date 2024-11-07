@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Adapter class for displaying a list of events in a RecyclerView.
- * Binds each event to a row in the RecyclerView and handles click events.
+ * This class sets up an adapter for displaying a list of events in a RecyclerView.
+ * @author Soaiba
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
     private List<Event> eventList;
@@ -23,44 +23,41 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
 
     /**
-     * Constructor for EventAdapter.
+     * This is a constructor for EventAdapter.
      * @author Soaiba
-     * @param eventList List of Event objects to be displayed
-     * @param listener Listener for handling item click events
+     * @param eventList list of Event objects to be displayed.
+     * @param listener listener for handling item click events.
      */
     public EventAdapter(List<Event> eventList, OnEventClickListener listener) {
         this.eventList = eventList;
         this.listener = listener;
     }
 
-    /**
-     * Creates a new ViewHolder to represent an event.
-     * Inflates the item layout for each event in the list.
-     * @see <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup,int)">RecyclerView.Adapter#onCreateViewHolder</a>
-     * @author Soaiba
-     * @param parent The ViewGroup into which the new View will be added after it is bound to an adapter position
-     * @param viewType The view type of the new View
-     * @return A new EventViewHolder that holds a View for each event
-     */
     @NonNull
     @Override
+    /**
+     * This method creates a ViewHolder for an event.
+     * @see <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup,int)">RecyclerView.Adapter#onCreateViewHolder</a>
+     * @author Soaiba
+     * @param parent parent ViewGroup.
+     * @param viewType iew type of the new View.
+     * @return ViewHolder for each event.
+     */
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_item, parent, false);
         return new EventViewHolder(view);
     }
 
+    @Override
     /**
-     * Displays the data at the specified position.
-     * Updates the contents of the ViewHolder to show the event at the given position.
+     * This method binds the event information to the ViewHolder at a specific position.
      * @see <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#bindViewHolder(VH,int)">RecyclerView.Adapter#onBindViewHolder</a>
      * @author Soaiba
-     * @param holder The ViewHolder which should be updated
-     * @param pos The position of the item
+     * @param holder ViewHolder to bind data to.
+     * @param pos position of the event in the list.
      */
-    @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int pos) {
         Event event = eventList.get(pos);
-
         holder.eventName.setText(event.getEventName());
         holder.eventDate.setText(dateFormat.format(event.getEventDate()));
         //TODO figure out status
@@ -69,9 +66,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     /**
-     * Returns the total number of items in the data set held by the adapter.
+     * This method returns the total number events.
      * @author Soaiba
-     * @return The number of items in the event list
+     * @return number of events in the list.
      */
     @Override
     public int getItemCount() {
@@ -79,7 +76,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     /**
-     * ViewHolder class that holds references to each item's views.
+     * This method holds references to each event's views.
+     * @author Soaiba
      */
     public static class EventViewHolder extends RecyclerView.ViewHolder {
         TextView eventName, eventDate, eventStatus;
@@ -87,7 +85,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         /**
          * Constructor for EventViewHolder.
          * @author Soaiba
-         * @param itemView The item view layout that contains the TextViews for event data
+         * @param itemView layout for event.
          */
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,7 +96,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     /**
-     * Interface for handling clicks on each event item.
+     * This interface is for handling clicks on each event.
+     * @author Soaiba
      */
     public interface OnEventClickListener {
         void onEventClick(Event event);

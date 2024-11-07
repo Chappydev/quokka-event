@@ -25,15 +25,8 @@ public class EventManager {
         // needs implementation
     }
 
-    //This function is not being used rn
-    /**
-     * Adds entrant's profile to the waitlist for an Event.
-     * @author Soaiba
-     * @param event the event to be added to the waitlist for
-     * @param profile the entrant's profile to add to the waitlist
-     */
-    public void joinWaitlist(Event event, ProfileSystem profile) {
-        event.addEntrantToWaitlist(profile);
+    public void joinWaitlist() {
+
     }
 
     public void cancelWaitlistSpot(){

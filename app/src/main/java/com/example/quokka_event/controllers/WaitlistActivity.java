@@ -1,13 +1,9 @@
 package com.example.quokka_event.controllers;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.R;
@@ -22,26 +18,34 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * This activity displays information about events for users to waitlist for.
+ * @author Saimon
+ */
 public class WaitlistActivity extends AppCompatActivity {
-
     private TextView eventTitle;
     private TextView dateText;
     private TextView timeText;
     private TextView locationText;
     private TextView organizerText;
-
     private EventManager eventManager;
-
     private Button joinButton;
     private Button exitButton;
 
     //TODO SHOULD SWITCH TO THIS ACTIVITY FROM QR CODE
     @Override
+    /**
+     * This method displays event details.
+     * Handles join button activity.
+     * @author Saimon
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_waitlist_details);
+
         User currentUser = User.getInstance(this.getApplicationContext());
 
+        // Initialize views and buttons
         eventTitle = findViewById(R.id.event_name_text);
         dateText = findViewById(R.id.date_text);
         timeText = findViewById(R.id.time_text);
@@ -56,6 +60,8 @@ public class WaitlistActivity extends AppCompatActivity {
         cal.setTime(testDate);
         cal.add(Calendar.DATE, 6);
         Date deadline = cal.getTime();
+
+        // Test event
         Event event = new Event("01", "Test Event", testDate, deadline, "Edmonton",5,5,new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>());
 
         eventTitle.setText(event.getEventName());
@@ -79,7 +85,7 @@ public class WaitlistActivity extends AppCompatActivity {
         joinButton.setOnClickListener(new View.OnClickListener() {
             /**
              * When join button is clicked add the user to the event's waitlist using Event.addEntrantToWaitlist()
-             * @author Simon
+             * @author Saimon
              * @param view
              */
             @Override

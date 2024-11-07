@@ -67,10 +67,10 @@ public class EventDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Navigate to the confirmation activity with a message type and event name.
+     * This method navigates to the confirmation activity with a message type and event name.
      * @author Soaiba
-     * @param eventName name of event user is interacting with
-     * @param messageType which button they are interacting with
+     * @param eventName name of event user is interacting with.
+     * @param messageType which button they are interacting with.
      */
     private void goToConfirm(String messageType, String eventName) {
         Intent intent = new Intent(EventDetailsActivity.this, ConfirmationActivity.class);

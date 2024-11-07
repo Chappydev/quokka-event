@@ -5,15 +5,16 @@ import com.example.quokka_event.models.ProfileSystem;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * This class sets up an Event object
+ */
 public class Event {
-
     private String eventID;
     private String eventName;
     private Date eventDate;
     private Date registrationDeadline;
     private String eventLocation;
     //private Organizer organizer;
-
     private int maxParticipants;
     private int maxWaitlist;
 
@@ -133,8 +134,8 @@ public class Event {
 
     /**
      * Checks if the waitlist is full.
-     * @author Simon and Soaiba
-     * @return true if the waitlist size has reached the maximum capacity
+     * @author Saimon and Soaiba
+     * @return true if the waitlist size has reached the maximum capacity.
      */
     public boolean isWaitListFull() {
         return waitList.size() >= maxWaitlist;
@@ -153,8 +154,8 @@ public class Event {
     /**
      * Adds an entrant to the waitlist if the waitlist is not full
      * and the registration deadline has not yet passed.
-     * @param user the user to be added to the waitlist
      * @author Soaiba
+     * @param user the user to be added to the waitlist.
      */
     public void addEntrantToWaitlist(ProfileSystem user){
         //TODO **** Update Database!! ****

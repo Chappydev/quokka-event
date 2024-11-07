@@ -39,9 +39,9 @@ public class ConfirmationActivity extends AppCompatActivity{
         }
 
         /**
-         * Method handles exit function activity.
-         * Returns user to event list page.
-         * @see https://medium.com/@snaresh22/mastering-android-app-navigation-with-intent-flags-36f84409432b
+         * This method handles exit function activity.
+         * Navigates user to event list page.
+         * @see https://medium.com/@snaresh22/mastering-android-app-navigation-with-intent-flags-36f84409432b.
          * @author Soaiba
          */
         Button exitButton = findViewById(R.id.exitButton);

@@ -5,11 +5,17 @@ import com.example.quokka_event.models.ProfileSystem;
 import java.util.ArrayList;
 import java.util.Collections;
 
-// Class runs lottery to randomly select users from waitlist to invite to event
+/**
+ * This class runs lottery to randomly select users from waitlist to invite to event.
+ * @author Soaiba
+ */
 public class Lottery {
     private Event event;
 
-    // Constructor
+    /**
+     * This is a constructor for Lottery.
+     * @param event the event we are conducting lottery for.
+     */
     public Lottery(Event event) {
         this.event = event;
     }
@@ -17,7 +23,7 @@ public class Lottery {
     /**
      * Runs lottery to fill the available spots with users from the waitlist.
      * @author Soaiba
-     * @param numSpots the number of spots available
+     * @param numSpots the number of spots available.
      */
     public void runLottery(int numSpots) {
         ArrayList<ProfileSystem> waitlist = event.getWaitList();
@@ -34,7 +40,7 @@ public class Lottery {
                 selectedParticipants.add(selectedUser);
             }
 
-            // Update event class
+            // Update Event object
             event.setParticipantList(selectedParticipants);
             waitlist.removeAll(selectedParticipants);
             event.setWaitList(waitlist);
