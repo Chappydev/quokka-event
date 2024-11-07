@@ -109,4 +109,16 @@
 
     <!-- still need to add image -->
 
+    <Button
+        android:id="@+id/back_button_bottom"
+        style="@style/landing_button_text"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/organizer_button"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="30dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
