@@ -80,6 +80,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Switch the activity to the UserProfilePageActivity when the person icon is clicked
+        final ImageButton profileButton = findViewById(R.id.profile);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, UserProfilePageActivity.class);
+                MainActivity.this.startActivity(showActivity);
+            }
+        });
+
         // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
         final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
         organizerEventsButton.setOnClickListener(new View.OnClickListener() {

@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/edit_dtl_button"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-
-        android:background="@drawable/edit_icon"
-        android:paddingBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/event_deadline_label"
-        app:layout_constraintStart_toStartOf="@+id/edit_title_button" />
+    <!-- Event name -->
 
     <TableLayout
         android:id="@+id/event_name"
@@ -30,29 +21,28 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/event_title_label"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:padding="16dp"
                 android:text="Event Name"
                 android:textColor="#000000"
-                android:textSize="40dp" />
+                android:textSize="40dp"/>
+
+            <ImageButton
+                android:id="@+id/edit_icon"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.4"
+                android:contentDescription="edit icon"
+                android:background="@drawable/edit_icon"
+            />
 
         </TableRow>
 
     </TableLayout>
 
-    <ImageButton
-        android:id="@+id/edit_title_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/edit_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/event_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="@+id/event_name"
-        app:layout_constraintTop_toTopOf="parent" />
-
+    <!-- Date Label -->
     <TextView
         android:id="@+id/event_date_label"
         android:layout_width="wrap_content"
@@ -64,6 +54,7 @@
         android:paddingTop="40dp"
         android:paddingLeft="30dp"/>
 
+    <!-- Time Label -->
     <TextView
         android:id="@+id/event_time_label"
         android:layout_width="wrap_content"
@@ -74,51 +65,64 @@
         app:layout_constraintTop_toBottomOf="@id/event_date_label"
         android:paddingLeft="30dp"/>
 
+    <!-- Location Label -->
     <TextView
         android:id="@+id/event_location_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:layout_marginBottom="16dp"
         android:text="Location:"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_time_label" />
+        app:layout_constraintTop_toBottomOf="@id/event_time_label"
+        android:paddingLeft="30dp"/>
 
-    <TextView
-        android:id="@+id/event_deadline_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:text="Deadline:"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
+    <ImageButton
+        android:id="@+id/edit_overview_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/edit_icon"
+        android:contentDescription="edit icon"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_location_label" />
 
+    <!-- Description Box -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/event_description_box"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@drawable/event_description_box"
-        android:paddingLeft="30dp"
-        android:paddingTop="20dp"
-        android:paddingRight="30dp"
         android:text="THIS IS AN EVENT DESCRIPTION"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_deadline_label" />
+        app:layout_constraintTop_toBottomOf="@id/edit_overview_icon"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="20dp"
+        />
+
+    <ImageButton
+        android:id="@+id/edit_description_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/edit_icon"
+        android:contentDescription="edit icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_description_box" />
 
     <!-- still need to add image -->
 
+    <!-- Done Button -->
     <Button
-        android:id="@+id/back_button_bottom"
+        android:id="@+id/event_done_button"
         style="@style/landing_button_text"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/organizer_button"
-        android:text="Back"
+        android:text="Done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="30dp"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

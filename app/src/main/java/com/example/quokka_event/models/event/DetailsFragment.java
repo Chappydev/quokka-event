@@ -54,21 +54,18 @@ public class DetailsFragment extends Fragment {
      * @param context
      */
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if(context instanceof DetailsFragment.detailsListener){
-            listener = (DetailsFragment.detailsListener) context;
-        } else {
-            throw new RuntimeException(context + "must implement overeditListener");
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.event_view_details_frag, container, false);
 
+        // Set up a click listener for the edit button
+//        Button editButton = view.findViewById(R.id.edit_event_button);
+//        editButton.setOnClickListener(v -> {
+//            new EditEventDetailsFragment().show(requireActivity().getSupportFragmentManager(), "Edit Event");
+//
+//        });
 
         changeSeatButton = view.findViewById(R.id.change_seat_button);
         confirmChangeSeatButton = view.findViewById(R.id.confirm_change_seat_button);
@@ -76,7 +73,7 @@ public class DetailsFragment extends Fragment {
         limitWaitlistCheckBox = view.findViewById(R.id.waitlist_limit_checkbox);
         limitParticipantCheckBox = view.findViewById(R.id.limit_participant_checkbox);
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
-        remainSeatTextView = view.findViewById(R.id.event_seats_label);
+        remainSeatTextView = view.findViewById(R.id.event_seats_label);+++++++++++++++
 
 
         setButtonsVisibility(View.GONE);

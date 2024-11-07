@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,7 +20,6 @@ import com.example.quokka_event.R;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 
 public class OverviewFragment extends Fragment {
     ImageButton editNameButton;
@@ -136,17 +136,19 @@ public class OverviewFragment extends Fragment {
         });
 
 
-        /*
         // Set up a click listener for the back button
-        Button backButton = view.findViewById(R.id.event_back_button);
+        Button backButton = view.findViewById(R.id.back_button_bottom);
         backButton.setOnClickListener(v -> {
             requireActivity().finish();
         });
 
+        /*
         // Set up a click listener for the edit button
         Button editButton = view.findViewById(R.id.event_edit_button);
         editButton.setOnClickListener(v -> {
             // need to add functionality
+            new AddEditEventFragment().show(requireActivity().getSupportFragmentManager(), "Edit Event");
+
         });
          */
 
