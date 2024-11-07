@@ -2,11 +2,14 @@ package com.example.quokka_event;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.controllers.DatabaseManager;
@@ -27,6 +30,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
     private Button backButton;
     private Button saveButton;
     private String existingFacilityId = null;
+    private CheckBox notificationCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
         facilityAddressField = findViewById(R.id.facility_address_field);
         backButton = findViewById(R.id.back_button_bottom);
         saveButton = findViewById(R.id.save_changes_button);
+        notificationCheckBox = findViewById(R.id.user_notifications_checkbox);
 
         loadUserData();
 
@@ -61,6 +66,12 @@ public class UserProfilePageActivity extends AppCompatActivity {
                 nameField.setText((String) userData.get("name"));
                 emailField.setText((String) userData.get("email"));
                 phoneField.setText((String) userData.get("phone"));
+                Boolean receiveNotifs = (Boolean) userData.get("notifications");
+                if (receiveNotifs != null && receiveNotifs == true) {
+                    notificationCheckBox.setChecked(true);
+                } else {
+                    notificationCheckBox.setChecked(false);
+                }
 
                 if (userData.containsKey("facilityId")) {
                     existingFacilityId = (String) userData.get("facilityId");
@@ -99,6 +110,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
         String name = nameField.getText().toString().trim();
         String email = emailField.getText().toString().trim();
         String phone = phoneField.getText().toString().trim();
+        Boolean notificationPreference = notificationCheckBox.isChecked();
 
         // Get facility data
         String facilityName = facilityNameField.getText().toString().trim();
@@ -112,7 +124,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
 
         // Save profile changes first
         String deviceId = auth.getCurrentUser().getUid();
-        db.updateProfile(deviceId, name, email, phone, new DbCallback() {
+        db.updateProfile(deviceId, name, email, phone, notificationPreference, new DbCallback() {
             @Override
             public void onSuccess(Object result) {
                 // Handle facility data after profile is updated

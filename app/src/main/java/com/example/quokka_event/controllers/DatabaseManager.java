@@ -364,11 +364,12 @@ public class DatabaseManager {
     }
 
 
-    public void updateProfile(String deviceId, String name, String email, String phone, DbCallback callback) {
+    public void updateProfile(String deviceId, String name, String email, String phone, Boolean notificationPreference, DbCallback callback) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", name);
         updates.put("email", email);
         updates.put("phone", phone);
+        updates.put("notifications", notificationPreference);
 
         usersRef.document(deviceId)
                 .update(updates)
