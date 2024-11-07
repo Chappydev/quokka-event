@@ -52,6 +52,10 @@ public class UserProfilePageActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Loads user data into UI
+     * @author speakerchef
+     */
     private void loadUserData() {
         String deviceId = auth.getCurrentUser().getUid();
         db.getUserData(new DbCallback() {
@@ -78,6 +82,12 @@ public class UserProfilePageActivity extends AppCompatActivity {
         }, deviceId);
     }
 
+
+    /**
+     * Loads facility data into UI
+     * @author speakerchef
+     * @param facilityId
+     */
     private void loadFacilityData(String facilityId) {
         db.getFacility(facilityId, new DbCallback() {
             @Override
@@ -94,6 +104,11 @@ public class UserProfilePageActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Saves changes made by user to the database
+     * @author speakerchef
+     */
     private void saveChanges() {
         // Get profile data
         String name = nameField.getText().toString().trim();
