@@ -9,17 +9,22 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
-import com.example.quokka_event.models.User;
-import com.example.quokka_event.models.event.Event;
-import com.example.quokka_event.models.organizer.Facility;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 // Class to interact with the firebase database to be used for admin's screen
 public class DatabaseManager {
@@ -27,6 +32,7 @@ public class DatabaseManager {
     private CollectionReference usersRef;
     private CollectionReference facilityRef;
     private CollectionReference eventsRef;
+    private CollectionReference enrollsRef;
     private Context applicationContext;
     private static DatabaseManager instance;
 
@@ -49,6 +55,7 @@ public class DatabaseManager {
         usersRef = db.collection("Users");
         facilityRef = db.collection("Facility");
         eventsRef = db.collection("Events");
+        enrollsRef = db.collection("Enrolls");
         return this;
     }
 
@@ -228,4 +235,57 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    public void getUserEventList(String userId, DbCallback callback) {
+        Log.d("DB", "getUserEventList: " + userId);
+        enrollsRef.whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            callback.onSuccess(new ArrayList<Map<String, Object>>());
+                        } else {
+                            ArrayList<Task<DocumentSnapshot>> taskList = new ArrayList<>();
+                            queryDocumentSnapshots.forEach(new Consumer<QueryDocumentSnapshot>() {
+                                @Override
+                                public void accept(QueryDocumentSnapshot queryDocumentSnapshot) {
+                                    Map<String, Object> event = queryDocumentSnapshot.getData();
+                                    Task<DocumentSnapshot> task = eventsRef.document((String) event.get("eventId"))
+                                            .get()
+                                            .addOnFailureListener(e -> Log.e("DB", "grabbing event details for getUserEventList: ", e));
+                                    taskList.add(task);
+                                }
+                            });
+                            Tasks.whenAllComplete(taskList)
+                                .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                                    @Override
+                                    public void onSuccess(List<Task<?>> tasks) {
+                                        ArrayList<Map<String, Object>> payload = new ArrayList<>();
+                                        queryDocumentSnapshots.forEach(new Consumer<QueryDocumentSnapshot>() {
+                                            @Override
+                                            public void accept(QueryDocumentSnapshot queryDocumentSnapshot) {
+                                                Map<String, Object> dataCopy = new HashMap<>(queryDocumentSnapshot.getData());
+                                                for (Task task : tasks) {
+                                                    if (task.isSuccessful()) {
+                                                        Object result = task.getResult();
+                                                        if (result instanceof DocumentSnapshot) {
+                                                            DocumentSnapshot ds = (DocumentSnapshot) result;
+                                                            Map<String, Object> event = ds.getData();
+                                                            if (ds.getId().equals(dataCopy.get("eventId"))) {
+                                                                dataCopy.put("event", event);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                payload.add(dataCopy);
+                                            }
+                                        });
+                                        callback.onSuccess(payload);
+                                    }
+                                });
+                        }
+                    }
+                })
+                .addOnFailureListener(callback::onError);
+    }
 }
