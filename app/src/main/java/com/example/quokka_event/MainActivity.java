@@ -1,11 +1,14 @@
 package com.example.quokka_event;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Button myEventsButton;
     private String lastCreatedEventId;
     private String lastCreatedFacilityId;
+    private static final int REQUEST_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +128,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Switch the activity to the QrScannerPageActivity when the scan qr code button is clicked
+        final Button scanQrCodeButton = findViewById(R.id.scan_qr_button);
+        scanQrCodeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE);
+                } else {
+                    Intent showActivity = new Intent(MainActivity.this, QrScannerPageActivity.class);
+                    MainActivity.this.startActivity(showActivity);
+                }
+            }
+        });
+
+
+
         // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
         final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
         organizerEventsButton.setOnClickListener(new View.OnClickListener() {
@@ -135,4 +154,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("QRScan", "onRequestPermissionsResult: " + grantResults[0]);
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent showActivity = new Intent(MainActivity.this, QrScannerPageActivity.class);
+                MainActivity.this.startActivity(showActivity);
+            } else {
+                Toast.makeText(this, "Cannot use the scanner without camera permissions", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -13,6 +19,9 @@
         android:theme="@style/Theme.Quokkaevent"
         tools:targetApi="31">
         <activity
+            android:name=".QrScannerPageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -21,30 +30,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".controllers.EntrantActivity">
-        </activity>
-        <activity
-            android:name=".controllers.MyEventsPageActivity">
-        </activity>
-        <activity
-            android:name=".NotificationPageActivity">
-        </activity>
-        <activity
-            android:name=".OrganizerEventsPageActivity">
-        </activity>
-        <activity
-            android:name=".CreateEventActivity">
-        </activity>
-        <activity
-            android:name=".controllers.EventTabsActivity">
-        </activity>
-        <activity
-            android:name=".UserProfilePageActivity">
-
-        </activity>
-
+        <activity android:name=".controllers.EntrantActivity"></activity>
+        <activity android:name=".controllers.MyEventsPageActivity"></activity>
+        <activity android:name=".NotificationPageActivity"></activity>
+        <activity android:name=".OrganizerEventsPageActivity"></activity>
+        <activity android:name=".CreateEventActivity"></activity>
+        <activity android:name=".controllers.EventTabsActivity"></activity>
+        <activity android:name=".UserProfilePageActivity"></activity>
     </application>
-<!--    <uses-permission android:name="android.permission.INTERNET" />-->
 
 </manifest>
