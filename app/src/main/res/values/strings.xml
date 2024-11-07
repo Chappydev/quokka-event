@@ -21,9 +21,10 @@
     <string name="cancel_button">Cancel</string>
     <string name="exit_button_text">Exit</string>
     <string name="back_button_text">Back</string>
+    <string name="app_name_text">QuokkaQR</string>
+    <string name="my_organized_events_title">My Organized Events</string>
 
     <!-- Icons -->
     <string name="bell_icon_description">bell icon</string>
     <string name="person_icon_description">person icon</string>
-
 </resources>
