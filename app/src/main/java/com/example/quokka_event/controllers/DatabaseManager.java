@@ -209,7 +209,7 @@ public class DatabaseManager {
      * Get all users from firebase database.
      */
     public ArrayList<Map<String, Object>> getAllProfiles() {
-        ArrayList<Map<String, Object>> profiles = new ArrayList();
+        final ArrayList<Map<String, Object>> profiles = new ArrayList();
         Map<String, Object> userInfo = new HashMap<>();
         usersRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
