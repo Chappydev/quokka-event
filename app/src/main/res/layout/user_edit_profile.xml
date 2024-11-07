@@ -38,14 +38,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/topToolbar">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="125dp"
-                    android:layout_height="125dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center"
                     app:cardCornerRadius="250dp">
 
                     <ImageView
-                        android:layout_width="125dp"
-                        android:layout_height="125dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:textAlignment="center"
                         android:scaleType="centerCrop"
                         android:src="@drawable/edit_icon" />
 
@@ -117,12 +118,40 @@
                 android:layout_width="350dp"
                 android:layout_height="3dp"
                 android:layout_marginTop="35dp"
-                android:layout_marginBottom="35dp"
                 android:background="@color/user_orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_gravity="center"
                 app:layout_constraintTop_toBottomOf="@+id/user_notifications_checkbox" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/facility_profile_image"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_marginTop="35dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="250dp"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/topToolbar">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="250dp">
+
+                    <!-- Facility Image -->
+                    <ImageView
+                        android:id="@+id/facility_image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/edit_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/facility_address_field" />
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+
 
             <!-- Facility Name Label -->
             <TextView
@@ -137,6 +166,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_divider"/>
+
 
             <!-- Facility Name Field -->
             <EditText
@@ -155,37 +185,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="25dp"
                 android:padding="12dp"
                 android:hint="Address"
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@+id/facility_name_field"/>
 
-            <!-- Facility Image -->
-            <ImageView
-                android:id="@+id/facility_image"
-                android:layout_width="300dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/edit_icon"
-                android:scaleType="centerInside"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/facility_address_field" />
 
-            <!-- Back Button -->
-            <Button
-                android:id="@+id/back_button_bottom"
-                style="@style/landing_button_text"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:background="@drawable/landing_button"
-                android:text="@string/back_button_text"
-                app:layout_constraintTop_toBottomOf="@+id/facility_image"
-                android:layout_gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginBottom="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="16dp">
+
+                <!-- Back Button -->
+                <Button
+                    android:id="@+id/back_button_bottom"
+                    style="@style/landing_button_text"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/landing_button"
+                    android:text="@string/back_button_text" />
+
+                <!-- Save Changes Button -->
+                <Button
+                    android:id="@+id/save_changes_button"
+                    style="@style/landing_button_text"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/landing_button"
+                    android:text="Save Changes" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

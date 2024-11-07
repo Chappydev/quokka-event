@@ -216,7 +216,7 @@ public class DatabaseManager {
     }
 
     // Adds a facility profile to firestore
-    public void addFacility(Facility facility , DbCallback callback){
+    public void addFacility(Facility facility, String deviceId, DbCallback callback){
         Map<String, Object> payload = new HashMap<>();
         payload.put("facilityName", facility.getFacilityName());
         payload.put("facilityLocation", facility.getFacilityLocation());
@@ -225,7 +225,11 @@ public class DatabaseManager {
                 .add(payload)
                 .addOnSuccessListener(DocumentReference -> {
                     DocumentReference.update("facilityId", DocumentReference.getId())
-                            .addOnSuccessListener(v -> callback.onSuccess(DocumentReference.getId())) // TODO: possible change return value to response object post testing.
+                            .addOnSuccessListener(v -> {
+                                callback.onSuccess(DocumentReference.getId());
+                                usersRef.document(deviceId)
+                                        .update("facilityId", DocumentReference.getId());
+                            })
                             .addOnFailureListener(exception -> callback.onError(exception));
                 })
                 .addOnFailureListener(exception -> callback.onError(exception));
