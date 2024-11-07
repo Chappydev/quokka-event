@@ -18,13 +18,16 @@ import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.event.OverviewFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.rpc.context.AttributeContext;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener, DetailsFragment.detailsListener {
     Button saveButton;
     Event event;
-
+    FirebaseAuth auth;
     /**
      * Setup EventTabsActivity. Have three tabs for setting/display event details.
      * @param savedInstanceState
@@ -81,8 +84,9 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
              */
             @Override
             public void onClick(View view) {
+                String deviceId = Objects.requireNonNull(auth.getCurrentUser()).getUid();
                 // send event to database;
-                db.addEvent(event, new DbCallback() {
+                db.addEvent(event, deviceId, new DbCallback() {
                     @Override
                     public void onSuccess(Object result) {
                         Log.d("DB", "added Event: " + event.getEventName() + " to database");

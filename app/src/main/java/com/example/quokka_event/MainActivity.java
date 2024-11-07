@@ -2,7 +2,6 @@ package com.example.quokka_event;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -90,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 );
                 Log.d("DB", "onCreate: " + user.getDeviceID());
             }
+
             @Override
             public void onError(Exception exception) {
                 Log.e("DB", "onError: ", exception);
@@ -134,7 +134,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
 
 }

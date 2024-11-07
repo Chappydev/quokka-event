@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -170,7 +171,7 @@ public class DatabaseManager {
     }
 
     // Add event document to firestore
-    public void addEvent(Event event, DbCallback callback){
+    public void addEvent(Event event, String deviceId, DbCallback callback){
         Map<String, Object> eventPayload = new HashMap<>();
         eventPayload.put("eventId", event.getEventID());
         eventPayload.put("eventName", event.getEventName());
@@ -185,7 +186,11 @@ public class DatabaseManager {
                 .add(eventPayload)
                 .addOnSuccessListener(documentReference -> {
                     documentReference.update("eventId", documentReference.getId())
-                            .addOnSuccessListener(response -> callback.onSuccess(documentReference.getId()))
+                            .addOnSuccessListener(response -> {
+                                callback.onSuccess(documentReference.getId());
+                                usersRef.document(deviceId)
+                                        .update("isOrganizer", true);
+                            })
                             .addOnFailureListener(exception -> callback.onError(exception));
                 })
                 .addOnFailureListener(exception -> callback.onError(exception));
@@ -287,5 +292,108 @@ public class DatabaseManager {
                     }
                 })
                 .addOnFailureListener(callback::onError);
+    }
+
+    // get all events
+    public void getEventList(String userId, DbCallback callback) {
+        eventsRef.get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Map<String, Object>> eventList = new ArrayList<>();
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        Map<String, Object> eventData = document.getData();
+                        eventList.add(eventData);
+                    }
+                    callback.onSuccess(eventList);
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
+    }
+
+    // accept event
+    public void acceptEvent(String eventId, String userId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        queryDocumentSnapshots
+                                .getDocuments()
+                                .get(0)
+                                .getReference()
+                                .update("status", "ACCEPTED")
+                                .addOnSuccessListener(response -> callback.onSuccess(response))
+                                .addOnFailureListener(exception -> callback.onError(exception));
+                    }
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
+
+    }
+
+    // decline an event
+    public void declineEvent(String eventId, String userId, DbCallback callback) {
+        enrollsRef.whereEqualTo("eventId", eventId)
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        queryDocumentSnapshots.getDocuments().get(0).getReference()
+                                .update("status", "DECLINED")
+                                .addOnSuccessListener(response -> callback.onSuccess(response))
+                                .addOnFailureListener(exception -> callback.onError(exception));
+                    } else {
+                        callback.onError(new Exception("No enrollment found"));
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+    }
+
+    // join a waitlist
+    public void joinWaitlist(String eventId, String userId, DbCallback callback) {
+        Map<String, Object> enrollData = new HashMap<>();
+        enrollData.put("eventId", eventId);
+        enrollData.put("userId", userId);
+        enrollData.put("status", "WAITLIST");
+
+        enrollsRef.add(enrollData)
+                .addOnSuccessListener(documentReference -> callback.onSuccess(documentReference.getId()))
+                .addOnFailureListener(e -> callback.onError(e));
+    }
+
+
+    public void updateProfile(String deviceId, String name, String email, String phone, DbCallback callback) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("name", name);
+        updates.put("email", email);
+        updates.put("phone", phone);
+
+        usersRef.document(deviceId)
+                .update(updates)
+                .addOnSuccessListener(response -> callback.onSuccess(response))
+                .addOnFailureListener(exception -> callback.onError(exception));
+    }
+
+    public void updateFacility(String facilityId, String name, String address, DbCallback callback) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("facilityName", name);
+        updates.put("facilityLocation", address);
+
+        facilityRef.document(facilityId)
+                .update(updates)
+                .addOnSuccessListener(response -> callback.onSuccess(response))
+                .addOnFailureListener(exception -> callback.onError(exception));
+    }
+
+
+    public void getFacility(String facilityId, DbCallback callback) {
+        facilityRef.document(facilityId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        callback.onSuccess(documentSnapshot.getData());
+                    } else {
+                        callback.onError(new Exception("Facility not found"));
+                    }
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
     }
 }
