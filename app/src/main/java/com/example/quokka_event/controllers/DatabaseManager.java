@@ -170,7 +170,13 @@ public class DatabaseManager {
         return profile;
     }
 
-    // Add event document to firestore
+    /**
+     * Adds an event to the db
+     * @author speakerchef
+     * @param event
+     * @param deviceId
+     * @param callback
+     */
     public void addEvent(Event event, String deviceId, DbCallback callback){
         Map<String, Object> eventPayload = new HashMap<>();
         eventPayload.put("eventId", event.getEventID());
@@ -197,7 +203,12 @@ public class DatabaseManager {
     }
 
 
-    // delete event from firestore, making sure that it also deletes any data associated with it
+    /**
+     * delete event from firestore, making sure that it also deletes any data associated with it
+     * @author speakerchef
+     * @param eventId
+     * @param callback
+     */
     public void deleteEvent(String eventId, DbCallback callback){
         eventsRef
                 .document(eventId)
@@ -206,7 +217,12 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-    // delete profile from database.
+    /**
+     * @author speakerchef
+     * deletes user profile from database.
+     * @param deviceId
+     * @param callback
+     */
     public void deleteProfile(String deviceId, DbCallback callback){
         usersRef
                 .document(deviceId)
@@ -215,7 +231,13 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-    // Adds a facility profile to firestore
+    /**
+     * Adds a facility profile to firestore
+     * @author speakerchef
+     * @param facility
+     * @param deviceId
+     * @param callback
+     */
     public void addFacility(Facility facility, String deviceId, DbCallback callback){
         Map<String, Object> payload = new HashMap<>();
         payload.put("facilityName", facility.getFacilityName());
@@ -235,7 +257,12 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-    // Delete a facility delete events that are associated it with it
+    /**
+     * Deletes a facility profile
+     * @author speakerchef
+     * @param facilityId
+     * @param callback
+     */
     public void deleteFacility(String facilityId, DbCallback callback){
         facilityRef
                 .document(facilityId)
@@ -244,6 +271,12 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    /**
+     * Gets events associated with a user
+     * @author ChappyDev
+     * @param userId
+     * @param callback
+     */
     public void getUserEventList(String userId, DbCallback callback) {
         Log.d("DB", "getUserEventList: " + userId);
         enrollsRef.whereEqualTo("userId", userId)
@@ -298,7 +331,13 @@ public class DatabaseManager {
                 .addOnFailureListener(callback::onError);
     }
 
-    // get all events
+
+    /**
+     * Gets list of all events
+     * @author speakerchef
+     * @param userId
+     * @param callback
+     */
     public void getEventList(String userId, DbCallback callback) {
         eventsRef.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -312,7 +351,14 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-    // accept event
+
+    /**
+     * Accepts an invite to an event
+     * @author speakerchef
+     * @param eventId
+     * @param userId
+     * @param callback
+     */
     public void acceptEvent(String eventId, String userId, DbCallback callback) {
         enrollsRef
                 .whereEqualTo("eventId", eventId)
@@ -333,7 +379,13 @@ public class DatabaseManager {
 
     }
 
-    // decline an event
+    /**
+     * Declines an invite to an event
+     * @author speakerchef
+     * @param eventId
+     * @param userId
+     * @param callback
+     */
     public void declineEvent(String eventId, String userId, DbCallback callback) {
         enrollsRef.whereEqualTo("eventId", eventId)
                 .whereEqualTo("userId", userId)
@@ -351,7 +403,14 @@ public class DatabaseManager {
                 .addOnFailureListener(e -> callback.onError(e));
     }
 
-    // join a waitlist
+
+    /**
+     * Adds user to an event waitlist
+     * @author speakerchef
+     * @param eventId
+     * @param userId
+     * @param callback
+     */
     public void joinWaitlist(String eventId, String userId, DbCallback callback) {
         Map<String, Object> enrollData = new HashMap<>();
         enrollData.put("eventId", eventId);
@@ -363,6 +422,16 @@ public class DatabaseManager {
                 .addOnFailureListener(e -> callback.onError(e));
     }
 
+
+    /**
+     * Update profile information
+     * @author speakerchef
+     * @param deviceId
+     * @param name
+     * @param email
+     * @param phone
+     * @param callback
+     */
 
     public void updateProfile(String deviceId, String name, String email, String phone, Boolean notificationPreference, DbCallback callback) {
         Map<String, Object> updates = new HashMap<>();
@@ -377,6 +446,15 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+
+    /**
+     * Update facility profile information
+     * @author speakerchef
+     * @param facilityId
+     * @param name
+     * @param address
+     * @param callback
+     */
     public void updateFacility(String facilityId, String name, String address, DbCallback callback) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("facilityName", name);
@@ -389,6 +467,12 @@ public class DatabaseManager {
     }
 
 
+    /**
+     * Queries a single facility
+     * @author speakerchef
+     * @param facilityId
+     * @param callback
+     */
     public void getFacility(String facilityId, DbCallback callback) {
         facilityRef.document(facilityId)
                 .get()
