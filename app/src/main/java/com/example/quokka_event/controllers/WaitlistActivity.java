@@ -75,21 +75,16 @@ public class WaitlistActivity extends AppCompatActivity {
 
         eventTitle.setText(event.getEventName());
 
-        // set up time text
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        String eventTime = timeFormat.format(event.getEventDate());
-        timeText.setText(eventTime);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        String formattedDate = dateFormat.format(event.getEventDate());
+        dateText.setText("Date: " + formattedDate);
 
-        locationText.setText(event.getEventLocation());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String formattedTime = timeFormat.format(event.getEventDate());
+        timeText.setText("Time: " + formattedTime);
 
-        // TODO: Add facility details on this page
-        organizerText.setText("organizer");
-
-        // Set date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM dd, yyyy", Locale.getDefault());
-
-//        String dateTextFormatted = getString(R.string.date, testDate);
-        dateText.setText(event.getEventDate().toString());
+        locationText.setText("Location: " + event.getEventLocation());
+        organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             /**

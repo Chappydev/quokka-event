@@ -53,6 +53,10 @@ public class EventDetailsActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
         String formattedDate = dateFormat.format(eventDate);
 
+        // Format time
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String formattedTime = timeFormat.format(eventDate);
+
         // Initialize Views
         TextView eventNameText = findViewById(R.id.event_name_text);
         TextView dateText = findViewById(R.id.date_text);
@@ -70,7 +74,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         // Display data
         eventNameText.setText(eventName);
         dateText.setText("Date: " + formattedDate);
-        timeText.setText("Time: TBD"); // TODO: Update once time data is available
+        timeText.setText("Time: " + formattedTime); // TODO: Update once time data is available
         locationText.setText("Location: " + eventLocation);
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
         statusText.setText("Status: " + status);
