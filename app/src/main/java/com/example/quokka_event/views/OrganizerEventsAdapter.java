@@ -5,16 +5,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.models.event.Event;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 
 public class OrganizerEventsAdapter extends RecyclerView.Adapter<OrganizerEventsAdapter.ViewHolder> {
-    private ArrayList<Event> localDataSet;
+    private ArrayList<Map<String, Object>> localDataSet;
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
 
@@ -36,7 +37,7 @@ public class OrganizerEventsAdapter extends RecyclerView.Adapter<OrganizerEvents
      * @param dataSet String[] containing the data to populate views to be used
      * by RecyclerView
      */
-    public OrganizerEventsAdapter(ArrayList<Event> dataSet) {
+    public OrganizerEventsAdapter(ArrayList<Map<String, Object>> dataSet) {
         localDataSet = dataSet;
     }
 
@@ -56,7 +57,7 @@ public class OrganizerEventsAdapter extends RecyclerView.Adapter<OrganizerEvents
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextView().setText(localDataSet.get(position).getEventName());
+        viewHolder.getTextView().setText(Objects.requireNonNull(localDataSet.get(position).get("eventName")).toString());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
