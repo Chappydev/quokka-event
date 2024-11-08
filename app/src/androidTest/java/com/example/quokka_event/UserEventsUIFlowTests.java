@@ -99,7 +99,7 @@ public class UserEventsUIFlowTests {
         // Click on the My Events button
 
         onView(withId(R.id.my_events_button)).perform(click());
-        Thread.sleep(5000);
+        Thread.sleep(10000);
         // Click on an event
         onView(withId(R.id.event_list_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
