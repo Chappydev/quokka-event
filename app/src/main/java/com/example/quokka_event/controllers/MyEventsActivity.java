@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.MainActivity;
 import com.example.quokka_event.R;
+import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.event.EventAdapter;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
@@ -30,9 +31,8 @@ public class MyEventsActivity extends AppCompatActivity {
     private EventAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
     private Map<String, String> eventStatusMap = new HashMap<>();
-
-    // for testing purposes
-    private String userId = "fa4SITZTmgNR1yqHspkZYbUrBpk2";
+    private User user;
+    private String userId;
 
     @Override
     /**
@@ -59,11 +59,14 @@ public class MyEventsActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
+        user = User.getInstance(this);
+        userId = user.getDeviceID();
+
         // Get all events from database
         //getEvents();
 
-        // Get user specific events from database
-        getUserEvents();
+        // Get user's events from database
+        getUserEvents();;
 
         // Handle back button activity
         Button backButton = findViewById(R.id.back_button_bottom);
@@ -123,7 +126,11 @@ public class MyEventsActivity extends AppCompatActivity {
      * @author Soaiba
      */
     private void getUserEvents() {
-       getUserEnrolls(userId);
+        if (userId != null) {
+            getUserEnrolls(userId);
+        } else {
+            Log.e("MyEventsActivity", "User ID not initialized, unable to fetch events.");
+        }
     }
 
     /**

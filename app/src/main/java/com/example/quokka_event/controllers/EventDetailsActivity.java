@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,8 +23,8 @@ import java.util.Locale;
 public class EventDetailsActivity extends AppCompatActivity {
     private DatabaseManager dbManager;
     private String eventId;
-    // For testing
-    private String userId = "fa4SITZTmgNR1yqHspkZYbUrBpk2";
+    private User user;
+    private String userId;
 
     @Override
     /**
@@ -35,6 +36,9 @@ public class EventDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_join_details);
         dbManager = DatabaseManager.getInstance(this);
+
+        user = User.getInstance(this);
+        userId = user.getDeviceID();
 
         // Get data from Intent
         eventId = getIntent().getStringExtra("event_id");
@@ -59,6 +63,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         Button acceptButton = findViewById(R.id.accept_button);
         Button denyButton = findViewById(R.id.deny_button);
         Button cancelButton = findViewById(R.id.cancel_button);
+        Button backButton = findViewById(R.id.back_button);
 
         // Display data
         eventNameText.setText(eventName);
@@ -75,11 +80,19 @@ public class EventDetailsActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(v -> {
             DatabaseManager.getInstance(this).updateEventStatus(eventId, userId, "Accepted", new DbCallback() {
                 @Override
+                /**
+                 * This method updates status on the database and navigates user to confirmation screen.
+                 * @author Soaiba
+                 */
                 public void onSuccess(Object response) {
                     goToConfirm("Accept", eventName);
                 }
 
                 @Override
+                /**
+                 * This method helps debug failiure to update database
+                 * @author Soaiba
+                 */
                 public void onError(Exception e) {
                     Log.e("EventDetailsActivity", "Failed to update status to accepted", e);
                 }
@@ -113,6 +126,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                 }
             });
         });
+
+        backButton.setOnClickListener(v -> goToMyEventsPage());
     }
 
     /**
@@ -154,5 +169,12 @@ public class EventDetailsActivity extends AppCompatActivity {
         intent.putExtra("message_type", messageType);
         intent.putExtra("event_name", eventName);
         startActivity(intent);
+    }
+
+    private void goToMyEventsPage() {
+        Intent intent = new Intent(EventDetailsActivity.this, MyEventsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }
