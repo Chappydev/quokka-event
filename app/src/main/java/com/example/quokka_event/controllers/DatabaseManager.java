@@ -514,7 +514,7 @@ public class DatabaseManager {
                 .document(deviceId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
+                    if (!documentSnapshot.exists()) {
                         callback.onError(new Exception("ERROR: User not found"));
                     } else {
                         ArrayList<Map<String,Object>> currentEvents = (ArrayList<Map<String,Object>>)documentSnapshot.get("events");
