@@ -357,7 +357,7 @@ public class DatabaseManager {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (!documentSnapshot.exists()){
+                        if (documentSnapshot.exists()){
                             Map<String, Object> eventWithId = documentSnapshot.getData();
                             eventWithId.put("id", documentSnapshot.getId());
                             callback.onSuccess(eventWithId);
