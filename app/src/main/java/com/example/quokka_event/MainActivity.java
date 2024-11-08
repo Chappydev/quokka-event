@@ -1,12 +1,15 @@
 package com.example.quokka_event;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -15,11 +18,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.quokka_event.controllers.AdminLandingPageActivity;
-import com.example.quokka_event.controllers.CreateProfileActivity;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.controllers.MyEventsPageActivity;
+import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,14 +34,18 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseManager db;
-    private Button myEventsButton;
+    private Button myEventButton;
     private String lastCreatedEventId;
     private String lastCreatedFacilityId;
+    private static final int REQUEST_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_landing_page);
+
+        myEventButton = findViewById(R.id.my_events_button);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -68,44 +73,11 @@ public class MainActivity extends AppCompatActivity {
             initUser(currentUser.getUid());
         }
 
-    }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//
-////        updateUI(currentUser);
-//    }
-
-    private void initUser(String uid) {
-        User user = User.getInstance(this);
-        String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        db.getDeviceUser(new DbCallback() {
-            @Override
-            public void onSuccess(Object result) {
-                Map<String, Object> map = (Map<String, Object>) result;
-                user.initialize(
-                        (String) map.get("deviceID"),
-                        (ProfileSystem) map.get("profile"),
-                        (Boolean) map.get("organizer"),
-                        (Boolean) map.get("admin")
-                );
-                Log.d("DB", "onCreate: " + user.getDeviceID());
-                switchToAdminLandingPage(user);
-            }
-            @Override
-            public void onError(Exception exception) {
-                Log.e("DB", "onError: ", exception);
-            }
-        }, uid);
-
-
         // Switch the activity to MyEventsActivity when the myEventsButton is clicked
-        myEventsButton = findViewById(R.id.my_events_button);
-        myEventsButton.setOnClickListener(new View.OnClickListener() {
+        myEventButton = findViewById(R.id.my_events_button);
+        myEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, MyEventsPageActivity.class);
+                Intent showActivity = new Intent(MainActivity.this, MyEventsActivity.class);
                 startActivity(showActivity);
             }
         });
@@ -128,6 +100,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Switch the activity to the QrScannerPageActivity when the scan qr code button is clicked
+        final Button scanQrCodeButton = findViewById(R.id.scan_qr_button);
+        scanQrCodeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE);
+                } else {
+                    Intent showActivity = new Intent(MainActivity.this, QrScannerPageActivity.class);
+                    MainActivity.this.startActivity(showActivity);
+                }
+            }
+        });
+
+
+
         // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
         final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
         organizerEventsButton.setOnClickListener(new View.OnClickListener() {
@@ -136,23 +123,53 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(showActivity);
             }
         });
+
     }
 
-    /**
-     * Function to switch to CreateProfileActivity.java
-     *
-     * */
-    private void switchToProfileActivity(){
-        Intent switchActivity = new Intent(this, CreateProfileActivity.class);
-        startActivity(switchActivity);
+
+    private void initUser(String uid) {
+        User user = User.getInstance(this);
+
+        db.getDeviceUser(new DbCallback() {
+            @Override
+            public void onSuccess(Object result) {
+                Map<String, Object> map = (Map<String, Object>) result;
+                user.initialize(
+                        (String) map.get("deviceID"),
+                        (ProfileSystem) map.get("profile"),
+                        (Boolean) map.get("organizer"),
+                        (Boolean) map.get("admin")
+                );
+                Log.d("DB", "onCreate: " + user.getDeviceID());
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                Log.e("DB", "onError: ", exception);
+            }
+        }, uid);
+
+
+
     }
 
-    private void switchToAdminLandingPage(User user){
-        if (user.isAdmin()){
-            Intent adminActivity = new Intent(this, AdminLandingPageActivity.class);
-            startActivity(adminActivity);
+    // Switch activity to WaitlistActivity TEMPORARY FOR TESTING WAITLIST ACTIVITY.
+    private void switchActivities(){
+        Intent intent = new Intent(this, MyEventsActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("QRScan", "onRequestPermissionsResult: " + grantResults[0]);
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent showActivity = new Intent(MainActivity.this, QrScannerPageActivity.class);
+                MainActivity.this.startActivity(showActivity);
+            } else {
+                Toast.makeText(this, "Cannot use the scanner without camera permissions", Toast.LENGTH_LONG).show();
+            }
         }
-        Log.d("isAdmin", user.getDeviceID() + ": "+ Boolean.toString(user.isAdmin()));
     }
-
 }
