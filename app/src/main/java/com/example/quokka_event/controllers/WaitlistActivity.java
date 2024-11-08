@@ -26,7 +26,7 @@ import java.util.Locale;
 
 /**
  * This activity displays information about events for users to waitlist for.
- * @author Saimon
+ * @author Simon
  */
 public class WaitlistActivity extends AppCompatActivity {
     private DatabaseManager db;
@@ -43,7 +43,7 @@ public class WaitlistActivity extends AppCompatActivity {
     /**
      * This method displays event details.
      * Handles join button activity.
-     * @author Saimon
+     * @author Simon, Soaiba, Daniel
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
