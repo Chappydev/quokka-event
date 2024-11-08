@@ -352,7 +352,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Gets events by their ID.
+     * This method gets events by their ID.
      * @author Soaiba
      * @param callback
      */
@@ -383,11 +383,11 @@ public class DatabaseManager {
     }
 
     /**
-     * Update status of event
+     * This method updates status of event.
      * @author Soaiba
-     * @param eventId
-     * @param userId
-     * @param newStatus
+     * @param eventId id of event we are updating.
+     * @param userId id of user whose event we are updating.
+     * @param newStatus updated status.
      * @param callback
      */
     public void updateEventStatus(String eventId, String userId, String newStatus, DbCallback callback) {
