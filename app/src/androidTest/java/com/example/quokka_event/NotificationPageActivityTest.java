@@ -47,7 +47,7 @@ public class NotificationPageActivityTest {
         onView(withId(R.id.bell)).perform(click());
 
         // Click on the Back button
-        onView(withId(R.id.back_button_bottom)).perform(click());
+        onView(withId(R.id.delete_event_button_admin)).perform(click());
 
         // Check the Activity has changed
         onView(withId(R.id.bell)).check(matches(isDisplayed()));

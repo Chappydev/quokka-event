@@ -1,4 +1,4 @@
-package com.example.quokka_event.models;
+package com.example.quokka_event.views;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,10 +6,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
-import com.example.quokka_event.views.ViewButtonListener;
+import com.example.quokka_event.models.ProfileAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * Profile Adapter to class for recycler view to hold a list of profiles.
  */
-public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
+public class AdminEventsAdapter extends RecyclerView.Adapter<AdminEventsAdapter.ViewHolder> {
 
     private ArrayList<Map<String, Object>> localDataSet;
     ViewButtonListener viewButtonListener;
@@ -28,7 +29,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
      * @param dataList
      * @param viewButtonListener
      */
-    public ProfileAdapter(ArrayList<Map<String, Object>> dataList, ViewButtonListener viewButtonListener){
+    public AdminEventsAdapter(ArrayList<Map<String, Object>> dataList, ViewButtonListener viewButtonListener){
         this.localDataSet = dataList;
         this.viewButtonListener = viewButtonListener;
     }
@@ -50,8 +51,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         public ViewHolder(View view, ViewButtonListener adapterListener) {
             super(view);
             // Define click listener for the ViewHolder's View
-            textView = (TextView) view.findViewById(R.id.profile_name);
-            viewButton = (Button) view.findViewById(R.id.admin_view_profile_button);
+            textView = (TextView) view.findViewById(R.id.admin_event_name);
+            viewButton = (Button) view.findViewById(R.id.admin_view_event_button);
             viewButton.setOnClickListener(this);
             listener = adapterListener;
         }
@@ -74,40 +75,40 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
      * @param dataSet arraylist containing all profilesystem objects
      * by RecyclerView
      */
-    public ProfileAdapter(ArrayList<Map<String, Object>> dataSet) {
+    public AdminEventsAdapter(ArrayList<Map<String, Object>> dataSet) {
         localDataSet = dataSet;
     }
 
+
     /**
-     * Create viewholder
-     * @param viewGroup The ViewGroup into which the new View will be added after it is bound to
+     * Set up
+     * @param holder The ViewHolder which should be updated to represent the contents of the
+     *        item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // Get element from your dataset at this position and replace the
+        // contents of the view with that element
+        holder.getTextView().setText((String)localDataSet.get(position).get("eventName"));
+    }
+
+    /**
+     *
+     * @param parent The ViewGroup into which the new View will be added after it is bound to
      *               an adapter position.
      * @param viewType The view type of the new View.
      *
      * @return
      */
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.profile_list_content, viewGroup, false);
-
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.event_list_content, parent, false);
         return new ViewHolder(view, viewButtonListener);
     }
 
-    /**
-     * Set up
-     * @param viewHolder The ViewHolder which should be updated to represent the contents of the
-     *        item at the given position in the data set.
-     * @param position The position of the item within the adapter's data set.
-     */
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        viewHolder.getTextView().setText((String)localDataSet.get(position).get("name"));
-    }
 
     @Override
     public int getItemCount() {

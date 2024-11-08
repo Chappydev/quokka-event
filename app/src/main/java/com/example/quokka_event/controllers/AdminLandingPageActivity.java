@@ -2,7 +2,6 @@ package com.example.quokka_event.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,8 +19,8 @@ import com.example.quokka_event.R;
  */
 public class AdminLandingPageActivity extends AppCompatActivity {
 
-    Button browse_profile_button;
-
+    Button browseProfileButton;
+    Button browseEventButton;
     /**
      * Create landing page for admins.
      * @param savedInstanceState
@@ -38,9 +37,10 @@ public class AdminLandingPageActivity extends AppCompatActivity {
             return insets;
         });
 
-        browse_profile_button = findViewById(R.id.browse_profile_button);
+        browseProfileButton = findViewById(R.id.browse_profile_button);
+        browseEventButton = findViewById(R.id.browse_events_button);
 
-        browse_profile_button.setOnClickListener(new View.OnClickListener() {
+        browseProfileButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Browse all profiles from database. start {@link BrowseProfilesActivity }
              * @param view
@@ -48,6 +48,18 @@ public class AdminLandingPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent showActivity = new Intent(AdminLandingPageActivity.this, BrowseProfilesActivity.class);
+                startActivity(showActivity);
+            }
+        });
+
+        browseEventButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Launch browse events activity for admins when browse event button is clicked.
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent showActivity = new Intent(AdminLandingPageActivity.this, AdminBrowseEventsActivity.class);
                 startActivity(showActivity);
             }
         });

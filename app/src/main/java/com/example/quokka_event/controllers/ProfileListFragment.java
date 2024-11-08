@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.models.ProfileAdapter;
+import com.example.quokka_event.views.ViewButtonListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
 /**
  * A fragment that contains the recyclerview to display all profiles in database.
  */
-public class ProfileListFragment extends Fragment implements ProfileAdapter.ProfileAdapterListener {
+public class ProfileListFragment extends Fragment implements ViewButtonListener {
     private ArrayList<Map<String, Object>> profileList;
     private ProfileAdapter adapter;
 
@@ -53,15 +54,16 @@ public class ProfileListFragment extends Fragment implements ProfileAdapter.Prof
             /**
              * After DatabaseManager.java grabs all the profiles from database set the profile list to
              * ProfileAdapter and set adapter to the recyclerview.
-             * @param profiles
+             * @param list
              */
             @Override
-            public void onProfilesLoaded(ArrayList<Map<String, Object>> profiles) {
-                profileList.addAll(profiles);
+            public void onDataLoaded(ArrayList<Map<String, Object>> list) {
+                profileList.addAll(list);
                 adapter.setLocalDataSet(profileList);
                 profilesRecyclerView.setAdapter(adapter);
             }
         });
+
 
 
 

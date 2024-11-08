@@ -137,7 +137,7 @@ public class OverviewFragment extends Fragment {
 
 
         // Set up a click listener for the back button
-        Button backButton = view.findViewById(R.id.back_button_bottom);
+        Button backButton = view.findViewById(R.id.delete_event_button_admin);
         backButton.setOnClickListener(v -> {
             requireActivity().finish();
         });

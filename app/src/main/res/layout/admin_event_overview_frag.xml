@@ -5,16 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/edit_dtl_button"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-
-        android:background="@drawable/edit_icon"
-        android:paddingBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/event_deadline_label"
-        app:layout_constraintStart_toStartOf="@+id/edit_title_button" />
-
     <TableLayout
         android:id="@+id/event_name"
         android:layout_width="match_parent"
@@ -41,17 +31,6 @@
         </TableRow>
 
     </TableLayout>
-
-    <ImageButton
-        android:id="@+id/edit_title_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/edit_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/event_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="@+id/event_name"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/event_date_label"
@@ -114,11 +93,11 @@
         style="@style/landing_button_text"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:background="@drawable/organizer_button"
-        android:text="Back"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/admin_button"
+        android:text="delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="30dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

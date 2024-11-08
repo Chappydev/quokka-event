@@ -74,14 +74,14 @@
         android:layout_height="50dp"
         android:background="@drawable/organizer_button"
         android:text="ADD"
-        app:layout_constraintBottom_toTopOf="@id/back_button_bottom"
+        app:layout_constraintBottom_toTopOf="@id/delete_event_button_admin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="30dp"/>
 
     <!-- BACK BUTTON -->
     <Button
-        android:id="@+id/back_button_bottom"
+        android:id="@+id/delete_event_button_admin"
         style="@style/landing_button_text"
         android:layout_width="200dp"
         android:layout_height="50dp"

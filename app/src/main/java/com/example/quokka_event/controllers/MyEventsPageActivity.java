@@ -10,11 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 public class MyEventsPageActivity extends AppCompatActivity {
@@ -27,7 +24,7 @@ public class MyEventsPageActivity extends AppCompatActivity {
         setContentView(R.layout.user_my_events_page);
 
         // Set up a click listener for the back button
-        Button backButton = findViewById(R.id.back_button_bottom);
+        Button backButton = findViewById(R.id.delete_event_button_admin);
         backButton.setOnClickListener(v -> {
             finish();
         });
