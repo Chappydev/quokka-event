@@ -54,11 +54,11 @@ public class ProfileListFragment extends Fragment implements ViewButtonListener 
             /**
              * After DatabaseManager.java grabs all the profiles from database set the profile list to
              * ProfileAdapter and set adapter to the recyclerview.
-             * @param profiles
+             * @param list
              */
             @Override
-            public void onProfilesLoaded(ArrayList<Map<String, Object>> profiles) {
-                profileList.addAll(profiles);
+            public void onDataLoaded(ArrayList<Map<String, Object>> list) {
+                profileList.addAll(list);
                 adapter.setLocalDataSet(profileList);
                 profilesRecyclerView.setAdapter(adapter);
             }

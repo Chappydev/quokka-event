@@ -9,14 +9,11 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
-import com.google.android.gms.tasks.Continuation;
-import com.example.quokka_event.models.ProfileSystem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -68,9 +65,9 @@ public class DatabaseManager {
     public interface RetrieveData {
         /**
          * Retrieve profiles once firebase grabs the documents
-         * @param profiles
+         * @param list
          */
-        void onProfilesLoaded(ArrayList<Map<String, Object>> profiles);
+        void onDataLoaded(ArrayList<Map<String, Object>> list);
     }
 
     /**
@@ -364,7 +361,6 @@ public class DatabaseManager {
      */
     public void getAllProfiles(RetrieveData callback) {
         final ArrayList<Map<String, Object>> usersList = new ArrayList();
-        Map<String, Object> userInfo = new HashMap<>();
 
         usersRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -383,7 +379,7 @@ public class DatabaseManager {
 
                             }
                             // Load profiles in ProfileListFragment.java
-                            callback.onProfilesLoaded(usersList);
+                            callback.onDataLoaded(usersList);
                         }
                         else {
                             Log.d("db", "unable to grab documents from firebase");
@@ -391,6 +387,30 @@ public class DatabaseManager {
                     }
 
                 });
+    }
+
+    /**
+     * Grab all events from database
+     * @param callback
+     */
+    public void getAllEvents(RetrieveData callback){
+        final ArrayList<Map<String, Object>> eventList = new ArrayList();
+        eventsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            /**
+             * Get events from database. Call after it is complete.
+             * @param task
+             */
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Map<String, Object> event = document.getData();
+                        eventList.add(event);
+                    }
+                    callback.onDataLoaded(eventList);
+                }
+            }
+        });
     }
 
     /**

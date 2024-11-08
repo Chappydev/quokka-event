@@ -45,6 +45,7 @@
 
         </activity>
         <activity android:name=".controllers.AdminBrowseEventsActivity"/>
+        <activity android:name=".controllers.AdminEventTabsActivity"/>
 
     </application>
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->

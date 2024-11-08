@@ -2,14 +2,12 @@ package com.example.quokka_event;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.controllers.DatabaseManager;
@@ -46,7 +44,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
         phoneField = findViewById(R.id.user_phone_number);
         facilityNameField = findViewById(R.id.facility_name_field);
         facilityAddressField = findViewById(R.id.facility_address_field);
-        backButton = findViewById(R.id.back_button_bottom);
+        backButton = findViewById(R.id.delete_event_button_admin);
         saveButton = findViewById(R.id.save_changes_button);
         notificationCheckBox = findViewById(R.id.user_notifications_checkbox);
 

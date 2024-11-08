@@ -14,7 +14,7 @@ public class NotificationPageActivity extends AppCompatActivity {
         setContentView(R.layout.user_notification_page);
 
         // Set up a click listener for the back button
-        Button backButton = findViewById(R.id.back_button_bottom);
+        Button backButton = findViewById(R.id.delete_event_button_admin);
         backButton.setOnClickListener(v -> {
             finish();
         });
