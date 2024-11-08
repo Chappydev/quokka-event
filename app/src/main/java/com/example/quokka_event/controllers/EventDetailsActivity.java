@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.R;
@@ -33,7 +34,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         long eventDateMillis = getIntent().getLongExtra("event_date", -1);
         Date eventDate = new Date(eventDateMillis);
         String eventLocation = getIntent().getStringExtra("event_location");
-        boolean isDeadlinePassed = getIntent().getBooleanExtra("event_deadline_passed", false);
+        String eventStatus = getIntent().getStringExtra("event_status");
 
         // Format date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
@@ -58,7 +59,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         timeText.setText("Time: TBD"); // TODO: Update once time data is available
         locationText.setText("Location: " + eventLocation);
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
-        statusText.setText(isDeadlinePassed ? "Closed" : "Open");
+        statusText.setText("Status: " + eventStatus);
 
         // Set click listeners for the buttons
         acceptButton.setOnClickListener(v -> goToConfirm("Accept", eventName));

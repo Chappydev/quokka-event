@@ -351,6 +351,37 @@ public class DatabaseManager {
     }
 
     /**
+     * Gets events by their ID.
+     * @author Soaiba
+     * @param callback
+     */
+    public void getEventsByIds(List<String> eventIds, DbCallback callback) {
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
+        for (int i = 0; i < eventIds.size(); i++) {
+            String eventId = eventIds.get(i);
+            Task<DocumentSnapshot> task = eventsRef.document(eventId).get();
+            tasks.add(task);
+        }
+
+        Tasks.whenAllComplete(tasks)
+                .addOnSuccessListener(completedTasks -> {
+                    List<Map<String, Object>> eventDataList = new ArrayList<>();
+                    for (int i = 0; i < completedTasks.size(); i++) {
+                        Task<?> task = completedTasks.get(i);
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = (DocumentSnapshot) task.getResult();
+                            if (document.exists()) {
+                                eventDataList.add(document.getData());
+                            }
+                        }
+                    }
+                    callback.onSuccess(eventDataList);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
      * Accepts an invite to an event
      * @author speakerchef
      * @param eventId
