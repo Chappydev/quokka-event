@@ -350,6 +350,22 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    public void getSingleEvent(DbCallback callback){
+        eventsRef
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+                        callback.onSuccess(document.getData());
+                    }else {
+                        callback.onError(new Exception("No event found"));
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+    }
+
+
     /**
      * Accepts an invite to an event
      * @author speakerchef
