@@ -58,7 +58,6 @@ public class DatabaseManager {
         facilityRef = db.collection("Facility");
         eventsRef = db.collection("Events");
         enrollsRef = db.collection("Enrolls");
-        organizerEvents = db.collection("OrganizerEvents");
 
         return this;
     }
