@@ -20,13 +20,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.quokka_event.controllers.MyEventsActivity" />
-        <activity android:name="com.example.quokka_event.controllers.EventDetailsActivity" />
-        <activity android:name=".controllers.ConfirmationActivity" />
-        <activity android:name=".controllers.WaitlistActivity" />
-        <activity android:name=".NotificationPageActivity" />
-        <activity android:name=".OrganizerEventsPageActivity" />
-        <activity android:name=".controllers.EventTabsActivity" />
-        <activity android:name=".UserProfilePageActivity" />
+
+        <activity
+            android:name=".controllers.EntrantActivity">
+        </activity>
+        <activity
+            android:name=".controllers.MyEventsPageActivity">
+        </activity>
+        <activity
+            android:name=".NotificationPageActivity">
+        </activity>
+        <activity
+            android:name=".OrganizerEventsPageActivity">
+        </activity>
+        <activity android:name=".models.event.EventTabsActivity" />
+        <activity android:name=".controllers.AdminLandingPageActivity"/>
+        <activity android:name=".controllers.BrowseProfilesActivity"/>
+        <activity android:name=".controllers.CreateProfileActivity"></activity>
+        <activity android:name=".controllers.BrowseProfileDetailsActivity"/>
+        <activity
+            android:name=".CreateEventActivity">
+        </activity>
+        <activity
+            android:name=".controllers.EventTabsActivity">
+        </activity>
+        <activity
+            android:name=".UserProfilePageActivity">
+
+        </activity>
+
+
     </application>
 </manifest>

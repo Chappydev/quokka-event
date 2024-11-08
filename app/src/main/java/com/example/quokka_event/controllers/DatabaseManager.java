@@ -10,6 +10,7 @@ import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
 import com.google.android.gms.tasks.Continuation;
+import com.example.quokka_event.models.ProfileSystem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -26,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+
+
 
 // Class to interact with the firebase database to be used for admin's screen
 public class DatabaseManager {
@@ -60,6 +63,16 @@ public class DatabaseManager {
         enrollsRef = db.collection("Enrolls");
 
         return this;
+    }
+    /**
+     * interface to send data to other classes.
+     */
+    public interface RetrieveData {
+        /**
+         * Retrieve profiles once firebase grabs the documents
+         * @param profiles
+         */
+        void onProfilesLoaded(ArrayList<Map<String, Object>> profiles);
     }
 
     /**
@@ -142,6 +155,7 @@ public class DatabaseManager {
             }
         });
     }
+
 
     /**
      * This function will find a single user based on their deviceID.
@@ -399,51 +413,50 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(exception -> callback.onError(exception));
 
+
+    }
+
+    // Delete hashed qr code data
+    public void deleteQRCode(){
+
+    }
+    // Delete a facility delete events that are associated it with it
+    public void deleteFacility(){
+
     }
 
     /**
-     * Declines an invite to an event
-     * @author speakerchef
-     * @param eventId
-     * @param userId
-     * @param callback
+     * Get all users from firebase database and send it to other classes using RetrieveData
+     * interface listener.
      */
-    public void declineEvent(String eventId, String userId, DbCallback callback) {
-        enrollsRef.whereEqualTo("eventId", eventId)
-                .whereEqualTo("userId", userId)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        queryDocumentSnapshots.getDocuments().get(0).getReference()
-                                .update("status", "DECLINED")
-                                .addOnSuccessListener(response -> callback.onSuccess(response))
-                                .addOnFailureListener(exception -> callback.onError(exception));
-                    } else {
-                        callback.onError(new Exception("No enrollment found"));
+    public void getAllProfiles(RetrieveData callback) {
+        final ArrayList<Map<String, Object>> usersList = new ArrayList();
+        Map<String, Object> userInfo = new HashMap<>();
+
+        usersRef.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    /**
+                     * Grab all user document from users collection in firebase database
+                     * @param task
+                     */
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                usersList.add(document.getData());
+
+                            }
+                            // Load profiles in ProfileListFragment.java
+                            callback.onProfilesLoaded(usersList);
+                        }
+                        else {
+                            Log.d("db", "unable to grab documents from firebase");
+                        }
                     }
-                })
-                .addOnFailureListener(e -> callback.onError(e));
+
+                });
     }
-
-
-    /**
-     * Adds user to an event waitlist
-     * @author speakerchef
-     * @param eventId
-     * @param userId
-     * @param callback
-     */
-    public void joinWaitlist(String eventId, String userId, DbCallback callback) {
-        Map<String, Object> enrollData = new HashMap<>();
-        enrollData.put("eventId", eventId);
-        enrollData.put("userId", userId);
-        enrollData.put("status", "WAITLIST");
-
-        enrollsRef.add(enrollData)
-                .addOnSuccessListener(documentReference -> callback.onSuccess(documentReference.getId()))
-                .addOnFailureListener(e -> callback.onError(e));
-    }
-
 
     /**
      * Update profile information

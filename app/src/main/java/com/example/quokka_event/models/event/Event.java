@@ -109,7 +109,6 @@ public class Event {
         this.maxWaitlist = maxWaitlist;
     }
 
-
     public ArrayList<ProfileSystem> getParticipantList() {
         return participantList;
     }

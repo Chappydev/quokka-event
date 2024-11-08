@@ -35,6 +35,7 @@ public class User {
     public User initialize(String deviceID, ProfileSystem profile, boolean organizer, boolean admin) {
         this.deviceID = deviceID;
         this.profile = profile;
+        this.profile.setDeviceID(deviceID);
         this.organizer = organizer;
         this.admin = admin;
         return this;

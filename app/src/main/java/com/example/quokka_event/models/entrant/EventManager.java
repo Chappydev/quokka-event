@@ -3,6 +3,8 @@ package com.example.quokka_event.models.entrant;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 
+import java.util.Date;
+
 // Refactor:
 // Remove User functionality and repurpose as an 'EventManager' class (idk about the naming) where
 // we deal with all the interactions between User and Event (joining waitlists, responding to
