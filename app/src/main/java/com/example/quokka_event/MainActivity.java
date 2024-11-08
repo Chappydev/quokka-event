@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUser(String uid) {
         User user = User.getInstance(this);
-        String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         db.getDeviceUser(new DbCallback() {
             @Override
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             public void onError(Exception exception) {
                 Log.e("DB", "onError: ", exception);
             }
-        }, deviceId);
+        }, uid);
 
 
 
