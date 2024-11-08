@@ -59,6 +59,7 @@ public class MyEventsActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
+        // Get user
         user = User.getInstance(this);
         userId = user.getDeviceID();
 
@@ -126,15 +127,11 @@ public class MyEventsActivity extends AppCompatActivity {
      * @author Soaiba
      */
     private void getUserEvents() {
-        if (userId != null) {
-            getUserEnrolls(userId);
-        } else {
-            Log.e("MyEventsActivity", "User ID not initialized, unable to fetch events.");
-        }
+        getUserEnrolls(userId);
     }
 
     /**
-     * This method gets enrollments for specific user and gets those events.
+     * This method gets user's enrollments and gets those events.
      * @param userId the ID of the user we need to get events for.
      * @author Soaiba
      */
@@ -142,7 +139,7 @@ public class MyEventsActivity extends AppCompatActivity {
         DatabaseManager.getInstance(this).getUserEventList(userId, new DbCallback() {
             @Override
             /**
-             * This method gets enrollments for specific user and gets those events.
+             * This method gets enrollments for user and gets those events.
              * @author Soaiba
              * @param data data from the database.
              */
