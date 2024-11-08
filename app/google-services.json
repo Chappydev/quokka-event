@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "613887869657",
+    "project_id": "quokka-events",
+    "storage_bucket": "quokka-events.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613887869657:android:de7315fcf464f986d3b4c8",
+        "android_client_info": {
+          "package_name": "com.example.quokka_event"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsNu9khCallpZxPK62VtZyL69-vGYbODM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
