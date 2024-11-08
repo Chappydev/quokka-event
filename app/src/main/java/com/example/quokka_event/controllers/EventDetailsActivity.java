@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -87,9 +88,9 @@ public class EventDetailsActivity extends AppCompatActivity {
                  * @param response
                  */
                 public void onSuccess(Object response) {
+                    Toast.makeText(EventDetailsActivity.this, "You have accepted the invitation to '" + eventName + "'", Toast.LENGTH_SHORT).show();
                     goToConfirm("Accept", eventName);
                 }
-
                 @Override
                 /**
                  * This method logs failure to update database.
@@ -98,6 +99,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                  */
                 public void onError(Exception e) {
                     Log.e("EventDetailsActivity", "Failed to update status to accepted", e);
+                    Toast.makeText(EventDetailsActivity.this, "You couldn't accept the invitation to '" + eventName + "'", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -111,6 +113,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                  * @param response
                  */
                 public void onSuccess(Object response) {
+                    Toast.makeText(EventDetailsActivity.this, "You have denied the invitation to '" + eventName + "'", Toast.LENGTH_SHORT).show();
                     goToConfirm("Deny", eventName);
                 }
 
@@ -122,6 +125,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                  */
                 public void onError(Exception e) {
                     Log.e("EventDetailsActivity", "Failed to update status to declined", e);
+                    Toast.makeText(EventDetailsActivity.this, "You couldn't deny the invitation to '" + eventName + "'", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -135,6 +139,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                  * @param response
                  */
                 public void onSuccess(Object response) {
+                    Toast.makeText(EventDetailsActivity.this, "You have canceled your waitlist spot in '" + eventName + "'", Toast.LENGTH_SHORT).show();
                     goToConfirm("Cancel", eventName);
                 }
 
@@ -146,6 +151,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                  */
                 public void onError(Exception e) {
                     Log.e("EventDetailsActivity", "Failed to update status to unjoined", e);
+                    Toast.makeText(EventDetailsActivity.this, "You couldn't cancel your waitlist spot in '" + eventName + "'", Toast.LENGTH_SHORT).show();
                 }
             });
         });
