@@ -106,7 +106,7 @@ public class AdminEventsAdapter extends RecyclerView.Adapter<AdminEventsAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_list_content, parent, false);
-        return null;
+        return new ViewHolder(view, viewButtonListener);
     }
 
 

@@ -33,14 +33,10 @@
         <activity
             android:name=".OrganizerEventsPageActivity">
         </activity>
-        <activity android:name=".models.event.EventTabsActivity" />
         <activity android:name=".controllers.AdminLandingPageActivity"/>
         <activity android:name=".controllers.BrowseProfilesActivity"/>
         <activity android:name=".controllers.CreateProfileActivity"></activity>
         <activity android:name=".controllers.BrowseProfileDetailsActivity"/>
-        <activity
-            android:name=".CreateEventActivity">
-        </activity>
         <activity
             android:name=".controllers.EventTabsActivity">
         </activity>
@@ -48,6 +44,7 @@
             android:name=".UserProfilePageActivity">
 
         </activity>
+        <activity android:name=".controllers.AdminBrowseEventsActivity"/>
 
     </application>
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->
