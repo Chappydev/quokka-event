@@ -14,6 +14,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Event tabs for admin browsing.
+ */
 public class AdminEventTabsActivity extends AppCompatActivity {
     Map<String, Object> event_details;
     @Override
