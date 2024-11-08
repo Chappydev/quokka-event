@@ -73,19 +73,22 @@ public class WaitlistActivity extends AppCompatActivity {
         organizerText = findViewById(R.id.organizer_text);
         joinButton = findViewById(R.id.join_waitlist_button);
 
-        eventTitle.setText(event.getEventName());
-
+        // Format date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         String formattedDate = dateFormat.format(event.getEventDate());
-        dateText.setText("Date: " + formattedDate);
 
+        // Format time
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         String formattedTime = timeFormat.format(event.getEventDate());
-        timeText.setText("Time: " + formattedTime);
 
+        // Display info
+        eventTitle.setText(event.getEventName());
+        dateText.setText("Date: " + formattedDate);
+        timeText.setText("Time: " + formattedTime);
         locationText.setText("Location: " + event.getEventLocation());
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
 
+        // Join button activity
         joinButton.setOnClickListener(new View.OnClickListener() {
             /**
              * When join button is clicked add the user to the event's waitlist and route back to
