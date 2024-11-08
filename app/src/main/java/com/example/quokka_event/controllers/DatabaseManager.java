@@ -451,6 +451,7 @@ public class DatabaseManager {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     /**
                      * Grab all user document from users collection in firebase database
+                     *
                      * @param task
                      */
                     @Override
@@ -466,11 +467,12 @@ public class DatabaseManager {
                             }
                             // Load profiles in ProfileListFragment.java
                             callback.onDataLoaded(usersList);
-                        }
-                        else {
+                        } else {
                             Log.d("db", "unable to grab documents from firebase");
                         }
                     }
+                });
+    }
 
     /**
      * This method updates status of event.
