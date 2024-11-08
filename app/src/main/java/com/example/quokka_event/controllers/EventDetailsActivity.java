@@ -29,7 +29,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     @Override
     /**
      * This method displays a info on event based on which event user interacted with on my events page.
-     * Handles accept, deny, cancel button activity.
+     * Handles accept, deny, cancel, back button activity.
      * @author Soaiba
      */
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.event_join_details);
         dbManager = DatabaseManager.getInstance(this);
 
+        // Get user
         user = User.getInstance(this);
         userId = user.getDeviceID();
 
@@ -83,6 +84,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                 /**
                  * This method updates status on the database and navigates user to confirmation screen.
                  * @author Soaiba
+                 * @param response
                  */
                 public void onSuccess(Object response) {
                     goToConfirm("Accept", eventName);
@@ -90,8 +92,9 @@ public class EventDetailsActivity extends AppCompatActivity {
 
                 @Override
                 /**
-                 * This method helps debug failiure to update database
+                 * This method logs failure to update database.
                  * @author Soaiba
+                 * @param e
                  */
                 public void onError(Exception e) {
                     Log.e("EventDetailsActivity", "Failed to update status to accepted", e);
@@ -102,11 +105,21 @@ public class EventDetailsActivity extends AppCompatActivity {
         denyButton.setOnClickListener(v -> {
             DatabaseManager.getInstance(this).updateEventStatus(eventId, userId, "Declined", new DbCallback() {
                 @Override
+                /**
+                 * This method updates status on the database and navigates user to confirmation screen.
+                 * @author Soaiba
+                 * @param response
+                 */
                 public void onSuccess(Object response) {
                     goToConfirm("Deny", eventName);
                 }
 
                 @Override
+                /**
+                 * This method logs failure to update database.
+                 * @author Soaiba
+                 * @param e
+                 */
                 public void onError(Exception e) {
                     Log.e("EventDetailsActivity", "Failed to update status to declined", e);
                 }
@@ -116,17 +129,28 @@ public class EventDetailsActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(v -> {
             DatabaseManager.getInstance(this).updateEventStatus(eventId, userId, "Unjoined", new DbCallback() {
                 @Override
+                /**
+                 * This method updates status on the database and navigates user to confirmation screen.
+                 * @author Soaiba
+                 * @param response
+                 */
                 public void onSuccess(Object response) {
                     goToConfirm("Cancel", eventName);
                 }
 
                 @Override
+                /**
+                 * This method logs failure to update database.
+                 * @author Soaiba
+                 * @param e
+                 */
                 public void onError(Exception e) {
                     Log.e("EventDetailsActivity", "Failed to update status to unjoined", e);
                 }
             });
         });
 
+        // Back button activity
         backButton.setOnClickListener(v -> goToMyEventsPage());
     }
 
@@ -171,6 +195,10 @@ public class EventDetailsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * This method navigates to the user's events page.
+     * @author Soaiba
+     */
     private void goToMyEventsPage() {
         Intent intent = new Intent(EventDetailsActivity.this, MyEventsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
