@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ public class DatabaseManager {
     private CollectionReference facilityRef;
     private CollectionReference eventsRef;
     private CollectionReference enrollsRef;
+    private CollectionReference organizerEvents;
     private Context applicationContext;
     private static DatabaseManager instance;
 
@@ -59,6 +61,7 @@ public class DatabaseManager {
         facilityRef = db.collection("Facility");
         eventsRef = db.collection("Events");
         enrollsRef = db.collection("Enrolls");
+
         return this;
     }
 
@@ -114,6 +117,7 @@ public class DatabaseManager {
     public void createProfile(DbCallback cb, String deviceId){
         // So we will create the user instead:
         Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("deviceId", deviceId);
         userInfo.put("name", "");
         userInfo.put("email", "");
         userInfo.put("address", "");
@@ -190,18 +194,40 @@ public class DatabaseManager {
         eventPayload.put("maxWaitlist", event.getMaxWaitlist());
 
         // Pushing the payload to the collection
-        eventsRef
-                .add(eventPayload)
-                .addOnSuccessListener(documentReference -> {
-                    documentReference.update("eventId", documentReference.getId())
-                            .addOnSuccessListener(response -> {
-                                callback.onSuccess(documentReference.getId());
-                                usersRef.document(deviceId)
-                                        .update("isOrganizer", true);
-                            })
-                            .addOnFailureListener(exception -> callback.onError(exception));
+        usersRef
+                .document(deviceId)
+                .get()
+                .addOnSuccessListener(userSnapShot -> {
+                    if (!userSnapShot.exists()){
+                        callback.onError(new Exception("ERROR: User not found"));
+                    }
+                    Map<String, Object> userMap = userSnapShot.getData();
+                    if (userMap.get("facilityId") == null){
+                        callback.onError(new Exception("ERROR: No facility owned. Please create a facility first!"));
+                    } else {
+                        eventPayload.put("facilityId", userSnapShot.get("facilityId"));
+                        eventsRef
+                                .add(eventPayload)
+                                .addOnSuccessListener(DocumentReference -> {
+                                    DocumentReference.update("eventId", DocumentReference.getId())
+                                            .addOnSuccessListener(response -> {
+                                                ArrayList<Map<String, Object>> currentEvents = (ArrayList<Map<String, Object>>) userMap.get("events");
+                                                if (currentEvents == null){
+                                                    currentEvents = new ArrayList<>();
+                                                }
+                                                eventPayload.put("eventId", DocumentReference.getId());
+                                                currentEvents.add(eventPayload);
+                                                userSnapShot.getReference().update("events", currentEvents)
+                                                        .addOnSuccessListener(v -> callback.onSuccess(DocumentReference.getId()))
+                                                        .addOnFailureListener(e -> callback.onError(e));
+                                            })
+                                            .addOnFailureListener(exception -> callback.onError(exception));
+                                })
+                                .addOnFailureListener(exception -> callback.onError(exception));
+                    }
                 })
-                .addOnFailureListener(exception -> callback.onError(exception));
+                .addOnFailureListener(e -> callback.onError(e));
+
     }
 
 
@@ -244,15 +270,16 @@ public class DatabaseManager {
         Map<String, Object> payload = new HashMap<>();
         payload.put("facilityName", facility.getFacilityName());
         payload.put("facilityLocation", facility.getFacilityLocation());
+        payload.put("facilityOwner", deviceId);
 
         facilityRef
                 .add(payload)
                 .addOnSuccessListener(DocumentReference -> {
                     DocumentReference.update("facilityId", DocumentReference.getId())
                             .addOnSuccessListener(v -> {
-                                callback.onSuccess(DocumentReference.getId());
                                 usersRef.document(deviceId)
-                                        .update("facilityId", DocumentReference.getId());
+                                        .update("isOrganizer", true, "facilityId", DocumentReference.getId());
+                                callback.onSuccess(DocumentReference.getId());
                             })
                             .addOnFailureListener(exception -> callback.onError(exception));
                 })
@@ -512,4 +539,23 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
+
+    public void getOrganizerEvents(String deviceId, DbCallback callback){
+        usersRef
+                .document(deviceId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        callback.onError(new Exception("ERROR: User not found"));
+                    } else {
+                        ArrayList<Map<String,Object>> currentEvents = (ArrayList<Map<String,Object>>)documentSnapshot.get("events");
+                        if (currentEvents == null){
+                            currentEvents = new ArrayList<>();
+                        }
+                        callback.onSuccess(currentEvents);
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+    }
 }
+
