@@ -29,7 +29,6 @@
         </activity>
 
         <activity android:name=".controllers.AdminLandingPageActivity"/>
-        <activity android:name=".controllers.CreateProfileActivity"></activity>
         <activity android:name=".controllers.BrowseProfileDetailsActivity"/>
         <activity android:name=".controllers.AdminBrowseEventsActivity"/>
         <activity android:name=".controllers.AdminEventTabsActivity"/>
