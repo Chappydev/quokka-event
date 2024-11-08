@@ -1,10 +1,6 @@
 package com.example.quokka_event.models.event;
 
-import android.provider.ContactsContract;
-
 import com.example.quokka_event.models.ProfileSystem;
-import com.example.quokka_event.models.User;
-import com.example.quokka_event.models.entrant.EventManager;
 
 import java.util.ArrayList;
 import java.util.Date;

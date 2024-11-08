@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,14 +19,23 @@ import com.example.quokka_event.controllers.AdminLandingPageActivity;
 import com.example.quokka_event.controllers.CreateProfileActivity;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.models.MyEventsPageActivity;
+import com.example.quokka_event.controllers.MyEventsPageActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageButton profileButton;
+    private FirebaseAuth auth;
+    private DatabaseManager db;
+    private Button myEventsButton;
+    private String lastCreatedEventId;
+    private String lastCreatedFacilityId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +47,38 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        DatabaseManager db = DatabaseManager.getInstance(this);
-        profileButton = findViewById(R.id.profile);
+        db = DatabaseManager.getInstance(this);
+
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser == null) {
+            auth.signInAnonymously()
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            String TAG = "AUTH";
+                            if (task.isSuccessful()) {
+                                initUser(task.getResult().getUser().getUid());
+                            } else {
+                                Log.e(TAG, "onComplete: ", task.getException());
+                            }
+                        }
+                    });
+        } else {
+            initUser(currentUser.getUid());
+        }
+
+    }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//
+////        updateUI(currentUser);
+//    }
+
+    private void initUser(String uid) {
         User user = User.getInstance(this);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         db.getDeviceUser(new DbCallback() {
@@ -52,32 +92,16 @@ public class MainActivity extends AppCompatActivity {
                         (Boolean) map.get("admin")
                 );
                 Log.d("DB", "onCreate: " + user.getDeviceID());
-                // Switch to landing page.
-                switchToAdminLandingPage(user);
             }
             @Override
             public void onError(Exception exception) {
                 Log.e("DB", "onError: ", exception);
             }
-        }, deviceId);
-
-
-
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * When the profile image is clicked open CreateProfileActivity.java
-             * @param view
-             * */
-            @Override
-                public void onClick(View view) {
-                    switchToProfileActivity();
-
-                }
-            });
+        }, uid);
 
 
         // Switch the activity to MyEventsActivity when the myEventsButton is clicked
-        final Button myEventsButton = findViewById(R.id.my_events_button);
+        myEventsButton = findViewById(R.id.my_events_button);
         myEventsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent showActivity = new Intent(MainActivity.this, MyEventsPageActivity.class);
@@ -90,7 +114,16 @@ public class MainActivity extends AppCompatActivity {
         bellButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
-                startActivity(showActivity);
+                MainActivity.this.startActivity(showActivity);
+            }
+        });
+
+        // Switch the activity to the UserProfilePageActivity when the person icon is clicked
+        final ImageButton profileButton = findViewById(R.id.profile);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, UserProfilePageActivity.class);
+                MainActivity.this.startActivity(showActivity);
             }
         });
 
@@ -99,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         organizerEventsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
-                startActivity(showActivity);
+                MainActivity.this.startActivity(showActivity);
             }
         });
     }

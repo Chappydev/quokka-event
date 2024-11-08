@@ -18,8 +18,6 @@ public class ProfileSystem {
     private Date birthday;
     private String address;
     private String deviceID;
-    private Boolean isAdmin;
-    private Boolean isOrganizer;
 
     // Constructor for profilesystem class
     public ProfileSystem(String deviceID,@DrawableRes int profileImage, String name, String email, String phoneNumber, Date birthday, String address){
@@ -29,19 +27,11 @@ public class ProfileSystem {
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
         this.address = address;
-        this.isOrganizer = false;
-        this.isAdmin = false;
-
     }
 
     // Temporary empty constructor - there might be a better way to do this but not all fields are
     // required so I need an easy way to do that for now
-    public ProfileSystem(){
-        this.deviceID = "";
-        this.name = "";
-        this.email = "";
-
-    }
+    public ProfileSystem(){}
 
     // Set profile image should upload the image to firebase as well
     public void setImage(@DrawableRes int newImage){
@@ -107,18 +97,4 @@ public class ProfileSystem {
     public void setDeviceID(String newID){deviceID = newID;}
     public String getDeviceID(){return deviceID;}
 
-    public void setIsAdmin(Boolean setAdmin){
-        isAdmin = setAdmin;
-    }
-
-    public void setIsOrganizer(Boolean setOrg){
-        isOrganizer = setOrg;
-    }
-
-    public Boolean getIsAdmin(){
-        return isAdmin;
-    }
-    public Boolean getIsOrganizer(){
-        return isOrganizer;
-    }
 }
