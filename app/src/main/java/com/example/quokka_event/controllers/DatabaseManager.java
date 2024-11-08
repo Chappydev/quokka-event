@@ -351,6 +351,27 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    public void getSingleEvent(String eventId, DbCallback callback){
+        eventsRef
+                .document(eventId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()){
+                            Map<String, Object> eventWithId = documentSnapshot.getData();
+                            eventWithId.put("id", documentSnapshot.getId());
+                            callback.onSuccess(eventWithId);
+                        } else {
+                            callback.onError(new Exception("No event found"));
+                        }
+
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+    }
+
+
     /**
      * This method gets events by their ID.
      * @author Soaiba
