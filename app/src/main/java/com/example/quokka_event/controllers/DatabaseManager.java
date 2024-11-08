@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-// Class to interact with the firebase database to be used for admin's screen
+/**
+ * Class to interact with database
+ */
 public class DatabaseManager {
     private FirebaseFirestore db;
     private CollectionReference usersRef;
@@ -355,9 +357,8 @@ public class DatabaseManager {
                 .addOnFailureListener(callback::onError);
     }
 
-
     /**
-     * Gets list of events.
+     * Gets list of all events.
      * @author speakerchef
      * @param callback
      */
@@ -374,57 +375,88 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-    /**
-     * Accepts an invite to an event
-     * @author speakerchef
-     * @param eventId
-     * @param userId
-     * @param callback
-     */
-    public void acceptEvent(String eventId, String userId, DbCallback callback) {
-        enrollsRef
-                .whereEqualTo("eventId", eventId)
-                .whereEqualTo("userId", userId)
+    public void getSingleEvent(String eventId, DbCallback callback){
+        eventsRef
+                .document(eventId)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()){
-                        queryDocumentSnapshots
-                                .getDocuments()
-                                .get(0)
-                                .getReference()
-                                .update("status", "ACCEPTED")
-                                .addOnSuccessListener(response -> callback.onSuccess(response))
-                                .addOnFailureListener(exception -> callback.onError(exception));
-                    }
-                })
-                .addOnFailureListener(exception -> callback.onError(exception));
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()){
+                            Map<String, Object> eventWithId = documentSnapshot.getData();
+                            eventWithId.put("id", documentSnapshot.getId());
+                            callback.onSuccess(eventWithId);
+                        } else {
+                            callback.onError(new Exception("No event found"));
+                        }
 
-    }
-
-    /**
-     * Declines an invite to an event
-     * @author speakerchef
-     * @param eventId
-     * @param userId
-     * @param callback
-     */
-    public void declineEvent(String eventId, String userId, DbCallback callback) {
-        enrollsRef.whereEqualTo("eventId", eventId)
-                .whereEqualTo("userId", userId)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        queryDocumentSnapshots.getDocuments().get(0).getReference()
-                                .update("status", "DECLINED")
-                                .addOnSuccessListener(response -> callback.onSuccess(response))
-                                .addOnFailureListener(exception -> callback.onError(exception));
-                    } else {
-                        callback.onError(new Exception("No enrollment found"));
                     }
                 })
                 .addOnFailureListener(e -> callback.onError(e));
     }
 
+    /**
+     * This method gets events by their ID.
+     * @author Soaiba
+     * @param callback
+     */
+    public void getEventsByIds(List<String> eventIds, DbCallback callback) {
+        List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+
+        for (int i = 0; i < eventIds.size(); i++) {
+            String eventId = eventIds.get(i);
+            Task<DocumentSnapshot> task = eventsRef.document(eventId).get();
+            tasks.add(task);
+        }
+
+        Tasks.whenAllComplete(tasks)
+                .addOnSuccessListener(completedTasks -> {
+                    List<Map<String, Object>> eventDataList = new ArrayList<>();
+                    for (int i = 0; i < completedTasks.size(); i++) {
+                        Task<?> task = completedTasks.get(i);
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = (DocumentSnapshot) task.getResult();
+                            if (document.exists()) {
+                                eventDataList.add(document.getData());
+                            }
+                        }
+                    }
+                    callback.onSuccess(eventDataList);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * This method updates status of event.
+     * @author Soaiba
+     * @param eventId id of event we are updating.
+     * @param userId id of user whose event we are updating.
+     * @param newStatus updated status.
+     * @param callback
+     */
+    public void updateEventStatus(String eventId, String userId, String newStatus, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        queryDocumentSnapshots.getDocuments().get(0).getReference()
+                                .update("status", newStatus)
+                                .addOnSuccessListener(response -> {
+                                    callback.onSuccess(response);
+                                })
+                                .addOnFailureListener(exception -> {
+                                    callback.onError(exception);
+                                });
+                    } else {
+                        callback.onError(new Exception("Enrollment not found"));
+                    }
+                })
+                .addOnFailureListener(exception -> {
+                    callback.onError(exception);
+                });
+    }
 
     /**
      * Adds user to an event waitlist
@@ -437,13 +469,12 @@ public class DatabaseManager {
         Map<String, Object> enrollData = new HashMap<>();
         enrollData.put("eventId", eventId);
         enrollData.put("userId", userId);
-        enrollData.put("status", "WAITLIST");
+        enrollData.put("status", "Waiting");
 
         enrollsRef.add(enrollData)
                 .addOnSuccessListener(documentReference -> callback.onSuccess(documentReference.getId()))
                 .addOnFailureListener(e -> callback.onError(e));
     }
-
 
     /**
      * Update profile information
@@ -468,7 +499,6 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-
     /**
      * Update facility profile information
      * @author speakerchef
@@ -487,7 +517,6 @@ public class DatabaseManager {
                 .addOnSuccessListener(response -> callback.onSuccess(response))
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
-
 
     /**
      * Queries a single facility

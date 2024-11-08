@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import com.example.quokka_event.R;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * This class sets up an adapter for displaying a list of events in a RecyclerView.
@@ -19,6 +21,7 @@ import java.util.Locale;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
     private List<Event> eventList;
+    private Map<String, String> eventStatusMap;
     private OnEventClickListener listener;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
 
@@ -28,8 +31,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
      * @param eventList list of Event objects to be displayed.
      * @param listener listener for handling item click events.
      */
-    public EventAdapter(List<Event> eventList, OnEventClickListener listener) {
+    public EventAdapter(List<Event> eventList, Map<String, String> eventStatusMap, OnEventClickListener listener) {
         this.eventList = eventList;
+        this.eventStatusMap = eventStatusMap;
         this.listener = listener;
     }
 
@@ -60,8 +64,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         Event event = eventList.get(pos);
         holder.eventName.setText(event.getEventName());
         holder.eventDate.setText(dateFormat.format(event.getEventDate()));
-        //TODO figure out status
-        holder.eventStatus.setText(event.isDeadline() ? "Closed" : "Open"); //how do you actually get the status?
+        String status = eventStatusMap.get(event.getEventID());
+        holder.eventStatus.setText(status);
         holder.itemView.setOnClickListener(v -> listener.onEventClick(event));
     }
 

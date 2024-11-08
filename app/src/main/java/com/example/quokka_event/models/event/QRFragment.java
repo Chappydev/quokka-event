@@ -63,7 +63,7 @@ public class QRFragment extends Fragment {
 
     private void generateQR() throws WriterException {
         // create the hash
-        String qrHash = UUID.randomUUID().toString();
+        String qrHash = "2b86OkQwYUsrH2BCyRMm";
 
         // create the qr map
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
