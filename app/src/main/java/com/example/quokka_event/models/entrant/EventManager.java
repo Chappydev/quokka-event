@@ -10,9 +10,13 @@ import java.util.Date;
 // we deal with all the interactions between User and Event (joining waitlists, responding to
 // invites, etc.)
 public class EventManager {
+    private Event event;
+    private ProfileSystem profile;
 
     // Constructor
-    public EventManager() {
+    public EventManager(Event event, ProfileSystem profile) {
+        this.event = event;
+        this.profile = profile;
     }
 
     // Refactor: this can stay here as long as this class doesn't become coupled to a single Event
@@ -23,10 +27,8 @@ public class EventManager {
         // needs implementation
     }
 
+    public void joinWaitlist() {
 
-    public boolean joinWaitlist(Event event, ProfileSystem user) {
-        boolean waitlisted = event.addEntrantToWaitlist(user);
-        return waitlisted;
     }
 
     public void cancelWaitlistSpot(){

@@ -19,7 +19,7 @@ import com.example.quokka_event.controllers.AdminLandingPageActivity;
 import com.example.quokka_event.controllers.CreateProfileActivity;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.controllers.MyEventsPageActivity;
+import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,7 +33,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseManager db;
-    private Button myEventsButton;
+    private Button myEventButton;
     private String lastCreatedEventId;
     private String lastCreatedFacilityId;
     @Override
@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_landing_page);
+
+        myEventButton = findViewById(R.id.my_events_button);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -68,44 +71,11 @@ public class MainActivity extends AppCompatActivity {
             initUser(currentUser.getUid());
         }
 
-    }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//
-////        updateUI(currentUser);
-//    }
-
-    private void initUser(String uid) {
-        User user = User.getInstance(this);
-        String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        db.getDeviceUser(new DbCallback() {
-            @Override
-            public void onSuccess(Object result) {
-                Map<String, Object> map = (Map<String, Object>) result;
-                user.initialize(
-                        (String) map.get("deviceID"),
-                        (ProfileSystem) map.get("profile"),
-                        (Boolean) map.get("organizer"),
-                        (Boolean) map.get("admin")
-                );
-                Log.d("DB", "onCreate: " + user.getDeviceID());
-                switchToAdminLandingPage(user);
-            }
-            @Override
-            public void onError(Exception exception) {
-                Log.e("DB", "onError: ", exception);
-            }
-        }, uid);
-
-
         // Switch the activity to MyEventsActivity when the myEventsButton is clicked
-        myEventsButton = findViewById(R.id.my_events_button);
-        myEventsButton.setOnClickListener(new View.OnClickListener() {
+        myEventButton = findViewById(R.id.my_events_button);
+        myEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, MyEventsPageActivity.class);
+                Intent showActivity = new Intent(MainActivity.this, MyEventsActivity.class);
                 startActivity(showActivity);
             }
         });
@@ -136,6 +106,64 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(showActivity);
             }
         });
+
+    }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//
+////        updateUI(currentUser);
+//    }
+
+    private void initUser(String uid) {
+        User user = User.getInstance(this);
+        String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        db.getDeviceUser(new DbCallback() {
+            @Override
+            public void onSuccess(Object result) {
+                Map<String, Object> map = (Map<String, Object>) result;
+                user.initialize(
+                        (String) map.get("deviceID"),
+                        (ProfileSystem) map.get("profile"),
+                        (Boolean) map.get("organizer"),
+                        (Boolean) map.get("admin")
+                );
+                Log.d("DB", "onCreate: " + user.getDeviceID());
+                switchToAdminLandingPage(user);
+            }
+            @Override
+            public void onError(Exception exception) {
+                Log.e("DB", "onError: ", exception);
+            }
+        }, deviceId);
+
+
+
+    }
+
+    // Switch activity to WaitlistActivity TEMPORARY FOR TESTING WAITLIST ACTIVITY.
+    private void switchActivities(){
+        Intent intent = new Intent(this, MyEventsActivity.class);
+        startActivity(intent);
+    }
+
+
+
+
+
+
+
+        // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
+        final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
+        organizerEventsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
+                MainActivity.this.startActivity(showActivity);
+            }
+        });
     }
 
     /**
@@ -154,5 +182,6 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d("isAdmin", user.getDeviceID() + ": "+ Boolean.toString(user.isAdmin()));
     }
+
 
 }

@@ -5,26 +5,37 @@ import com.example.quokka_event.models.ProfileSystem;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * This class sets up an Event object
+ */
 public class Event {
-
     private String eventID;
     private String eventName;
     private Date eventDate;
     private Date registrationDeadline;
     private String eventLocation;
     //private Organizer organizer;
-
     private int maxParticipants;
     private int maxWaitlist;
 
-
-    // The waitlist should not be arraylist of eventmanager. Since eventmanager does not
-    // have any variables to differentiate two different eventmanager objects.
     private ArrayList<ProfileSystem> participantList;
     private ArrayList<ProfileSystem> waitList;
     private ArrayList<ProfileSystem> cancelledParticipants;
 
-    // Constructor
+    /**
+     * Constructs an Event with specified attributes.
+     * @author idk???
+     * @param eventID                identifier for the event
+     * @param eventName              name of the event
+     * @param eventDate              date of the event
+     * @param registrationDeadline   registration deadline for the event
+     * @param eventLocation          location of the event
+     * @param maxParticipants        maximum number of participants
+     * @param maxWaitlist            maximum size of the waitlist
+     * @param participantList        list of participants
+     * @param waitList               list of waitlisted entrants
+     * @param cancelledParticipants  list of cancelled participants
+     */
     public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<ProfileSystem> participantList, ArrayList<ProfileSystem> waitList, ArrayList<ProfileSystem> cancelledParticipants) {
         this.eventID = eventID;
         this.eventName = eventName;
@@ -38,11 +49,7 @@ public class Event {
         this.cancelledParticipants = cancelledParticipants;
     }
 
-    public Event(String name, Date eventDate, Date registrationDeadline, String location, int maxSpots, int maxRegistration) {
-    }
-
-    public Event() {
-
+    public Event(){
     }
 
     public String getEventID() {
@@ -81,6 +88,7 @@ public class Event {
         return eventLocation;
     }
 
+
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
     }
@@ -107,6 +115,7 @@ public class Event {
 
     public void setParticipantList(ArrayList<ProfileSystem> participantList) {
         this.participantList = participantList;
+        //TODO update database
     }
 
     public ArrayList<ProfileSystem> getWaitList() {
@@ -115,6 +124,7 @@ public class Event {
 
     public void setWaitList(ArrayList<ProfileSystem> waitList) {
         this.waitList = waitList;
+        //TODO update database
     }
 
     public ArrayList<ProfileSystem> getCancelledParticipants() {
@@ -127,8 +137,8 @@ public class Event {
 
     /**
      * Checks if the waitlist is full.
-     * @author Simon and Soaiba
-     * @return true if the waitlist size has reached the maximum capacity
+     * @author Saimon and Soaiba
+     * @return true if the waitlist size has reached the maximum capacity.
      */
     public boolean isWaitListFull() {
         return waitList.size() >= maxWaitlist;
@@ -148,16 +158,12 @@ public class Event {
      * Adds an entrant to the waitlist if the waitlist is not full
      * and the registration deadline has not yet passed.
      * @author Soaiba
-     * @param user the user to be added to the waitlist
-     * @return true if the user was successfully added to the waitlist
+     * @param user the user to be added to the waitlist.
      */
-    public boolean addEntrantToWaitlist(ProfileSystem user){
+    public void addEntrantToWaitlist(ProfileSystem user){
+        //TODO **** Update Database!! ****
         if (!isWaitListFull() && !isDeadline()) {
             waitList.add(user);
-            return true;
-        }
-        else {
-            return false;
         }
     }
 }
