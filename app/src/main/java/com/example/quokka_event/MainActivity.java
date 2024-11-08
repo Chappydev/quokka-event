@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         (Boolean) map.get("admin")
                 );
                 Log.d("DB", "onCreate: " + user.getDeviceID());
+                switchToAdminLandingPage(user);
             }
             @Override
             public void onError(Exception exception) {
