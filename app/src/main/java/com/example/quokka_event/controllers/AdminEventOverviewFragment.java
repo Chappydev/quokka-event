@@ -50,7 +50,7 @@ public class AdminEventOverviewFragment extends Fragment {
         timeTextView = view.findViewById(R.id.event_time_label);
         locationTextView = view.findViewById(R.id.event_location_label);
         deadlineTextView = view.findViewById(R.id.event_deadline_label);
-        deleteButton = view.findViewById(R.id.delete_event_button_admin);
+        deleteButton = view.findViewById(R.id.back_button_bottom);
         AdminEventTabsActivity activity = (AdminEventTabsActivity) getActivity();
         Map<String, Object> event = activity.getEventDetails();
         eventNameTextView.setText((String) event.get("eventName"));

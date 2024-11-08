@@ -18,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.quokka_event.controllers.AdminLandingPageActivity;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.MyEventsActivity;
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         (Boolean) map.get("admin")
                 );
                 Log.d("DB", "onCreate: " + user.getDeviceID());
+                switchAdminActivity(user.isAdmin());
             }
 
             @Override
@@ -171,5 +173,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Cannot use the scanner without camera permissions", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    /**
+     * start admin landing page
+     */
+    void switchAdminActivity (Boolean isAdmin){
+        if (isAdmin){
+            Intent activity = new Intent(MainActivity.this, AdminLandingPageActivity.class);
+            startActivity(activity);
+        }
+
     }
 }

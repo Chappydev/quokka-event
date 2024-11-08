@@ -24,7 +24,7 @@ public class MyEventsPageActivity extends AppCompatActivity {
         setContentView(R.layout.user_my_events_page);
 
         // Set up a click listener for the back button
-        Button backButton = findViewById(R.id.delete_event_button_admin);
+        Button backButton = findViewById(R.id.back_button_bottom);
         backButton.setOnClickListener(v -> {
             finish();
         });

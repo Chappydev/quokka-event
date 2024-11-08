@@ -44,7 +44,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
         phoneField = findViewById(R.id.user_phone_number);
         facilityNameField = findViewById(R.id.facility_name_field);
         facilityAddressField = findViewById(R.id.facility_address_field);
-        backButton = findViewById(R.id.delete_event_button_admin);
+        backButton = findViewById(R.id.back_button_bottom);
         saveButton = findViewById(R.id.save_changes_button);
         notificationCheckBox = findViewById(R.id.user_notifications_checkbox);
 
