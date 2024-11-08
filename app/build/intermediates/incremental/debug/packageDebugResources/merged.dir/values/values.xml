@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="admin_purple">#b618f5</color>
+    <color name="black">#FF000000</color>
+    <color name="organizer_blue">#5BC7C4</color>
+    <color name="user_orange">#FB9365</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="accept_button">Accept</string>
+    <string name="app_name">quokka-event</string>
+    <string name="app_name_text">QuokkaQR</string>
+    <string name="back_button_text">Back</string>
+    <string name="bell_icon_description">bell icon</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="confirmation_message">Confirmation message</string>
+    <string name="date">Date</string>
+    <string name="deny_button">Deny</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_status">Status</string>
+    <string name="exit_button_text">Exit</string>
+    <string name="gcm_defaultSenderId" translatable="false">613887869657</string>
+    <string name="google_api_key" translatable="false">AIzaSyAsNu9khCallpZxPK62VtZyL69-vGYbODM</string>
+    <string name="google_app_id" translatable="false">1:613887869657:android:de7315fcf464f986d3b4c8</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAsNu9khCallpZxPK62VtZyL69-vGYbODM</string>
+    <string name="google_storage_bucket" translatable="false">quokka-events.appspot.com</string>
+    <string name="join_button">Join Waiting List</string>
+    <string name="location">Location</string>
+    <string name="my_events_button_text">My Events</string>
+    <string name="my_organized_events_title">My Organized Events</string>
+    <string name="organizer">Organizer</string>
+    <string name="organizer_events_button_text">Organizer Events</string>
+    <string name="person_icon_description">person icon</string>
+    <string name="project_id" translatable="false">quokka-events</string>
+    <string name="scan_qr_code_button_text">Scan QR Code</string>
+    <string name="time">Time</string>
+    <style name="Base.Theme.Quokkaevent" parent="Theme.AppCompat.Light.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.Quokkaevent" parent="Base.Theme.Quokkaevent"/>
+    <style name="landing_button_text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">"#FFFF"</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+</resources>

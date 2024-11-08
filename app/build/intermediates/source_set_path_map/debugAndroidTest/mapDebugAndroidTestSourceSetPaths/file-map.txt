@@ -1,0 +1,6 @@
+com.example.quokka_event.test.app-core-1.6.1-0 /Users/sohannair/.gradle/caches/transforms-4/3b555c0cdcc3f592c22efa4c6206649a/transformed/core-1.6.1/res
+com.example.quokka_event.test.app-tracing-1.1.0-1 /Users/sohannair/.gradle/caches/transforms-4/3f819b44159ae91fa32a40ee74592d1d/transformed/tracing-1.1.0/res
+com.example.quokka_event.test.app-androidTest-2 /Users/sohannair/AndroidStudioProjects/quokkaevent/app/build/generated/res/resValues/androidTest/debug
+com.example.quokka_event.test.app-mergeDebugAndroidTestResources-3 /Users/sohannair/AndroidStudioProjects/quokkaevent/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+com.example.quokka_event.test.app-mergeDebugAndroidTestResources-4 /Users/sohannair/AndroidStudioProjects/quokkaevent/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+com.example.quokka_event.test.app-debugAndroidTest-5 /Users/sohannair/AndroidStudioProjects/quokkaevent/app/build/intermediates/merged_res/debugAndroidTest/mergeDebugAndroidTestResources
