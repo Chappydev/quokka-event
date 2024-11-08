@@ -15,8 +15,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.quokka_event.controllers.AdminLandingPageActivity;
-import com.example.quokka_event.controllers.CreateProfileActivity;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.MyEventsActivity;
@@ -132,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
                         (Boolean) map.get("admin")
                 );
                 Log.d("DB", "onCreate: " + user.getDeviceID());
-                switchToAdminLandingPage(user);
             }
+
             @Override
             public void onError(Exception exception) {
                 Log.e("DB", "onError: ", exception);
@@ -155,33 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
-        final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
-        organizerEventsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, OrganizerEventsPageActivity.class);
-                MainActivity.this.startActivity(showActivity);
-            }
-        });
-    }
-
-    /**
-     * Function to switch to CreateProfileActivity.java
-     *
-     * */
-    private void switchToProfileActivity(){
-        Intent switchActivity = new Intent(this, CreateProfileActivity.class);
-        startActivity(switchActivity);
-    }
-
-    private void switchToAdminLandingPage(User user){
-        if (user.isAdmin()){
-            Intent adminActivity = new Intent(this, AdminLandingPageActivity.class);
-            startActivity(adminActivity);
-        }
-        Log.d("isAdmin", user.getDeviceID() + ": "+ Boolean.toString(user.isAdmin()));
-    }
 
 
 }

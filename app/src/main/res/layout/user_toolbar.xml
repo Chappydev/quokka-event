@@ -36,6 +36,5 @@
         android:layout_height="50dp"
         android:layout_gravity="end"
         android:contentDescription="@string/person_icon_description"
-        android:background="@drawable/person_icon"
-        android:clickable="true"/>
+        android:background="@drawable/person_icon" />
 </androidx.appcompat.widget.Toolbar>
