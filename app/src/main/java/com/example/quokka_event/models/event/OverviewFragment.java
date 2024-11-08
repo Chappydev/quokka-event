@@ -136,12 +136,6 @@ public class OverviewFragment extends Fragment {
         });
 
 
-        // Set up a click listener for the back button
-        Button backButton = view.findViewById(R.id.back_button_bottom);
-        backButton.setOnClickListener(v -> {
-            requireActivity().finish();
-        });
-
         /*
         // Set up a click listener for the edit button
         Button editButton = view.findViewById(R.id.event_edit_button);

@@ -27,6 +27,7 @@ import java.util.Objects;
 
 public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener, DetailsFragment.detailsListener {
     Button saveButton;
+    Button cancelButton;
     Event event;
     FirebaseAuth auth;
     /**
@@ -54,6 +55,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
         saveButton = findViewById(R.id.savebutton);
+        cancelButton = findViewById(R.id.cancelbutton);
 
         // Connect TabLayout and ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
@@ -103,7 +105,13 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 });
             }
         });
+
+        cancelButton.setOnClickListener(v -> {
+            finish();
+        });
     }
+
+
 
     /**
      * Called from listener from overviewfragment.java to set event name
