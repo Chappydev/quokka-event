@@ -93,7 +93,7 @@ public class WaitlistActivity extends AppCompatActivity {
             /**
              * When join button is clicked add the user to the event's waitlist and route back to
              * MyEventsActivity
-             * @author Chappydev
+             * @author Chappydev, Soaiba
              * @param view
              */
             @Override
@@ -102,8 +102,10 @@ public class WaitlistActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Object result) {
                         Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(WaitlistActivity.this, MyEventsActivity.class);
-                        WaitlistActivity.this.startActivity(intent);
+                        Intent intent = new Intent(WaitlistActivity.this, ConfirmationActivity.class);
+                        intent.putExtra("message_type", "JoinWaitlist");
+                        intent.putExtra("event_name", event.getEventName());
+                        startActivity(intent);
                     }
 
                     @Override

@@ -37,12 +37,14 @@ public class ConfirmationActivity extends AppCompatActivity{
             confirmationMessage.setText("You denied invitation to " + eventName + " :(");
         } else if ("Cancel".equals(messageType)) {
             confirmationMessage.setText("You have unjoined the waitlist to " + eventName + ".");
+        } else if ("JoinWaitlist".equals(messageType)) {
+            confirmationMessage.setText("You have joined the waitlist for " + eventName + "!");
         }
 
         /**
          * This method handles exit function activity.
          * Navigates user to event list page.
-         * @see https://medium.com/@snaresh22/mastering-android-app-navigation-with-intent-flags-36f84409432b.
+         * @see <a href="https://medium.com/@snaresh22/mastering-android-app-navigation-with-intent-flags-36f84409432b.">...</a>
          * @author Soaiba
          */
         Button exitButton = findViewById(R.id.exitButton);
