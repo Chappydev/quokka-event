@@ -1,6 +1,5 @@
 package com.example.quokka_event.models;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.views.ViewButtonListener;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -21,16 +21,16 @@ import java.util.Map;
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
 
     private ArrayList<Map<String, Object>> localDataSet;
-    ProfileAdapterListener profileAdapterListener;
+    ViewButtonListener viewButtonListener;
 
     /**
      * Constructor to set the profiles arraylist and interface listener
      * @param dataList
-     * @param profileAdapterListener
+     * @param viewButtonListener
      */
-    public ProfileAdapter(ArrayList<Map<String, Object>> dataList, ProfileAdapterListener profileAdapterListener){
+    public ProfileAdapter(ArrayList<Map<String, Object>> dataList, ViewButtonListener viewButtonListener){
         this.localDataSet = dataList;
-        this.profileAdapterListener = profileAdapterListener;
+        this.viewButtonListener = viewButtonListener;
     }
 
     /**
@@ -40,14 +40,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
         private Button viewButton;
-        private ProfileAdapterListener listener;
+        private ViewButtonListener listener;
 
         /**
          * Viewholder constructor. Set view and view button click listener.
          * @param view
          * @param adapterListener
          */
-        public ViewHolder(View view, ProfileAdapterListener adapterListener) {
+        public ViewHolder(View view, ViewButtonListener adapterListener) {
             super(view);
             // Define click listener for the ViewHolder's View
             textView = (TextView) view.findViewById(R.id.profile_name);
@@ -92,7 +92,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.profile_list_content, viewGroup, false);
 
-        return new ViewHolder(view, profileAdapterListener);
+        return new ViewHolder(view, viewButtonListener);
     }
 
     /**
@@ -118,15 +118,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         localDataSet = data;
     }
 
-    /**
-     * Interface to call once viewbutton is clicked to display profile details to admin.
-     */
-    public interface ProfileAdapterListener {
-        /**
-         * Send index of the list as a parameter.
-         * @param pos
-         */
-        void viewButtonClick(int pos);
-    }
+
 }
 

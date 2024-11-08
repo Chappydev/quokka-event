@@ -1,6 +1,5 @@
 package com.example.quokka_event.views;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +19,19 @@ import java.util.Map;
 /**
  * Profile Adapter to class for recycler view to hold a list of profiles.
  */
-public class AdminEventsAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
+public class AdminEventsAdapter extends RecyclerView.Adapter<AdminEventsAdapter.ViewHolder> {
 
     private ArrayList<Map<String, Object>> localDataSet;
-    ProfileAdapterListener profileAdapterListener;
+    ViewButtonListener viewButtonListener;
 
     /**
      * Constructor to set the profiles arraylist and interface listener
      * @param dataList
-     * @param profileAdapterListener
+     * @param viewButtonListener
      */
-    public AdminEventsAdapter(ArrayList<Map<String, Object>> dataList, ProfileAdapterListener profileAdapterListener){
+    public AdminEventsAdapter(ArrayList<Map<String, Object>> dataList, ViewButtonListener viewButtonListener){
         this.localDataSet = dataList;
-        this.profileAdapterListener = profileAdapterListener;
+        this.viewButtonListener = viewButtonListener;
     }
 
     /**
@@ -42,18 +41,18 @@ public class AdminEventsAdapter extends RecyclerView.Adapter<ProfileAdapter.View
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
         private Button viewButton;
-        private ProfileAdapterListener listener;
+        private ViewButtonListener listener;
 
         /**
          * Viewholder constructor. Set view and view button click listener.
          * @param view
          * @param adapterListener
          */
-        public ViewHolder(View view, ProfileAdapterListener adapterListener) {
+        public ViewHolder(View view, ViewButtonListener adapterListener) {
             super(view);
             // Define click listener for the ViewHolder's View
-            textView = (TextView) view.findViewById(R.id.profile_name);
-            viewButton = (Button) view.findViewById(R.id.admin_view_profile_button);
+            textView = (TextView) view.findViewById(R.id.admin_event_name);
+            viewButton = (Button) view.findViewById(R.id.admin_view_event_button);
             viewButton.setOnClickListener(this);
             listener = adapterListener;
         }
@@ -81,14 +80,6 @@ public class AdminEventsAdapter extends RecyclerView.Adapter<ProfileAdapter.View
     }
 
 
-    @NonNull
-    @Override
-    public ProfileAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.profile_list_content, parent, false);
-        return null;
-    }
-
     /**
      * Set up
      * @param holder The ViewHolder which should be updated to represent the contents of the
@@ -96,11 +87,28 @@ public class AdminEventsAdapter extends RecyclerView.Adapter<ProfileAdapter.View
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull ProfileAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        holder.getTextView().setText((String)localDataSet.get(position).get("name"));
+        holder.getTextView().setText((String)localDataSet.get(position).get("eventName"));
     }
+
+    /**
+     *
+     * @param parent The ViewGroup into which the new View will be added after it is bound to
+     *               an adapter position.
+     * @param viewType The view type of the new View.
+     *
+     * @return
+     */
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.event_list_content, parent, false);
+        return null;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -111,15 +119,6 @@ public class AdminEventsAdapter extends RecyclerView.Adapter<ProfileAdapter.View
         localDataSet = data;
     }
 
-    /**
-     * Interface to call once viewbutton is clicked to display profile details to admin.
-     */
-    public interface ProfileAdapterListener {
-        /**
-         * Send index of the list as a parameter.
-         * @param pos
-         */
-        void viewButtonClick(int pos);
-    }
+
 }
 

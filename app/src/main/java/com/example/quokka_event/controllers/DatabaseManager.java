@@ -348,10 +348,6 @@ public class DatabaseManager {
 
 
 
-    // delete profile from database.
-    public void deleteProfile(){
-
-    }
 
     // Delete hashed qr code data
     public void deleteQRCode(){
@@ -381,7 +377,9 @@ public class DatabaseManager {
 
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                usersList.add(document.getData());
+                                Map<String, Object> user = document.getData();
+                                user.put("deviceID", document.getId());
+                                usersList.add(user);
 
                             }
                             // Load profiles in ProfileListFragment.java

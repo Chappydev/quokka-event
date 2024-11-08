@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.models.ProfileAdapter;
+import com.example.quokka_event.views.ViewButtonListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
 /**
  * A fragment that contains the recyclerview to display all profiles in database.
  */
-public class ProfileListFragment extends Fragment implements ProfileAdapter.ProfileAdapterListener {
+public class ProfileListFragment extends Fragment implements ViewButtonListener {
     private ArrayList<Map<String, Object>> profileList;
     private ProfileAdapter adapter;
 
@@ -62,6 +63,7 @@ public class ProfileListFragment extends Fragment implements ProfileAdapter.Prof
                 profilesRecyclerView.setAdapter(adapter);
             }
         });
+
 
 
 
