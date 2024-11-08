@@ -1,12 +1,18 @@
 package com.example.quokka_event.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.quokka_event.QrScannerPageActivity;
 import com.example.quokka_event.R;
+import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.entrant.EventManager;
@@ -23,6 +29,7 @@ import java.util.Locale;
  * @author Saimon
  */
 public class WaitlistActivity extends AppCompatActivity {
+    private DatabaseManager db;
     private Event event;
     private TextView eventTitle;
     private TextView dateText;
@@ -44,6 +51,7 @@ public class WaitlistActivity extends AppCompatActivity {
         setContentView(R.layout.event_waitlist_details);
 
         User currentUser = User.getInstance(this.getApplicationContext());
+        db = DatabaseManager.getInstance(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -85,13 +93,27 @@ public class WaitlistActivity extends AppCompatActivity {
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * When join button is clicked add the user to the event's waitlist using Event.addEntrantToWaitlist()
-             * @author Saimon
+             * When join button is clicked add the user to the event's waitlist and route back to
+             * MyEventsActivity
+             * @author Chappydev
              * @param view
              */
             @Override
             public void onClick(View view) {
-                event.addEntrantToWaitlist(currentUser.getProfile());
+                db.joinWaitlist(event.getEventID(), User.getInstance(WaitlistActivity.this).getDeviceID(), new DbCallback() {
+                    @Override
+                    public void onSuccess(Object result) {
+                        Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(WaitlistActivity.this, MyEventsActivity.class);
+                        WaitlistActivity.this.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        Log.e("DB", "WaitlistActivity onError: ", exception);
+                        Toast.makeText(WaitlistActivity.this, "Something went wrong adding you to the waitlist", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
