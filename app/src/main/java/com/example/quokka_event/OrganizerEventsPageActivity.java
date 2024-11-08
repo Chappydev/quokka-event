@@ -99,6 +99,7 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Object result) {
                 Log.d("Event", "onSuccess: " + result);
+                eventList.clear();
                 eventList.addAll((ArrayList<Map<String,Object>>)result);
                 customAdapter.notifyDataSetChanged();
             }
