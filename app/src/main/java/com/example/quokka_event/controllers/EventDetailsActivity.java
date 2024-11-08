@@ -2,12 +2,14 @@ package com.example.quokka_event.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.controllers.dbutil.DbCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +20,11 @@ import java.util.Locale;
  * @author Soaiba
  */
 public class EventDetailsActivity extends AppCompatActivity {
+    private DatabaseManager dbManager;
+    private String eventId;
+    // For testing
+    private String userId = "fa4SITZTmgNR1yqHspkZYbUrBpk2";
+
     @Override
     /**
      * This method displays a info on event based on which event user interacted with on my events page.
@@ -27,14 +34,14 @@ public class EventDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_join_details);
+        dbManager = DatabaseManager.getInstance(this);
 
         // Get data from Intent
-        String eventId = getIntent().getStringExtra("event_id");
+        eventId = getIntent().getStringExtra("event_id");
         String eventName = getIntent().getStringExtra("event_name");
-        long eventDateMillis = getIntent().getLongExtra("event_date", -1);
-        Date eventDate = new Date(eventDateMillis);
+        Date eventDate = new Date(getIntent().getLongExtra("event_date", -1));
         String eventLocation = getIntent().getStringExtra("event_location");
-        String eventStatus = getIntent().getStringExtra("event_status");
+        String status = getIntent().getStringExtra("status");
 
         // Format date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
@@ -59,12 +66,81 @@ public class EventDetailsActivity extends AppCompatActivity {
         timeText.setText("Time: TBD"); // TODO: Update once time data is available
         locationText.setText("Location: " + eventLocation);
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
-        statusText.setText("Status: " + eventStatus);
+        statusText.setText("Status: " + status);
+
+        // Set button visibility based on status
+        setButtonVisibility(status, acceptButton, denyButton, cancelButton);
 
         // Set click listeners for the buttons
-        acceptButton.setOnClickListener(v -> goToConfirm("Accept", eventName));
-        denyButton.setOnClickListener(v -> goToConfirm("Deny", eventName));
-        cancelButton.setOnClickListener(v -> goToConfirm("Cancel", eventName));
+        acceptButton.setOnClickListener(v -> {
+            DatabaseManager.getInstance(this).updateEventStatus(eventId, userId, "Accepted", new DbCallback() {
+                @Override
+                public void onSuccess(Object response) {
+                    goToConfirm("Accept", eventName);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("EventDetailsActivity", "Failed to update status to accepted", e);
+                }
+            });
+        });
+
+        denyButton.setOnClickListener(v -> {
+            DatabaseManager.getInstance(this).updateEventStatus(eventId, userId, "Declined", new DbCallback() {
+                @Override
+                public void onSuccess(Object response) {
+                    goToConfirm("Deny", eventName);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("EventDetailsActivity", "Failed to update status to declined", e);
+                }
+            });
+        });
+
+        cancelButton.setOnClickListener(v -> {
+            DatabaseManager.getInstance(this).updateEventStatus(eventId, userId, "Unjoined", new DbCallback() {
+                @Override
+                public void onSuccess(Object response) {
+                    goToConfirm("Cancel", eventName);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("EventDetailsActivity", "Failed to update status to unjoined", e);
+                }
+            });
+        });
+    }
+
+    /**
+     * This method sets button visibility based on status.
+     * @author Soaiba
+     * @param status enrollment status.
+     * @param acceptButton accept button.
+     * @param denyButton deny button.
+     * @param cancelButton back button.
+     */
+    private void setButtonVisibility(String status, Button acceptButton, Button denyButton, Button cancelButton) {
+        if ("Waiting".equalsIgnoreCase(status)) {
+            acceptButton.setEnabled(false);
+            denyButton.setEnabled(false);
+            cancelButton.setEnabled(true);
+        } else if ("Invited".equalsIgnoreCase(status)) {
+            acceptButton.setEnabled(true);
+            denyButton.setEnabled(true);
+            cancelButton.setEnabled(false);
+        } else if ("Accepted".equalsIgnoreCase(status) || "Declined".equalsIgnoreCase(status) || "Unjoined".equalsIgnoreCase(status) || "Not Invited".equalsIgnoreCase(status)) {
+            acceptButton.setEnabled(false);
+            denyButton.setEnabled(false);
+            cancelButton.setEnabled(false);
+        } else {
+            acceptButton.setEnabled(true);
+            denyButton.setEnabled(true);
+            cancelButton.setEnabled(true);
+        }
     }
 
     /**

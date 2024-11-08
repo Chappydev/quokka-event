@@ -54,7 +54,7 @@ public class MyEventsActivity extends AppCompatActivity {
             intent.putExtra("event_name", event.getEventName());
             intent.putExtra("event_date", event.getEventDate().getTime());
             intent.putExtra("event_location", event.getEventLocation());
-            intent.putExtra("event_status", eventStatusMap.get(event.getEventID()));
+            intent.putExtra("status", eventStatusMap.get(event.getEventID()));
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
