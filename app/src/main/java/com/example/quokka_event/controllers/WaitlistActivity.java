@@ -58,7 +58,7 @@ public class WaitlistActivity extends AppCompatActivity {
             event = new Event();
             event.setEventDate((Date) extras.get("eventDate"));
             event.setEventLocation((String) extras.get("eventLocation"));
-            event.setEventID((String) extras.get("id"));
+            event.setEventID((String) extras.getString("eventId"));
             event.setEventName((String) extras.get("eventName"));
             event.setMaxParticipants((int) extras.get("maxParticipants"));
             event.setRegistrationDeadline((Date) extras.get("registrationDeadline"));

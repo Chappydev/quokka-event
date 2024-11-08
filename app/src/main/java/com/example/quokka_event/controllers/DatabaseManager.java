@@ -371,7 +371,6 @@ public class DatabaseManager {
                 .addOnFailureListener(e -> callback.onError(e));
     }
 
-
     /**
      * This method gets events by their ID.
      * @author Soaiba
@@ -446,7 +445,7 @@ public class DatabaseManager {
         Map<String, Object> enrollData = new HashMap<>();
         enrollData.put("eventId", eventId);
         enrollData.put("userId", userId);
-        enrollData.put("status", "WAITLIST");
+        enrollData.put("status", "Waiting");
 
         enrollsRef.add(enrollData)
                 .addOnSuccessListener(documentReference -> callback.onSuccess(documentReference.getId()))
