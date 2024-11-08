@@ -346,7 +346,7 @@ public class DatabaseManager {
     }
 
 
-    }
+
 
     // delete profile from database.
     public void deleteProfile(){
