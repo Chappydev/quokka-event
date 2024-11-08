@@ -23,6 +23,7 @@ import java.util.Locale;
  * @author Saimon
  */
 public class WaitlistActivity extends AppCompatActivity {
+    private Event event;
     private TextView eventTitle;
     private TextView dateText;
     private TextView timeText;
@@ -45,6 +46,18 @@ public class WaitlistActivity extends AppCompatActivity {
 
         User currentUser = User.getInstance(this.getApplicationContext());
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            event = new Event();
+            event.setEventDate((Date) extras.get("eventDate"));
+            event.setEventLocation((String) extras.get("eventLocation"));
+            event.setEventID((String) extras.get("id"));
+            event.setEventName((String) extras.get("eventName"));
+            event.setMaxParticipants((int) extras.get("maxParticipants"));
+            event.setRegistrationDeadline((Date) extras.get("registrationDeadline"));
+            event.setMaxWaitlist((int) extras.get("maxWaitlist"));
+        }
+
         // Initialize views and buttons
         eventTitle = findViewById(R.id.event_name_text);
         dateText = findViewById(R.id.date_text);
@@ -53,33 +66,30 @@ public class WaitlistActivity extends AppCompatActivity {
         organizerText = findViewById(R.id.organizer_text);
         joinButton = findViewById(R.id.join_waitlist_button);
 
-        // Set up date for signup
-        Date testDate = new Date();
-        // Set up deadline date
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(testDate);
-        cal.add(Calendar.DATE, 6);
-        Date deadline = cal.getTime();
-
-        // Test event
-        Event event = new Event("01", "Test Event", testDate, deadline, "Edmonton",5,5,new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>(), new ArrayList<ProfileSystem>());
+//        // Set up date for signup
+//        Date testDate = new Date();
+//        // Set up deadline date
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(testDate);
+//        cal.add(Calendar.DATE, 6);
+//        Date deadline = cal.getTime();
 
         eventTitle.setText(event.getEventName());
 
         // set up time text
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        String eventTime = timeFormat.format(event.getEventDate());timeText.setText(eventTime);
+        String eventTime = timeFormat.format(event.getEventDate());
         timeText.setText(eventTime);
 
         locationText.setText(event.getEventLocation());
 
-        // Seems like Event is missing organizer name.
+        // TODO: Add facility details on this page
         organizerText.setText("organizer");
 
         // Set date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM dd, yyyy", Locale.getDefault());
 
-        String dateTextFormatted = getString(R.string.date, testDate);
+//        String dateTextFormatted = getString(R.string.date, testDate);
         dateText.setText(event.getEventDate().toString());
 
         joinButton.setOnClickListener(new View.OnClickListener() {
