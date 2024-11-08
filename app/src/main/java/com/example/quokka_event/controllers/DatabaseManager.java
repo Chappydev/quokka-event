@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -194,27 +195,29 @@ public class DatabaseManager {
 
         // Pushing the payload to the collection
         usersRef
-                .whereEqualTo("deviceId", deviceId)
-                .whereNotEqualTo("facilityId", null)
+                .document(deviceId)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (queryDocumentSnapshots.isEmpty()){
+                .addOnSuccessListener(userSnapShot -> {
+                    if (!userSnapShot.exists()){
+                        callback.onError(new Exception("ERROR: User not found"));
+                    }
+                    Map<String, Object> userMap = userSnapShot.getData();
+                    if (userMap.get("facilityId") == null){
                         callback.onError(new Exception("ERROR: No facility owned. Please create a facility first!"));
                     } else {
-                        DocumentSnapshot userDoc = queryDocumentSnapshots.getDocuments().get(0);
-                        eventPayload.put("facilityId", userDoc.get("facilityId"));
+                        eventPayload.put("facilityId", userSnapShot.get("facilityId"));
                         eventsRef
                                 .add(eventPayload)
                                 .addOnSuccessListener(DocumentReference -> {
                                     DocumentReference.update("eventId", DocumentReference.getId())
                                             .addOnSuccessListener(response -> {
-                                                ArrayList<Map<String, Object>> currentEvents = (ArrayList<Map<String, Object>>) userDoc.get("events");
+                                                ArrayList<Map<String, Object>> currentEvents = (ArrayList<Map<String, Object>>) userMap.get("events");
                                                 if (currentEvents == null){
                                                     currentEvents = new ArrayList<>();
                                                 }
                                                 eventPayload.put("eventId", DocumentReference.getId());
                                                 currentEvents.add(eventPayload);
-                                                userDoc.getReference().update("events", currentEvents)
+                                                userSnapShot.getReference().update("events", currentEvents)
                                                         .addOnSuccessListener(v -> callback.onSuccess(DocumentReference.getId()))
                                                         .addOnFailureListener(e -> callback.onError(e));
                                             })
