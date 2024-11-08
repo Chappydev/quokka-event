@@ -52,6 +52,10 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.espresso.intents)
     implementation(libs.play.services.basement)
+    implementation(libs.uiautomator)
+    androidTestImplementation(libs.espresso.contrib){
+        exclude( group="com.google.protobuf", module="protobuf-lite")
+    }
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
