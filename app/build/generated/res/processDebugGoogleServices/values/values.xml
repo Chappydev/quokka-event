@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="gcm_defaultSenderId" translatable="false">613887869657</string>
-    <string name="google_api_key" translatable="false">AIzaSyAsNu9khCallpZxPK62VtZyL69-vGYbODM</string>
-    <string name="google_app_id" translatable="false">1:613887869657:android:de7315fcf464f986d3b4c8</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAsNu9khCallpZxPK62VtZyL69-vGYbODM</string>
-    <string name="google_storage_bucket" translatable="false">quokka-events.appspot.com</string>
-    <string name="project_id" translatable="false">quokka-events</string>
-</resources>
