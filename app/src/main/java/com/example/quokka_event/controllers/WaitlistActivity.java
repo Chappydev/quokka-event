@@ -33,13 +33,12 @@ public class WaitlistActivity extends AppCompatActivity {
     private Button joinButton;
     private Button exitButton;
 
-    //TODO SHOULD SWITCH TO THIS ACTIVITY FROM QR CODE
-    @Override
     /**
      * This method displays event details.
      * Handles join button activity.
      * @author Saimon
      */
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_waitlist_details);
@@ -65,14 +64,6 @@ public class WaitlistActivity extends AppCompatActivity {
         locationText = findViewById(R.id.location_text);
         organizerText = findViewById(R.id.organizer_text);
         joinButton = findViewById(R.id.join_waitlist_button);
-
-//        // Set up date for signup
-//        Date testDate = new Date();
-//        // Set up deadline date
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(testDate);
-//        cal.add(Calendar.DATE, 6);
-//        Date deadline = cal.getTime();
 
         eventTitle.setText(event.getEventName());
 

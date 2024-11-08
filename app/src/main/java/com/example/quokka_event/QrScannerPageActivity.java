@@ -30,12 +30,23 @@ import com.google.zxing.Result;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * The page responsible for scanning the QR code and sending you to the WaitlistActivity to see
+ * details and potentially enroll in the waitlist.
+ */
 public class QrScannerPageActivity extends AppCompatActivity {
     private CodeScanner codeScanner;
     private CodeScannerView scannerView;
     private DatabaseManager db;
 
 
+    /**
+     * Setting up the codeScanner
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +56,12 @@ public class QrScannerPageActivity extends AppCompatActivity {
         scannerView = findViewById(R.id.scanner_view);
         codeScanner = new CodeScanner(this, scannerView);
         codeScanner.setDecodeCallback(new DecodeCallback() {
+            /**
+             * Will look for the matching event id in database if we get an id back.
+             * Manages errors with Toasts.
+             * @author Chappydev
+             * @param result Encapsulates the result of decoding a barcode within an image
+             */
             @Override
             public void onDecoded(@NonNull final Result result) {
                 runOnUiThread(new Runnable() {
@@ -81,6 +98,10 @@ public class QrScannerPageActivity extends AppCompatActivity {
             }
         });
         scannerView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Restarts scanning on click
+             * @param view The view that was clicked.
+             */
             @Override
             public void onClick(View view) {
                 codeScanner.startPreview();
@@ -88,6 +109,9 @@ public class QrScannerPageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Starts scanning on resume
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -96,6 +120,9 @@ public class QrScannerPageActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Frees up resources used by codeScanner when activity is paused
+     */
     @Override
     protected void onPause() {
         if (codeScanner != null) {
@@ -104,6 +131,11 @@ public class QrScannerPageActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    /**
+     * Navigates to the WaitlistActivity, sending the Event data with it
+     * @author Chappydev
+     * @param eventMap  event data to send to the WaitlistActivity
+     */
     private void navigateToWaitlistActivity(Map<String, Object> eventMap) {
         Intent showActivity = new Intent(QrScannerPageActivity.this, WaitlistActivity.class);
         Timestamp eventDate = (Timestamp) eventMap.get("eventDate");
