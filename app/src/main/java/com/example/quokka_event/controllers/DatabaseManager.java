@@ -350,16 +350,19 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-    public void getSingleEvent(DbCallback callback){
+    public void getSingleEvent(String eventId, DbCallback callback){
         eventsRef
-                .limit(1)
+                .document(eventId)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()){
-                        DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
-                        callback.onSuccess(document.getData());
-                    }else {
-                        callback.onError(new Exception("No event found"));
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (!documentSnapshot.exists()){
+                            callback.onSuccess(documentSnapshot.getData());
+                        } else {
+                            callback.onError(new Exception("No event found"));
+                        }
+
                     }
                 })
                 .addOnFailureListener(e -> callback.onError(e));
