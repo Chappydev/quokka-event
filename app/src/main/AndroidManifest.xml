@@ -24,9 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".controllers.MyEventsPageActivity">
-        </activity>
 
         <activity android:name=".controllers.AdminLandingPageActivity"/>
         <activity android:name=".controllers.BrowseProfileDetailsActivity"/>

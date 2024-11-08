@@ -15,7 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 
-import com.example.quokka_event.controllers.MyEventsPageActivity;
+import com.example.quokka_event.controllers.MyEventsActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class MyEventsPageActivityTest {
         onView(withId(R.id.my_events_button)).perform(click());
 
         // Check the Activity has changed
-        intended(hasComponent(MyEventsPageActivity.class.getName()));
+        intended(hasComponent(MyEventsActivity.class.getName()));
         Intents.release();
 
     }
