@@ -1,13 +1,17 @@
 package com.example.quokka_event.models.event;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,12 +33,14 @@ public class OverviewFragment extends Fragment {
     TextView timeTextView;
     TextView locationTextView;
     TextView deadlineTextView;
+    private EditText descriptionEditText;
 
     public interface overviewEditListener{
         void setEventName(String eventTitle);
         void setEventDate(Date eventDate);
         void setLocation(String location);
         void setDeadline(Date deadline);
+        void setDescription(String description);
     }
 
     private overviewEditListener listener;
@@ -69,6 +75,7 @@ public class OverviewFragment extends Fragment {
         timeTextView = view.findViewById(R.id.event_time_label);
         locationTextView = view.findViewById(R.id.event_location_label);
         deadlineTextView = view.findViewById(R.id.event_deadline_label);
+        descriptionEditText = view.findViewById(R.id.event_description);
 
 
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
@@ -132,6 +139,25 @@ public class OverviewFragment extends Fragment {
             public void onClick(View view) {
                 EditEventDTLFragment editDateFrag = new EditEventDTLFragment();
                 editDateFrag.show(getChildFragmentManager(), "edit event date");
+            }
+        });
+
+        descriptionEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 500) {
+                    descriptionEditText.setText(s.subSequence(0, 500));
+                    descriptionEditText.setSelection(500);
+                    Toast.makeText(getContext(), "Description cannot exceed 500 characters", Toast.LENGTH_SHORT).show();
+                } else {
+                    listener.setDescription(s.toString());
+                }
             }
         });
 
