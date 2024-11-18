@@ -90,8 +90,8 @@ MERGED from [androidx.test.espresso:espresso-idling-resource:3.6.1] /Users/sohan
 	xmlns:android
 		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:2:11-69
 application
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:5:5-41:19
-INJECTED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:5:5-41:19
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:5:5-42:19
+INJECTED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:5:5-42:19
 MERGED from [com.google.firebase:firebase-firestore:25.1.0] /Users/sohannair/.gradle/caches/transforms-4/62b765d843b7b893ebbd05a2b6b39ae7/transformed/firebase-firestore-25.1.0/AndroidManifest.xml:13:5-24:19
 MERGED from [com.google.firebase:firebase-firestore:25.1.0] /Users/sohannair/.gradle/caches/transforms-4/62b765d843b7b893ebbd05a2b6b39ae7/transformed/firebase-firestore-25.1.0/AndroidManifest.xml:13:5-24:19
 MERGED from [com.google.firebase:firebase-auth:23.0.0] /Users/sohannair/.gradle/caches/transforms-4/b49bf4ffc0e9994e9792a6998cca81ea/transformed/firebase-auth-23.0.0/AndroidManifest.xml:28:5-73:19
@@ -162,76 +162,82 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/sohannair/.gradle/ca
 		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:13:9-49
 	android:dataExtractionRules
 		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:7:9-65
-activity#com.example.quokka_event.QrScannerPageActivity
+activity#com.example.quokka_event.controllers.EventDetailsViewActivity
 ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:15:9-17:40
 	android:exported
 		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:17:13-37
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:16:13-50
-activity#com.example.quokka_event.MainActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:18:9-26:20
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:16:13-65
+activity#com.example.quokka_event.QrScannerPageActivity
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:18:9-20:40
 	android:exported
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:20:13-36
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:20:13-37
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:19:13-41
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:19:13-50
+activity#com.example.quokka_event.MainActivity
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:21:9-29:20
+	android:exported
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:23:13-36
+	android:name
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:22:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:21:13-25:29
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:24:13-28:29
 action#android.intent.action.MAIN
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:22:17-69
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:25:17-69
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:22:25-66
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:25:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:24:17-77
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:27:17-77
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:24:27-74
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:27:27-74
 activity#com.example.quokka_event.controllers.AdminLandingPageActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:28:9-73
-	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:28:19-71
-activity#com.example.quokka_event.controllers.BrowseProfileDetailsActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:29:9-77
-	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:29:19-75
-activity#com.example.quokka_event.controllers.AdminBrowseEventsActivity
 ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:30:9-74
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:30:19-72
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:30:19-71
+activity#com.example.quokka_event.controllers.BrowseProfileDetailsActivity
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:31:9-78
+	android:name
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:31:19-75
+activity#com.example.quokka_event.controllers.AdminBrowseEventsActivity
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:32:9-75
+	android:name
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:32:19-72
 activity#com.example.quokka_event.controllers.AdminEventTabsActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:31:9-71
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:33:9-72
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:31:19-69
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:33:19-69
 activity#com.example.quokka_event.controllers.MyEventsActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:33:9-90
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:34:9-66
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:33:19-87
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:34:19-63
 activity#com.example.quokka_event.controllers.EventDetailsActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:34:9-94
-	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:34:19-91
-activity#com.example.quokka_event.controllers.ConfirmationActivity
 ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:35:9-70
 	android:name
 		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:35:19-67
+activity#com.example.quokka_event.controllers.ConfirmationActivity
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:36:9-70
+	android:name
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:36:19-67
 activity#com.example.quokka_event.controllers.WaitlistActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:36:9-66
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:37:9-66
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:36:19-63
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:37:19-63
 activity#com.example.quokka_event.NotificationPageActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:37:9-62
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:38:9-62
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:37:19-59
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:38:19-59
 activity#com.example.quokka_event.OrganizerEventsPageActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:38:9-65
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:39:9-65
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:38:19-62
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:39:19-62
 activity#com.example.quokka_event.controllers.EventTabsActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:39:9-67
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:40:9-67
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:39:19-64
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:40:19-64
 activity#com.example.quokka_event.UserProfilePageActivity
-ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:40:9-61
+ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:41:9-61
 	android:name
-		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:40:19-58
+		ADDED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml:41:19-58
 uses-sdk
 INJECTED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/sohannair/AndroidStudioProjects/quokkaevent/app/src/main/AndroidManifest.xml

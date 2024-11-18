@@ -3438,11 +3438,13 @@ int id endToStart 0x7f0800e8
 int id enterAlways 0x7f0800e9
 int id enterAlwaysCollapsed 0x7f0800ea
 int id escape 0x7f0800eb
+int id event_capacity_label 0x7f080292
 int id event_date 0x7f0800ec
 int id event_date_label 0x7f0800ed
 int id event_deadline_label 0x7f0800ee
 int id event_description 0x7f0800ef
 int id event_description_box 0x7f0800f0
+int id event_description_label 0x7f080293
 int id event_done_button 0x7f0800f1
 int id event_draw_remaining_button 0x7f0800f2
 int id event_list_recycler_view 0x7f0800f3
@@ -3454,6 +3456,7 @@ int id event_seats_available_label 0x7f0800f8
 int id event_seats_label 0x7f0800f9
 int id event_status 0x7f0800fa
 int id event_time_label 0x7f0800fb
+int id event_title 0x7f080294
 int id event_title_edittext 0x7f0800fc
 int id event_title_label 0x7f0800fd
 int id event_view_button 0x7f0800fe
@@ -4006,6 +4009,7 @@ int layout design_text_input_start_icon 0x7f0b0037
 int layout edit_event_date 0x7f0b0038
 int layout edit_event_title_fragment 0x7f0b0039
 int layout event_confirmation 0x7f0b003a
+int layout event_details_view 0x7f0b0091
 int layout event_edit_details_frag 0x7f0b003b
 int layout event_edit_overview_frag 0x7f0b003c
 int layout event_join_details 0x7f0b003d

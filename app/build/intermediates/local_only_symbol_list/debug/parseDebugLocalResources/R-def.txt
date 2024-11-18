@@ -64,11 +64,13 @@ id edit_title_button
 id edittext_entrant_cap
 id edittext_wl_cap
 id email_details_text
+id event_capacity_label
 id event_date
 id event_date_label
 id event_deadline_label
 id event_description
 id event_description_box
+id event_description_label
 id event_done_button
 id event_draw_remaining_button
 id event_list_recycler_view
@@ -80,6 +82,7 @@ id event_seats_available_label
 id event_seats_label
 id event_status
 id event_time_label
+id event_title
 id event_title_edittext
 id event_title_label
 id event_view_button
@@ -161,6 +164,7 @@ layout change_seat_fragment
 layout edit_event_date
 layout edit_event_title_fragment
 layout event_confirmation
+layout event_details_view
 layout event_edit_details_frag
 layout event_edit_overview_frag
 layout event_join_details

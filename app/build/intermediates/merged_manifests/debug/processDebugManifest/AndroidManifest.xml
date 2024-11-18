@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.quokka_event"
     android:versionCode="1"
-    android:versionName="1.0" > <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    android:versionName="1.0" >
+
     <uses-sdk
         android:minSdkVersion="24"
         android:targetSdkVersion="34" />
@@ -60,6 +61,9 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/Theme.Quokkaevent" >
+        <activity
+            android:name="com.example.quokka_event.controllers.EventDetailsViewActivity"
+            android:exported="false" />
         <activity
             android:name="com.example.quokka_event.QrScannerPageActivity"
             android:exported="false" />

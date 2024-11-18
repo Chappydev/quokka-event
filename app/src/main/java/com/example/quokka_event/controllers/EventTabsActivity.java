@@ -45,6 +45,8 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setEventDate(currentDate);
         event.setRegistrationDeadline(currentDate);
         event.setDescription("");
+        event.setMaxWaitlist(Integer.MAX_VALUE);
+        event.setMaxParticipants(Integer.MAX_VALUE);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
