@@ -200,6 +200,7 @@ public class DatabaseManager {
         eventPayload.put("registrationDeadline", event.getRegistrationDeadline());
         eventPayload.put("maxParticipants", event.getMaxParticipants());
         eventPayload.put("maxWaitlist", event.getMaxWaitlist());
+        eventPayload.put("description", event.getDescription());
 
         // Pushing the payload to the collection
         usersRef

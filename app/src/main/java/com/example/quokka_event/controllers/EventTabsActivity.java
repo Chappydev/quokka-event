@@ -44,6 +44,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setEventLocation("Location");
         event.setEventDate(currentDate);
         event.setRegistrationDeadline(currentDate);
+        event.setDescription("");
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
@@ -148,6 +149,9 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
     public void setDeadline(Date deadline) {
         event.setRegistrationDeadline(deadline);
     }
+
+    @Override
+    public void setDescription(String description) { event.setDescription(description); }
 
     /**
      * Called from listener in DetailsFragment.java

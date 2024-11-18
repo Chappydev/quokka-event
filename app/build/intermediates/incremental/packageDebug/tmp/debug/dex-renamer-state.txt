@@ -1,4 +1,4 @@
-#Fri Nov 08 15:35:08 MST 2024
+#Mon Nov 18 01:03:49 MST 2024
 base.0=/Users/sohannair/AndroidStudioProjects/quokkaevent/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/Users/sohannair/AndroidStudioProjects/quokkaevent/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
 base.10=/Users/sohannair/AndroidStudioProjects/quokkaevent/app/build/intermediates/dex/debug/mergeExtDexDebug/classes3.dex
