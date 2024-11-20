@@ -136,16 +136,6 @@ public class OverviewFragment extends Fragment {
         });
 
 
-        /*
-        // Set up a click listener for the edit button
-        Button editButton = view.findViewById(R.id.event_edit_button);
-        editButton.setOnClickListener(v -> {
-            // need to add functionality
-            new AddEditEventFragment().show(requireActivity().getSupportFragmentManager(), "Edit Event");
-
-        });
-         */
-
         return view;
 
     }
