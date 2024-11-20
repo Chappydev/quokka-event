@@ -46,7 +46,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="121f006b-7c6c-4fcf-9794-f61c733f8876" name="Changes" comment="" />
+    <list default="true" id="121f006b-7c6c-4fcf-9794-f61c733f8876" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,7 +57,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/Users/sohannair/.android/avd/Pixel_8_Pro_API_35.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/home/simon/.android/avd/Medium_Phone_API_35.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -132,7 +134,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "exp/merge-main-dev",
+    "git-widget-placeholder": "deliverable/project-part-3-copy",
     "kotlin-language-version-configured": "true",
     "settings.editor.selected.configurable": "experimental"
   }
@@ -146,7 +148,7 @@
       <recent name="com.example.quokka_event.controllers" />
     </key>
   </component>
-  <component name="RunManager" selected="Android Instrumented Tests.All Tests">
+  <component name="RunManager" selected="Android App.MainActivity">
     <configuration name="MainActivity" type="AndroidRunConfigurationType" factoryName="Android App" temporary="true">
       <module name="quokka-event.app.main" />
       <option name="DEPLOY" value="true" />
@@ -160,6 +162,8 @@
       <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
       <option name="ACTIVITY_EXTRA_FLAGS" value="" />
       <option name="MODE" value="specific_activity" />
+      <option name="RESTORE_ENABLED" value="false" />
+      <option name="RESTORE_FILE" value="" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
       <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
@@ -276,8 +280,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Android Instrumented Tests.All Tests" />
         <item itemvalue="Android App.MainActivity" />
+        <item itemvalue="Android Instrumented Tests.All Tests" />
       </list>
     </recent_temporary>
   </component>
@@ -291,5 +295,8 @@
       <updated>1731086835415</updated>
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
