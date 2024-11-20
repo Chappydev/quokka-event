@@ -25,6 +25,7 @@ import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.EventTabsActivity;
 import com.example.quokka_event.models.organizer.EventEntrantsPage;
 import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
+import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
 
 public class DetailsFragment extends Fragment {
 
@@ -37,6 +38,7 @@ public class DetailsFragment extends Fragment {
     EditText participantCapEditText;
     Boolean isWaitlistLimit;
     Boolean isParticipantLimit;
+    Button notifyParticipantsButton;
     Button notifyParticipantsButton;
     Button viewParticipantsButton;
 
@@ -90,6 +92,8 @@ public class DetailsFragment extends Fragment {
         remainSeatTextView = view.findViewById(R.id.event_seats_label);
         notifyParticipantsButton = view.findViewById(R.id.notify_participants_button);
         viewParticipantsButton = view.findViewById(R.id.view_participants_button);
+        notifyParticipantsButton = view.findViewById(R.id.notify_participants_button);
+
 
         // setting defaults to max values
         participantLimit = Integer.MAX_VALUE;
@@ -117,6 +121,17 @@ public class DetailsFragment extends Fragment {
                 Intent showActivity = new Intent(getActivity(), EventEntrantsPage.class);
                 startActivity(showActivity);
             }
+        });
+
+        notifyParticipantsButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                NotifyParticipantsFragment notifyParticipantsFragment = new NotifyParticipantsFragment();
+                notifyParticipantsFragment.show(getChildFragmentManager(), "notify participant");
+            }
+
+
         });
 
         limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
