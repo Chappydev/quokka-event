@@ -10,10 +10,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.fragment.app.DialogFragment;
-
 import com.example.quokka_event.R;
+
+/**
+ * This is a fragment that is displayed when an organizer clicks on the Notify Particpants button.
+ * @author mylayambao
+ * @since project part 4
+ */
 
 public class NotifyParticipantsFragment extends DialogFragment {
     TextView eventName;
@@ -22,10 +26,6 @@ public class NotifyParticipantsFragment extends DialogFragment {
     EditText notificationText;
     Spinner recipientSpinner;
 
-    /**
-     * @author mylayambao
-     * @since project part 4
-     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,4 +47,6 @@ public class NotifyParticipantsFragment extends DialogFragment {
 
          return  view;
     }
+
+
 }
