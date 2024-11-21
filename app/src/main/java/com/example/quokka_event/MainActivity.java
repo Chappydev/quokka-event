@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private String lastCreatedEventId;
     private String lastCreatedFacilityId;
     private static final int REQUEST_CODE = 100;
+    private Boolean isAdmin = false;
+    private Button adminButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +127,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        adminButton = findViewById(R.id.admin_button);
+        adminButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchAdminActivity(isAdmin);
+            }
+        });
+
     }
 
 
@@ -142,7 +152,8 @@ public class MainActivity extends AppCompatActivity {
                         (Boolean) map.get("admin")
                 );
                 Log.d("DB", "onCreate: " + user.getDeviceID());
-                switchAdminActivity(user.isAdmin());
+                isAdmin = user.isAdmin();
+                showAdminButton(isAdmin);
             }
 
             @Override
@@ -184,5 +195,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(activity);
         }
 
+    }
+
+    /**
+     * Show an admin button if user is an admin.
+     * @param isAdmin
+     */
+    void showAdminButton(Boolean isAdmin){
+        if (isAdmin){
+            adminButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            adminButton.setVisibility(View.GONE);
+        }
     }
 }
