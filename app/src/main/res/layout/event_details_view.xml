@@ -106,6 +106,14 @@
                 android:padding="16dp"
                 android:background="@drawable/event_description_box" />
 
+            <ImageView
+                android:id="@+id/qr_image"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:scaleType="fitCenter" />
+
         </LinearLayout>
     </ScrollView>
 

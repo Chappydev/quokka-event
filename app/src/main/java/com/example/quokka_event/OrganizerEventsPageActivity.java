@@ -79,6 +79,8 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
         eventViewButton.setOnClickListener(v->{
             Intent showActivity = new Intent(OrganizerEventsPageActivity.this, EventTabsActivity.class);
             startActivity(showActivity);
+
+            // generate and display a qr code
         });
 
 

@@ -69,9 +69,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 case 1:
                     tab.setText("Details");
                     break;
-                case 2:
-                    tab.setText("QR Code");
-                    break;
+
             }
         }).attach();
 
@@ -95,6 +93,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                         Toast.makeText(EventTabsActivity.this,
                                 "Event created successfully",
                                 Toast.LENGTH_SHORT).show();
+
                         finish();
                     }
 

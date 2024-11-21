@@ -1,8 +1,11 @@
 package com.example.quokka_event.controllers;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,11 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.google.firebase.Timestamp;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+
 
 public class EventDetailsViewActivity extends AppCompatActivity {
     private TextView eventTitle;
@@ -28,6 +36,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private TextView eventDescriptionLabel;
     private Button backButton;
     private DatabaseManager db;
+    ImageView qrImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         eventDeadlineLabel = findViewById(R.id.event_deadline_label);
         eventDescriptionLabel = findViewById(R.id.event_description_label);
         backButton = findViewById(R.id.back_button_bottom);
+        qrImage = findViewById(R.id.qr_image);
 
         db = DatabaseManager.getInstance(this);
 
@@ -58,6 +68,37 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
     }
 
+
+    /**
+     * Generates and displays a QR Code
+     * @author mylayambao
+     * @param eventId
+     * @throws WriterException
+     */
+
+    private void generateQR(String eventId) throws WriterException {
+
+        // create the qr map
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        int width = 800;
+        int height = 800;
+
+        // ref :https://stackoverflow.com/questions/41606384/how-to-generate-qr-code-using-zxing-library
+        try {
+            BitMatrix bitMatrix = qrCodeWriter.encode(eventId, BarcodeFormat.QR_CODE, width, height);
+
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                }
+            }
+            // display the qr code
+            qrImage.setImageBitmap(bitmap);
+        } catch (WriterException e){
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Loads the event details for the selected event
@@ -97,6 +138,9 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     // description and possible nulls
                     String description = (String) event.get("description");
                     eventDescriptionLabel.setText(description != null ? description : "No description available");
+
+                    // generate & display the qr code
+                    generateQR(eventId);
 
                 } catch (Exception e) {
                     Log.e("EventDetails", "Error formatting event data", e);
