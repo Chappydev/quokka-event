@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class AdminEventOverviewFragment extends Fragment {
     TextView eventNameTextView;
-    Button deleteButton;
+    Button backButton;
     TextView dateTextView;
     TextView locationTextView;
     TextView timeTextView;
@@ -50,7 +50,6 @@ public class AdminEventOverviewFragment extends Fragment {
         timeTextView = view.findViewById(R.id.event_time_label);
         locationTextView = view.findViewById(R.id.event_location_label);
         deadlineTextView = view.findViewById(R.id.event_deadline_label);
-        deleteButton = view.findViewById(R.id.back_button_bottom);
         AdminEventTabsActivity activity = (AdminEventTabsActivity) getActivity();
         Map<String, Object> event = activity.getEventDetails();
         eventNameTextView.setText((String) event.get("eventName"));
@@ -71,6 +70,7 @@ public class AdminEventOverviewFragment extends Fragment {
         timeTextView.setText(timestring);
         deadlineTextView.setText("Deadline: "+deadlineString);
         locationTextView.setText(location);
+
         return view;
     }
 }

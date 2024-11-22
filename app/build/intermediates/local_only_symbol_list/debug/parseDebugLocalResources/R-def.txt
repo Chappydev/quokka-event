@@ -22,11 +22,15 @@ id accept_button
 id add_button_bottom
 id adminToolbar
 id admin_back_button
+id admin_browse_facility
 id admin_button
 id admin_delete_profile_button
 id admin_event_date
 id admin_event_name
 id admin_events_list
+id admin_facility_list
+id admin_facility_name
+id admin_facility_view_button
 id admin_landing_page
 id admin_profile_recycler
 id admin_tab_layout
@@ -39,7 +43,6 @@ id back_button_bottom
 id bell
 id browse_events_button
 id browse_events_button3
-id browse_events_button4
 id browse_profile_button
 id cancel_button
 id cancelbutton
@@ -48,6 +51,7 @@ id confirm_change_seat_button
 id confirmationMessage
 id date_text
 id day_picker
+id delete_button
 id deny_button
 id editDateTextView
 id editDeadlineTextView
@@ -87,7 +91,6 @@ id event_title
 id event_title_edittext
 id event_title_label
 id event_view_button
-id event_viewpager
 id event_waitlist_label
 id exitButton
 id facility_address_field
@@ -157,6 +160,9 @@ layout activity_qr_scanner_page
 layout admin_browse_events
 layout admin_event_overview_frag
 layout admin_event_tabs
+layout admin_event_view_frag
+layout admin_facility_activity
+layout admin_facility_content
 layout admin_landing_page
 layout admin_toolbar
 layout all_profiles_fragment

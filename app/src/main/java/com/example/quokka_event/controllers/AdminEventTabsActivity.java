@@ -2,6 +2,8 @@ package com.example.quokka_event.controllers;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,10 +21,14 @@ import java.util.Map;
  */
 public class AdminEventTabsActivity extends AppCompatActivity {
     Map<String, Object> event_details;
+    Button backButton;
+    Button deleteButton;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_event_tabs);
+        backButton = findViewById(R.id.cancel_button);
+        deleteButton = findViewById(R.id.delete_button);
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             event_details = (Map<String, Object>) extras.get("event");
@@ -31,19 +37,18 @@ public class AdminEventTabsActivity extends AppCompatActivity {
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         AdminViewPagerAdapter adapter = new AdminViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            switch (position){
-                case 0:
-                    tab.setText("Overview");
-                    break;
-                case 1:
-                    tab.setText("Details");
-                    break;
-                case 2:
-                    tab.setText("QR Code");
-                    break;
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
-        }).attach();
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
     public Map<String, Object> getEventDetails(){
         return event_details;

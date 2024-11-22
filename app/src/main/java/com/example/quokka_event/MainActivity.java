@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_landing_page);
 
+
         myEventButton = findViewById(R.id.my_events_button);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.landing_page), (v, insets) -> {
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         adminButton = findViewById(R.id.admin_button);
+        adminButton.setVisibility(View.GONE);
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

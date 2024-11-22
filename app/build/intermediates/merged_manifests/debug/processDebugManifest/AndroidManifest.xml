@@ -78,6 +78,7 @@
         </activity>
         <activity android:name="com.example.quokka_event.controllers.AdminLandingPageActivity" />
         <activity android:name="com.example.quokka_event.controllers.BrowseProfileDetailsActivity" />
+        <activity android:name="com.example.quokka_event.controllers.BrowseProfilesActivity" />
         <activity android:name="com.example.quokka_event.controllers.AdminBrowseEventsActivity" />
         <activity android:name="com.example.quokka_event.controllers.AdminEventTabsActivity" />
         <activity android:name="com.example.quokka_event.controllers.MyEventsActivity" />

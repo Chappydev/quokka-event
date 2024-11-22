@@ -3280,11 +3280,15 @@ int id adjust_height 0x7f08004a
 int id adjust_width 0x7f08004b
 int id adminToolbar 0x7f08004c
 int id admin_back_button 0x7f08004d
+int id admin_browse_facility 0x7f080296
 int id admin_button 0x7f08004e
 int id admin_delete_profile_button 0x7f08004f
 int id admin_event_date 0x7f080050
 int id admin_event_name 0x7f080051
 int id admin_events_list 0x7f080052
+int id admin_facility_list 0x7f080297
+int id admin_facility_name 0x7f080298
+int id admin_facility_view_button 0x7f080299
 int id admin_landing_page 0x7f080053
 int id admin_profile_recycler 0x7f080054
 int id admin_tab_layout 0x7f080055
@@ -3326,7 +3330,6 @@ int id bounceEnd 0x7f080078
 int id bounceStart 0x7f080079
 int id browse_events_button 0x7f08007a
 int id browse_events_button3 0x7f08007b
-int id browse_events_button4 0x7f08007c
 int id browse_profile_button 0x7f08007d
 int id browser_actions_header_text 0x7f08007e
 int id browser_actions_menu_item_icon 0x7f08007f
@@ -3384,6 +3387,7 @@ int id decelerate 0x7f0800b2
 int id decelerateAndComplete 0x7f0800b3
 int id decor_content_parent 0x7f0800b4
 int id default_activity_button 0x7f0800b5
+int id delete_button 0x7f08029b
 int id deltaRelative 0x7f0800b6
 int id deny_button 0x7f0800b7
 int id dependency_ordering 0x7f0800b8
@@ -3461,7 +3465,6 @@ int id event_title 0x7f0800ff
 int id event_title_edittext 0x7f080100
 int id event_title_label 0x7f080101
 int id event_view_button 0x7f080102
-int id event_viewpager 0x7f080103
 int id event_waitlist_label 0x7f080104
 int id exitButton 0x7f080105
 int id exitUntilCollapsed 0x7f080106
@@ -3984,6 +3987,9 @@ int layout activity_qr_scanner_page 0x7f0b001d
 int layout admin_browse_events 0x7f0b001e
 int layout admin_event_overview_frag 0x7f0b001f
 int layout admin_event_tabs 0x7f0b0020
+int layout admin_event_view_frag 0x7f0b0094
+int layout admin_facility_activity 0x7f0b0092
+int layout admin_facility_content 0x7f0b0093
 int layout admin_landing_page 0x7f0b0021
 int layout admin_toolbar 0x7f0b0022
 int layout all_profiles_fragment 0x7f0b0023

@@ -3281,11 +3281,15 @@ id adjust_height
 id adjust_width
 id adminToolbar
 id admin_back_button
+id admin_browse_facility
 id admin_button
 id admin_delete_profile_button
 id admin_event_date
 id admin_event_name
 id admin_events_list
+id admin_facility_list
+id admin_facility_name
+id admin_facility_view_button
 id admin_landing_page
 id admin_profile_recycler
 id admin_tab_layout
@@ -3327,7 +3331,6 @@ id bounceEnd
 id bounceStart
 id browse_events_button
 id browse_events_button3
-id browse_events_button4
 id browse_profile_button
 id browser_actions_header_text
 id browser_actions_menu_item_icon
@@ -3385,6 +3388,7 @@ id decelerate
 id decelerateAndComplete
 id decor_content_parent
 id default_activity_button
+id delete_button
 id deltaRelative
 id deny_button
 id dependency_ordering
@@ -3462,7 +3466,6 @@ id event_title
 id event_title_edittext
 id event_title_label
 id event_view_button
-id event_viewpager
 id event_waitlist_label
 id exitButton
 id exitUntilCollapsed
@@ -3985,6 +3988,9 @@ layout activity_qr_scanner_page
 layout admin_browse_events
 layout admin_event_overview_frag
 layout admin_event_tabs
+layout admin_event_view_frag
+layout admin_facility_activity
+layout admin_facility_content
 layout admin_landing_page
 layout admin_toolbar
 layout all_profiles_fragment
