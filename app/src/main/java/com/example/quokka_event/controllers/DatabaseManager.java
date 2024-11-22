@@ -1,9 +1,11 @@
 package com.example.quokka_event.controllers;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
@@ -20,11 +22,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 
@@ -192,6 +198,7 @@ public class DatabaseManager {
      * @param callback
      */
     public void addEvent(Event event, String deviceId, DbCallback callback){
+
         Map<String, Object> eventPayload = new HashMap<>();
         eventPayload.put("eventId", event.getEventID());
         eventPayload.put("eventName", event.getEventName());
@@ -201,6 +208,7 @@ public class DatabaseManager {
         eventPayload.put("maxParticipants", event.getMaxParticipants());
         eventPayload.put("maxWaitlist", event.getMaxWaitlist());
         eventPayload.put("description", event.getDescription());
+        eventPayload.put("image", event.getPoster());
 
         // Pushing the payload to the collection
         usersRef
@@ -629,5 +637,30 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(e -> callback.onError(e));
     }
+
+    /**
+     * Uploads the poster to the db and returns url, returns null url of poster is null
+     * @author mylayambao
+     */
+    public void uploadPoster(@Nullable Uri posterUri, DbCallback callback){
+        if (posterUri == null){
+            callback.onSuccess(null); // return null
+            return;
+        }
+        // create reference to storage
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference fileRef = storageReference.child("images/" + UUID.randomUUID().toString());
+
+        // upload the poster
+        fileRef.putFile(posterUri)
+                .addOnSuccessListener(taskSnapshot ->
+                        fileRef.getDownloadUrl().addOnSuccessListener(uri -> callback.onSuccess(uri.toString()))
+                )
+                .addOnFailureListener(e -> callback.onError(new Exception("Image upload failed: " + e.getMessage())));
+    }
+
+
+
+
 }
 

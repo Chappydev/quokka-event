@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -153,6 +154,13 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
     @Override
     public void setDescription(String description) { event.setDescription(description); }
+
+    /**
+     * Set event deadline called from a listener in OverviewFragment.java
+     * @param poster
+     */
+    @Override
+    public void setPoster(Uri poster) { event.setPoster(poster);}
 
     /**
      * Called from listener in DetailsFragment.java

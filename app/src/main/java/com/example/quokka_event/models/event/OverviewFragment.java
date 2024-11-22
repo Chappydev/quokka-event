@@ -1,5 +1,8 @@
 package com.example.quokka_event.models.event;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,9 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
@@ -20,10 +27,15 @@ import androidx.fragment.app.FragmentResultListener;
 import com.example.quokka_event.models.organizer.EditEventDTLFragment;
 import com.example.quokka_event.models.organizer.EditEventTitleFragment;
 import com.example.quokka_event.R;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import com.bumptech.glide.Glide;
 
 public class OverviewFragment extends Fragment {
     ImageButton editNameButton;
@@ -34,6 +46,27 @@ public class OverviewFragment extends Fragment {
     TextView locationTextView;
     TextView deadlineTextView;
     private EditText descriptionEditText;
+    // for poster upload
+    StorageReference storageReference;
+    FirebaseStorage firebaseStorage;
+    Uri image;
+    Button uploadImageButton;
+    ImageView posterImage;
+    // Initialize Firebase Storage
+
+    ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                    image = result.getData().getData();
+                    Glide.with(requireContext()).load(image).into(posterImage);
+
+
+                }
+            }
+    );
+
+
 
     public interface overviewEditListener{
         void setEventName(String eventTitle);
@@ -41,6 +74,7 @@ public class OverviewFragment extends Fragment {
         void setLocation(String location);
         void setDeadline(Date deadline);
         void setDescription(String description);
+        void setPoster(Uri poster);
     }
 
     private overviewEditListener listener;
@@ -76,6 +110,13 @@ public class OverviewFragment extends Fragment {
         locationTextView = view.findViewById(R.id.event_location_label);
         deadlineTextView = view.findViewById(R.id.event_deadline_label);
         descriptionEditText = view.findViewById(R.id.event_description);
+        posterImage = view.findViewById(R.id.poster_image);
+        uploadImageButton = view.findViewById(R.id.upload_image_button);
+
+        // Initialize Firebase Storage
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference("uploaded_images");
+
 
 
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
@@ -118,9 +159,6 @@ public class OverviewFragment extends Fragment {
             }
         });
 
-
-
-
         editNameButton.setOnClickListener(new View.OnClickListener() {
             /**
              * When the button is clicked, edit the event name
@@ -161,6 +199,14 @@ public class OverviewFragment extends Fragment {
             }
         });
 
+        uploadImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDeviceGallery();
+            }
+        });
+
+
 
         /*
         // Set up a click listener for the edit button
@@ -174,5 +220,37 @@ public class OverviewFragment extends Fragment {
 
         return view;
 
+    }
+
+    /**
+     * Allows the user to select an image from their device
+     * @author mylayambao
+     */
+    private void openDeviceGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        imageLauncher.launch(intent);
+    }
+
+    /**
+     * Allows image upload to firebase
+     * @author mylayambao
+     */
+    private void uploadImage(Uri poster){
+        // create a filename (using time)
+        String fileName = System.currentTimeMillis() + ".jpg";
+        StorageReference fileReference = storageReference.child(fileName); // storage reff
+
+        // Upload the image
+        fileReference.putFile(poster)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // Get the download URL
+                    fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String downloadUrl = uri.toString();
+                    });
+                })
+                .addOnFailureListener(e -> {
+
+                });
     }
 }

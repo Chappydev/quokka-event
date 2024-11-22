@@ -1,5 +1,7 @@
 package com.example.quokka_event.models.event;
 
+import android.net.Uri;
+
 import com.example.quokka_event.models.ProfileSystem;
 
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ public class Event {
     private ArrayList<ProfileSystem> waitList;
     private ArrayList<ProfileSystem> cancelledParticipants;
 
+    // for poster upload
+    private Uri poster;
+
     /**
      * Constructs an Event with specified attributes.
      *
@@ -36,7 +41,6 @@ public class Event {
      * @param participantList       list of participants
      * @param waitList              list of waitlisted entrants
      * @param cancelledParticipants list of cancelled participants
-     * @param description           event description field
      * @author idk???
      */
     public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<ProfileSystem> participantList, ArrayList<ProfileSystem> waitList, ArrayList<ProfileSystem> cancelledParticipants) {
@@ -117,6 +121,9 @@ public class Event {
 
     public String getDescription(){ return this.description; }
 
+    public Uri getPoster() {return poster;}
+
+    public void setPoster(Uri poster) {this.poster = poster;}
 
     public ArrayList<ProfileSystem> getParticipantList() {
         return participantList;

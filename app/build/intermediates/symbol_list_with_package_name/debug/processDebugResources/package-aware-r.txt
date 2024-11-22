@@ -3492,6 +3492,7 @@ id frost
 id fullscreen_header
 id ghost_view
 id ghost_view_holder
+id glide_custom_view_target_tag
 id gone
 id graph
 id graph_wrap
@@ -3668,6 +3669,7 @@ id phone_details_text
 id pin
 id position
 id postLayout
+id poster_image
 id pressed
 id profile
 id profile_divider
@@ -3820,6 +3822,7 @@ id unchecked
 id uniform
 id unlabeled
 id up
+id upload_image_button
 id useLogo
 id user_email
 id user_email_label

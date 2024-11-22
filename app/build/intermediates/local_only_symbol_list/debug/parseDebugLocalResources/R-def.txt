@@ -118,6 +118,7 @@ id organizer_events_recycler
 id organizer_events_title
 id organizer_text
 id phone_details_text
+id poster_image
 id profile
 id profile_divider
 id profile_name
@@ -140,6 +141,7 @@ id textView5
 id time_text
 id toolbar2
 id topToolbar
+id upload_image_button
 id user_email
 id user_email_label
 id user_name_field

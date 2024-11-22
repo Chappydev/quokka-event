@@ -44,6 +44,10 @@ dependencies {
     implementation("com.google.zxing:core:3.4.1")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
+    // for images
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
     implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
 
     implementation(libs.appcompat)
@@ -53,6 +57,7 @@ dependencies {
     implementation(libs.espresso.intents)
     implementation(libs.play.services.basement)
     implementation(libs.uiautomator)
+    implementation(libs.firebase.storage)
     androidTestImplementation(libs.espresso.contrib){
         exclude( group="com.google.protobuf", module="protobuf-lite")
     }
