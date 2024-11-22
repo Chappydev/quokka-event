@@ -44,6 +44,9 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setEventLocation("Location");
         event.setEventDate(currentDate);
         event.setRegistrationDeadline(currentDate);
+        event.setDescription("");
+        event.setMaxWaitlist(Integer.MAX_VALUE);
+        event.setMaxParticipants(Integer.MAX_VALUE);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
@@ -66,9 +69,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 case 1:
                     tab.setText("Details");
                     break;
-                case 2:
-                    tab.setText("QR Code");
-                    break;
+
             }
         }).attach();
 
@@ -92,6 +93,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                         Toast.makeText(EventTabsActivity.this,
                                 "Event created successfully",
                                 Toast.LENGTH_SHORT).show();
+
                         finish();
                     }
 
@@ -148,6 +150,9 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
     public void setDeadline(Date deadline) {
         event.setRegistrationDeadline(deadline);
     }
+
+    @Override
+    public void setDescription(String description) { event.setDescription(description); }
 
     /**
      * Called from listener in DetailsFragment.java
