@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -37,6 +39,7 @@ public class AdminEventTabsActivity extends AppCompatActivity {
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         AdminViewPagerAdapter adapter = new AdminViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
+        DatabaseManager db = DatabaseManager.getInstance(this);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,11 +49,28 @@ public class AdminEventTabsActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String eventId = (String)event_details.get("eventId");
+                db.deleteEvent(eventId, new DbCallback() {
+                    @Override
+                    public void onSuccess(Object result) {
+                        startEventsTab();
+                    }
 
+                    @Override
+                    public void onError(Exception exception) {
+
+                    }
+                });
             }
         });
+
     }
     public Map<String, Object> getEventDetails(){
         return event_details;
+    }
+    void startEventsTab(){
+        Intent intent = new Intent(this, AdminBrowseEventsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }
