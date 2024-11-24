@@ -524,7 +524,21 @@ public class DatabaseManager {
                 .addOnSuccessListener(documentReference -> callback.onSuccess(documentReference.getId()))
                 .addOnFailureListener(e -> callback.onError(e));
     }
-
+    public void getAllFacilities(RetrieveData callback){
+        final ArrayList<Map<String, Object>> facilityList = new ArrayList();
+        facilityRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Map<String, Object> facility = document.getData();
+                        facilityList.add(facility);
+                    }
+                    callback.onDataLoaded(facilityList);
+                }
+            }
+        });
+    }
     /**
      * Grab all events from database
      * @param callback
