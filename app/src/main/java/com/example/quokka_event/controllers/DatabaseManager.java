@@ -630,26 +630,42 @@ public class DatabaseManager {
                 .addOnFailureListener(e -> callback.onError(e));
     }
 
+
     /**
-     * Retrieves the waitlist of an event
-     * @author mylayambao
+     * updates event details
+     * @author speakerchef
      * @param eventId
+     * @param updates
      * @param callback
      */
-    public void getEventWaitlist(String eventId, DbCallback callback){
-        eventsRef
-                .document(eventId)
+    public void updateEvent(String eventId, String userId, Map<String, Object> updates, DbCallback callback) {
+        usersRef.document(userId)
                 .get()
-                .addOnSuccessListener(task -> {
-                    if(task.exists()){
-                        List<Object> waitlist = (List<Object>) task.get("waitlist");
+                .addOnSuccessListener(documentSnapshot -> {
+                    ArrayList<Map<String, Object>> organizerEvents =
+                            (ArrayList<Map<String, Object>>) documentSnapshot.get("events");
 
-                        if (waitlist != null){
-                            callback.onSuccess(waitlist);
+                    if (organizerEvents != null) {
+                        // Update event in organizer's array
+                        for (Map<String, Object> event : organizerEvents) {
+                            if (eventId.equals(event.get("eventId"))) {
+                                event.putAll(updates);
+                                break;
+                            }
                         }
+
+                        // Update both database locations
+                        Task<Void> eventUpdate = eventsRef.document(eventId).update(updates);
+                        Task<Void> userUpdate = usersRef.document(userId).update("events", organizerEvents);
+
+                        Tasks.whenAllComplete(eventUpdate, userUpdate)
+                                .addOnSuccessListener(tasks -> callback.onSuccess(null))
+                                .addOnFailureListener(callback::onError);
                     }
                 })
-                .addOnFailureListener(e -> callback.onError(e));
+                .addOnFailureListener(callback::onError);
     }
 }
+
+
 

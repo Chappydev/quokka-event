@@ -26,6 +26,15 @@
                 android:padding="16dp"
                 android:textColor="#000000"
                 android:textSize="40dp" />
+
+            <EditText
+                android:id="@+id/event_title_edit"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:padding="16dp"
+                android:textColor="#000000"
+                android:textSize="40dp"
+                android:visibility="gone" />
         </TableRow>
     </TableLayout>
 
@@ -34,13 +43,14 @@
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/event_name"
-        app:layout_constraintBottom_toTopOf="@id/back_button_bottom">
+        app:layout_constraintBottom_toTopOf="@id/button_container">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Existing textview fields -->
             <TextView
                 android:id="@+id/event_date_label"
                 android:layout_width="wrap_content"
@@ -57,6 +67,7 @@
                 android:textSize="18sp"
                 android:text="Time:" />
 
+            <!-- Location field -->
             <TextView
                 android:id="@+id/event_location_label"
                 android:layout_width="wrap_content"
@@ -65,6 +76,15 @@
                 android:textSize="18sp"
                 android:text="Location:" />
 
+            <EditText
+                android:id="@+id/event_location_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <!-- Capacity fields -->
             <TextView
                 android:id="@+id/event_capacity_label"
                 android:layout_width="wrap_content"
@@ -73,6 +93,16 @@
                 android:textSize="18sp"
                 android:text="Capacity:" />
 
+            <EditText
+                android:id="@+id/event_capacity_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:inputType="number"
+                android:visibility="gone" />
+
+            <!-- Waitlist fields -->
             <TextView
                 android:id="@+id/event_waitlist_label"
                 android:layout_width="wrap_content"
@@ -80,6 +110,15 @@
                 android:layout_marginTop="10dp"
                 android:textSize="18sp"
                 android:text="Waitlist Capacity:" />
+
+            <EditText
+                android:id="@+id/event_waitlist_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:inputType="number"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/event_deadline_label"
@@ -89,6 +128,7 @@
                 android:textSize="18sp"
                 android:text="Registration Deadline:" />
 
+            <!-- Description fields -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,6 +146,16 @@
                 android:padding="16dp"
                 android:background="@drawable/event_description_box" />
 
+            <EditText
+                android:id="@+id/event_description_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:background="@drawable/event_description_box"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/qr_image"
                 android:layout_width="200dp"
@@ -117,12 +167,38 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/back_button_bottom"
+    <LinearLayout
+        android:id="@+id/button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back"
+        android:orientation="horizontal"
         android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/back_button_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Back" />
+
+        <Button
+            android:id="@+id/edit_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Edit" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Save"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
