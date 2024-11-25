@@ -629,5 +629,43 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(e -> callback.onError(e));
     }
+
+
+    /**
+     * updates event details
+     * @author speakerchef
+     * @param eventId
+     * @param updates
+     * @param callback
+     */
+    public void updateEvent(String eventId, String userId, Map<String, Object> updates, DbCallback callback) {
+        usersRef.document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    ArrayList<Map<String, Object>> organizerEvents =
+                            (ArrayList<Map<String, Object>>) documentSnapshot.get("events");
+
+                    if (organizerEvents != null) {
+                        // Update event in organizer's array
+                        for (Map<String, Object> event : organizerEvents) {
+                            if (eventId.equals(event.get("eventId"))) {
+                                event.putAll(updates);
+                                break;
+                            }
+                        }
+
+                        // Update both database locations
+                        Task<Void> eventUpdate = eventsRef.document(eventId).update(updates);
+                        Task<Void> userUpdate = usersRef.document(userId).update("events", organizerEvents);
+
+                        Tasks.whenAllComplete(eventUpdate, userUpdate)
+                                .addOnSuccessListener(tasks -> callback.onSuccess(null))
+                                .addOnFailureListener(callback::onError);
+                    }
+                })
+                .addOnFailureListener(callback::onError);
+    }
 }
+
+
 
