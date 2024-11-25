@@ -1,6 +1,8 @@
 package com.example.quokka_event;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,6 +17,7 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.organizer.Facility;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 public class UserProfilePageActivity extends AppCompatActivity {
@@ -113,6 +116,10 @@ public class UserProfilePageActivity extends AppCompatActivity {
         });
     }
 
+    private boolean validPhoneNumber(String phone){
+        return phone.length() <= 10 && phone.length() >= 8 && phone.matches("[0-9]+");
+    }
+
 
     /**
      * Saves changes made by user to the database
@@ -130,10 +137,24 @@ public class UserProfilePageActivity extends AppCompatActivity {
         String facilityAddress = facilityAddressField.getText().toString().trim();
 
         // Validate profile data
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty()) {
-            Toast.makeText(this, "Please fill in all profile fields", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty() || email.isEmpty()) {
+            Toast.makeText(this, "Please fill in all profile fields!", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (name.matches("[0-9]+")){
+            Toast.makeText(this, "Please enter a valid name!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!(email.contains("@") && email.contains("."))) {
+            Toast.makeText(this, "Please enter a valid email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!(phone != "" && validPhoneNumber(phone))){
+            Toast.makeText(this, "Please enter a valid 8-10 digit phone number!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
 
         // Save profile changes first
         String deviceId = auth.getCurrentUser().getUid();
@@ -141,7 +162,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Object result) {
                 // Handle facility data after profile is updated
-                if (!facilityName.isEmpty() && !facilityAddress.isEmpty()) {
+                if (!facilityName.isEmpty()) {
                     if (existingFacilityId != null) {
                         // Updates their existing facility
                         db.updateFacility(existingFacilityId, facilityName, facilityAddress, new DbCallback() {
