@@ -64,10 +64,10 @@ public class MyEventsActivity extends AppCompatActivity {
         userId = user.getDeviceID();
 
         // Get all events from database
-        getEvents();
+        //();
 
         // Get user's events from database
-        //getUserEvents();;
+        getUserEvents();;
 
         // Handle back button activity
         Button backButton = findViewById(R.id.back_button_bottom);
