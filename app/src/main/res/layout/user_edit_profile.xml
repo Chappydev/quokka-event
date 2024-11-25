@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Made by Simon
+     Edited by Soaiba -->
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,16 +15,16 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@+id/topToolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <!-- Circular Image -->
@@ -43,17 +45,17 @@
                     android:layout_gravity="center"
                     app:cardCornerRadius="250dp">
 
+                    <!-- User pfp -->
                     <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:textAlignment="center"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/edit_icon" />
-
+                        android:id="@+id/user_profile_image_view"
+                        android:layout_width="125dp"
+                        android:layout_height="125dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="@string/profile_picture" />
                 </androidx.cardview.widget.CardView>
 
             </androidx.cardview.widget.CardView>
-
             <!-- Name Label -->
             <TextView
                 android:id="@+id/user_name_label"
@@ -177,10 +179,8 @@
                         android:background="@drawable/edit_icon"
                         app:layout_constraintTop_toBottomOf="@+id/facility_address_field" />
                 </androidx.cardview.widget.CardView>
+
             </androidx.cardview.widget.CardView>
-
-
-
             <!-- Facility Name Label -->
             <TextView
                 android:id="@+id/facility_name_label"
@@ -194,7 +194,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_divider"/>
-
 
             <!-- Facility Name Field -->
             <EditText
@@ -233,7 +232,6 @@
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@+id/facility_name_field"/>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,9 +259,7 @@
                     android:layout_marginStart="10dp"
                     android:background="@drawable/landing_button"
                     android:text="Save Changes" />
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

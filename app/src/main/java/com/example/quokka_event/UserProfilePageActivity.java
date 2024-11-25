@@ -1,5 +1,6 @@
 package com.example.quokka_event;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,12 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.ProfileSystem;
+import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.organizer.Facility;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.reflect.Type;
 import java.util.Map;
 
+/**
+ * This class manages user's profile page.
+ */
 public class UserProfilePageActivity extends AppCompatActivity {
     private DatabaseManager db;
     private FirebaseAuth auth;
@@ -34,6 +41,10 @@ public class UserProfilePageActivity extends AppCompatActivity {
     private CheckBox notificationCheckBox;
 
     @Override
+    /**
+     * This method initializes the activity.
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -57,20 +68,31 @@ public class UserProfilePageActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> saveChanges());
     }
 
-
     /**
-     * Loads user data into UI
-     * @author speakerchef
+     * Loads user data into UI.
+     * @author speakerchef and Soaiba
      */
     private void loadUserData() {
         String deviceId = auth.getCurrentUser().getUid();
         db.getUserData(new DbCallback() {
             @Override
+            /**
+             * This method loads user data.
+             */
             public void onSuccess(Object result) {
                 Map<String, Object> userData = (Map<String, Object>) result;
-                nameField.setText((String) userData.get("name"));
+
+                String name = (String) userData.get("name");
+
+                ProfileSystem profile = User.getInstance(getApplicationContext()).getProfile();
+                Bitmap profileImage = profile.generatePfp(name);
+                ImageView profileImageView = findViewById(R.id.user_profile_image_view);
+                profileImageView.setImageBitmap(profileImage);
+
+                nameField.setText(name);
                 emailField.setText((String) userData.get("email"));
                 phoneField.setText((String) userData.get("phone"));
+
                 Boolean receiveNotifs = (Boolean) userData.get("notifications");
                 if (receiveNotifs != null && receiveNotifs == true) {
                     notificationCheckBox.setChecked(true);
@@ -85,6 +107,9 @@ public class UserProfilePageActivity extends AppCompatActivity {
             }
 
             @Override
+            /**
+             * This method shows error loading user data.
+             */
             public void onError(Exception exception) {
                 Log.e("Profile", "Error loading user data", exception);
                 Toast.makeText(UserProfilePageActivity.this,
@@ -94,9 +119,8 @@ public class UserProfilePageActivity extends AppCompatActivity {
         }, deviceId);
     }
 
-
     /**
-     * Loads facility data into UI
+     * Loads facility data into UI.
      * @author speakerchef
      * @param facilityId
      */
@@ -122,7 +146,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
 
 
     /**
-     * Saves changes made by user to the database
+     * Saves changes made by user to the database.
      * @author speakerchef
      */
     private void saveChanges() {
@@ -153,8 +177,6 @@ public class UserProfilePageActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid 8-10 digit phone number!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
 
         // Save profile changes first
         String deviceId = auth.getCurrentUser().getUid();

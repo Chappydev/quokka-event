@@ -74,7 +74,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         // Display data
         eventNameText.setText(eventName);
         dateText.setText("Date: " + formattedDate);
-        timeText.setText("Time: " + formattedTime); // TODO: Update once time data is available
+        timeText.setText("Time: " + formattedTime);
         locationText.setText("Location: " + eventLocation);
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
         statusText.setText("Status: " + status);
