@@ -164,8 +164,17 @@ public class ProfileSystem {
         // Set pfp color
         //https://developer.android.com/reference/android/graphics/Color#HSVToColor(float[])
         //https://stackoverflow.com/questions/33219638/how-to-make-a-hashcodeinteger-value-positive
+        int hashCode;
+        if (name != null && !name.trim().isEmpty()) {
+            hashCode = name.hashCode();
+        }
+        // If no name is provided
+        else {
+            hashCode = 0;
+        }
+
         int color = Color.HSVToColor(new float[]{
-                (name.hashCode() & 0x7FFFFFFF) % 360,
+                (hashCode & 0x7FFFFFFF) % 360,
                 1,
                 1
         });
@@ -176,21 +185,25 @@ public class ProfileSystem {
         // Get initials
         //https://stackoverflow.com/questions/64567828/how-to-print-the-first-name-and-initials-of-a-full-name
         String initials = "";
-        String[] nameSplit = name.split("\\s+");
-        if (nameSplit.length > 0) {
-            initials += nameSplit[0].charAt(0);
+        if (name != null && !name.trim().isEmpty()) {
+            String[] nameSplit = name.split("\\s+");
+            if (nameSplit.length > 0) {
+                initials += nameSplit[0].charAt(0);
+            }
+            if (nameSplit.length > 1) {
+                initials += nameSplit[1].charAt(0);
+            }
+            initials = initials.toUpperCase();
         }
-        if (nameSplit.length > 1) {
-            initials += nameSplit[1].charAt(0);
-        }
-        initials = initials.toUpperCase();
 
-        paint.setColor(Color.WHITE);
-        paint.setTextSize(w / 3f);
-        paint.setTextAlign(Paint.Align.CENTER);
-        float x = w / 2f;
-        float y = h / 2f - (paint.descent() + paint.ascent()) / 2;
-        canvas.drawText(initials, x, y, paint);
+        if (!initials.isEmpty()) {
+            paint.setColor(Color.WHITE);
+            paint.setTextSize(w / 3f);
+            paint.setTextAlign(Paint.Align.CENTER);
+            float x = w / 2f;
+            float y = h / 2f - (paint.descent() + paint.ascent()) / 2;
+            canvas.drawText(initials, x, y, paint);
+        }
 
         return bmp;
     }
