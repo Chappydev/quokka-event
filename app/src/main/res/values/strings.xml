@@ -27,4 +27,5 @@
     <!-- Icons -->
     <string name="bell_icon_description">bell icon</string>
     <string name="person_icon_description">person icon</string>
+    <string name="profile_picture">Profile Picture</string>
 </resources>
