@@ -82,7 +82,7 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
         });
 
 
-    }
+     }
 
     private void setupRecyclerView() {
         eventList = new ArrayList<>();
@@ -93,7 +93,7 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));  // Optional: adds dividers
     }
 
-    private void loadOrganizerEvents() {
+   private void loadOrganizerEvents() {
         String deviceId = auth.getCurrentUser().getUid();
         db.getOrganizerEvents(deviceId, new DbCallback() {
             @Override

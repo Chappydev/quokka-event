@@ -38,6 +38,7 @@
         <activity android:name=".OrganizerEventsPageActivity" />
         <activity android:name=".controllers.EventTabsActivity" />
         <activity android:name=".UserProfilePageActivity" />
+        <activity android:name=".models.organizer.EventEntrantsPage"/>
     </application>
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->
 

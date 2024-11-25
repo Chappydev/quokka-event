@@ -628,5 +628,27 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(e -> callback.onError(e));
     }
+
+    /**
+     * Retrieves the waitlist of an event
+     * @author mylayambao
+     * @param eventId
+     * @param callback
+     */
+    public void getEventWaitlist(String eventId, DbCallback callback){
+        eventsRef
+                .document(eventId)
+                .get()
+                .addOnSuccessListener(task -> {
+                    if(task.exists()){
+                        List<Object> waitlist = (List<Object>) task.get("waitlist");
+
+                        if (waitlist != null){
+                            callback.onSuccess(waitlist);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+    }
 }
 

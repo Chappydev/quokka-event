@@ -20,8 +20,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.quokka_event.OrganizerEventsPageActivity;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.EventTabsActivity;
+import com.example.quokka_event.models.organizer.EventEntrantsPage;
 import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
 
 public class DetailsFragment extends Fragment {
@@ -36,6 +38,7 @@ public class DetailsFragment extends Fragment {
     Boolean isWaitlistLimit;
     Boolean isParticipantLimit;
     Button notifyParticipantsButton;
+    Button viewParticipantsButton;
 
 
     int participantLimit;
@@ -68,7 +71,7 @@ public class DetailsFragment extends Fragment {
     }
     /**
      * Attach the detailsListener listener to EventTabsActivity.java
-     * @param context
+     * *@param context
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,7 +89,7 @@ public class DetailsFragment extends Fragment {
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
         remainSeatTextView = view.findViewById(R.id.event_seats_label);
         notifyParticipantsButton = view.findViewById(R.id.notify_participants_button);
-
+        viewParticipantsButton = view.findViewById(R.id.view_participants_button);
 
         setButtonsVisibility(View.GONE);
 
@@ -99,6 +102,15 @@ public class DetailsFragment extends Fragment {
             }
 
 
+        });
+
+        viewParticipantsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // start new activity
+                Intent showActivity = new Intent(getActivity(), EventEntrantsPage.class);
+                startActivity(showActivity);
+            }
         });
 
         limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
