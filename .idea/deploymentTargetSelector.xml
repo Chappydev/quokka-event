@@ -6,6 +6,7 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="All Tests">
+      <SelectionState runConfigName="quokka_event">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
