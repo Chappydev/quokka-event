@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -87,6 +88,14 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: No event ID provided", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        Button viewWaitlistButton = findViewById(R.id.view_waitlist_button);
+        viewWaitlistButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventDetailsViewActivity.this, WaitlistEntriesActivity.class);
+            intent.putExtra("eventId", currentEventId);
+            intent.putExtra("eventName", eventTitle.getText().toString());
+            startActivity(intent);
+        });
 
         setupButtonListeners();
         setEditMode(false);
