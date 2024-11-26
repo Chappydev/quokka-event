@@ -27,6 +27,8 @@ import com.example.quokka_event.models.organizer.EventEntrantsPage;
 import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
 import com.example.quokka_event.models.organizer.EventEntrantsPage;
 import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
+import com.example.quokka_event.models.organizer.EventEntrantsPage;
+import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
 
 public class DetailsFragment extends Fragment {
 
@@ -112,6 +114,11 @@ public class DetailsFragment extends Fragment {
         });
 
         limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * Show waitlist edittext if the limit waitlist checkbox is checked.
+             * @param compoundButton
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 isWaitlistLimit = isChecked;
@@ -127,6 +134,11 @@ public class DetailsFragment extends Fragment {
         });
 
         limitParticipantCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * Show participantCapEditText if limitParticipantCheckBox is checked.
+             * @param compoundButton
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 isParticipantLimit = isChecked;
