@@ -200,12 +200,13 @@
             android:visibility="gone" />
 
          <Button
-            android:id="@+id/view_waitlist_button"
+            android:id="@+id/view_participants_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+             android:textSize="12dp"
             android:layout_marginStart="8dp"
-            android:text="Waitlist"
+            android:text="Participants"
              />
 
 

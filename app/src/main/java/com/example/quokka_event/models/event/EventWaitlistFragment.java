@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.DatabaseManager;
+import com.example.quokka_event.controllers.WaitlistEntriesActivity;
+import com.example.quokka_event.controllers.WaitlistEntriesAdapter;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.views.EventWaitlistAdapter;
 import com.example.quokka_event.views.OrganizerEventsAdapter;
@@ -24,9 +28,14 @@ import java.util.Map;
 public class EventWaitlistFragment extends Fragment {
 
     ArrayList<Map<String,Object>> eventWaitlistList;
-    EventWaitlistAdapter customAdapter;
+    //EventWaitlistAdapter customAdapter;
     private DatabaseManager db;
     private FirebaseAuth auth;
+    private WaitlistEntriesAdapter adapter;
+    private String eventId;
+    private String eventName;
+    private RecyclerView waitlistRecyclerView;
+
 
     public EventWaitlistFragment(){
         // leave empty
@@ -50,10 +59,26 @@ public class EventWaitlistFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Method for the creation of a event waitlist fragement
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            eventId = getArguments().getString("eventId");
+        }
+
+        db = DatabaseManager.getInstance(requireContext());
+        eventWaitlistList = new ArrayList<>();
+    }
 
     private eventWaitlistListener listener;
     /**
-     * Method for the creation of a event waitlist fragement
+     * Method for the creation view of a event waitlist fragement
      * @author mylayambao
      * @param inflater The LayoutInflater object that can be used to inflate
      * any views in the fragment,
@@ -69,52 +94,52 @@ public class EventWaitlistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this frag
-        View view = inflater.inflate(R.layout.event_waitlist_fragment, container, false);
 
-        setupRecyclerView(view);
-        loadEventWaitlist("wRqJ5v3rx9QTcnfSMnWw");
+        // inflate the layout for this frag
+        View view = inflater.inflate(R.layout.activity_waitlist_entries, container, false);
+        //setupRecyclerView(view);
+        waitlistRecyclerView = view.findViewById(R.id.waitlist_recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        waitlistRecyclerView.setLayoutManager(layoutManager);
+        adapter = new WaitlistEntriesAdapter(eventWaitlistList);
+        waitlistRecyclerView.setAdapter(adapter);
+        loadWaitlistedUsers();
+
         return view;
+
+
     }
 
+
     /**
-     *  Sets up the recycle viwer.
-     * @author mylayambao
-     * @param view
+     * Load the users on the waitlist from the db
+     * @author sohan
      * @since project part 4
      */
-    private void setupRecyclerView(View view) {
-        eventWaitlistList = new ArrayList<>();
-        customAdapter = new EventWaitlistAdapter(eventWaitlistList);
-        RecyclerView recyclerView = view.findViewById(R.id.event_waitlist_recycler);
-        recyclerView.setAdapter(customAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL));
-    }
 
-    /**
-     * Loads the waitlist of a given event to update the recyle view.
-     * @author mylayambao
-     * @param eventId
-     */
-    private void loadEventWaitlist(String eventId){
-        db.getEventWaitlist(eventId, new DbCallback() {
+    private void loadWaitlistedUsers() {
+        if (eventId == null) {
+            Toast.makeText(getContext(), "Error: No event ID provided", Toast.LENGTH_SHORT).show();
+            requireActivity().onBackPressed();
+            return;
+        }
+
+        db.getWaitlistEntrants(eventId, new DbCallback() {
             @Override
             public void onSuccess(Object result) {
-                // clear current waitlist and update with new data
                 eventWaitlistList.clear();
-                eventWaitlistList.addAll((ArrayList<Map<String,Object>>) result);
-                // notify adapter
-                customAdapter.notifyDataSetChanged();
+                eventWaitlistList.addAll((ArrayList<Map<String, Object>>) result);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onError(Exception exception) {
-                Log.e("Waitlist","onError:", exception);
-
+            public void onError(Exception e) {
+                Log.e("Waitlist", "Error loading waitlist entries", e);
+                Toast.makeText(getContext(), "Error loading waitlist", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
 
 }

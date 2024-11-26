@@ -20,7 +20,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
-
 public class WaitlistEntriesActivity extends AppCompatActivity {
     private RecyclerView waitlistRecyclerView;
     private ArrayList<Map<String, Object>> waitlistEntrants;

@@ -21,15 +21,15 @@ public class ViewPagerAdapterEventEntrant extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new EventWaitlistFragment();
+                return EventWaitlistFragment.newInstance("wRqJ5v3rx9QTcnfSMnWw");
             case 1:
-                return new EventWaitlistFragment();
+                return EventWaitlistFragment.newInstance("wRqJ5v3rx9QTcnfSMnWw");
             case 2:
                 return EventWaitlistFragment.newInstance("wRqJ5v3rx9QTcnfSMnWw");
             case 3:
-                return new EventWaitlistFragment();
+                return EventWaitlistFragment.newInstance("wRqJ5v3rx9QTcnfSMnWw");
             default:
-                return new EventWaitlistFragment();
+                return EventWaitlistFragment.newInstance("wRqJ5v3rx9QTcnfSMnWw");
         }
     }
 

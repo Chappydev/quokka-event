@@ -5,6 +5,11 @@
       <config />
     </shared>
     <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_waitlist_entries.xml">
+        <config>
+          <theme>@style/Theme.Quokkaevent</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/admin_browse_events.xml">
         <config>
           <theme>@style/Theme.Quokkaevent</theme>
@@ -40,6 +45,11 @@
           <theme>@style/Theme.Quokkaevent</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/event_details_view.xml">
+        <config>
+          <theme>@style/Theme.Quokkaevent</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/event_edit_details_frag.xml">
         <config>
           <theme>@style/Theme.Quokkaevent</theme>
@@ -58,6 +68,11 @@
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/event_entrants_page.xml">
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/event_edit_overview_frag.xml"/>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/event_details_view.xml">
+        <config>
+          <theme>@style/Theme.Quokkaevent</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/event_entrants_tabs.xml">
         <config>
           <theme>@style/Theme.Quokkaevent</theme>
         </config>
@@ -139,7 +154,16 @@
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/views/EventWaitlistAdapter.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/event_entrant_item.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/event_waitlist_fragment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/event_entrants_tabs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/controllers/EventDetailsViewActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/controllers/EventDetailsViewActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/controllers/ViewPagerAdapterEventEntrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/controllers/ViewPagerAdapterEventEntrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/controllers/WaitlistEntriesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/controllers/WaitlistEntriesActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/models/event/EventWaitlistFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/models/event/EventWaitlistFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/models/organizer/EventEntrantsPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/models/organizer/EventEntrantsPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_waitlist_entries.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_waitlist_entries.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/event_details_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/event_details_view.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/models/event/DetailsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/models/event/DetailsFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/models/event/OverviewFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/quokka_event/models/event/OverviewFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/event_view_details_frag.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/event_view_details_frag.xml" afterDir="false" />
