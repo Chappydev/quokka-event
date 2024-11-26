@@ -62,6 +62,9 @@
         android:testOnly="true"
         android:theme="@style/Theme.Quokkaevent" >
         <activity
+            android:name="com.example.quokka_event.controllers.WaitlistEntriesActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.quokka_event.controllers.EventDetailsViewActivity"
             android:exported="false" />
         <activity
