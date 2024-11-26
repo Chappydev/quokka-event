@@ -1,7 +1,11 @@
 package com.example.quokka_event.models.organizer;
 
+import static android.app.PendingIntent.getActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -41,10 +45,11 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("message","now displaying EventEntrantsActivity");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.event_tabs);
+        setContentView(R.layout.event_entrants_tabs);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
+        backButton = findViewById(R.id.back_button);
 
         ViewPagerAdapterEventEntrant adapter = new ViewPagerAdapterEventEntrant(this);
         viewPager.setAdapter(adapter);
@@ -65,6 +70,9 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
             }
         }).attach();
 
+        backButton.setOnClickListener(v -> finish());
+
+
 
     }
 
@@ -76,4 +84,9 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
     public void setLocation(String location) {}
     @Override
     public void setDeadline(Date deadline) {}
+
+    @Override
+    public void setDescription(String description) {
+
+    }
 }

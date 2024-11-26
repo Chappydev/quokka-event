@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.organizer.EventEntrantsPage;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.BarcodeFormat;
@@ -89,9 +90,9 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             finish();
         }
 
-        Button viewWaitlistButton = findViewById(R.id.view_waitlist_button);
+        Button viewWaitlistButton = findViewById(R.id.view_participants_button);
         viewWaitlistButton.setOnClickListener(v -> {
-            Intent intent = new Intent(EventDetailsViewActivity.this, WaitlistEntriesActivity.class);
+            Intent intent = new Intent(EventDetailsViewActivity.this, EventEntrantsPage.class);
             intent.putExtra("eventId", currentEventId);
             intent.putExtra("eventName", eventTitle.getText().toString());
             startActivity(intent);
