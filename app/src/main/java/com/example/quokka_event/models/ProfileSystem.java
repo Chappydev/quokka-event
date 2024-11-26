@@ -204,7 +204,6 @@ public class ProfileSystem {
             float y = h / 2f - (paint.descent() + paint.ascent()) / 2;
             canvas.drawText(initials, x, y, paint);
         }
-
         return bmp;
     }
 }
