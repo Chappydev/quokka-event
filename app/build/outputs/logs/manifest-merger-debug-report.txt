@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:1-45:12
-INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:1-45:12
-INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:1-45:12
-INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:1-45:12
+ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:1-46:12
+INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:1-46:12
+INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:1-46:12
+INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:1-46:12
 MERGED from [com.google.firebase:firebase-firestore:25.1.0] /home/simon/.gradle/caches/transforms-4/62b765d843b7b893ebbd05a2b6b39ae7/transformed/firebase-firestore-25.1.0/AndroidManifest.xml:2:1-26:12
 MERGED from [com.google.firebase:firebase-auth:23.0.0] /home/simon/.gradle/caches/transforms-4/b49bf4ffc0e9994e9792a6998cca81ea/transformed/firebase-auth-23.0.0/AndroidManifest.xml:17:1-75:12
 MERGED from [com.google.android.material:material:1.12.0] /home/simon/.gradle/caches/transforms-4/959272428b09550ed241823812d3e931/transformed/material-1.12.0/AndroidManifest.xml:17:1-24:12
@@ -90,8 +90,8 @@ MERGED from [androidx.test.espresso:espresso-idling-resource:3.6.1] /home/simon/
 	xmlns:android
 		ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:2:11-69
 application
-ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:5:5-43:19
-INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:5:5-43:19
+ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:5:5-44:19
+INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:5:5-44:19
 MERGED from [com.google.firebase:firebase-firestore:25.1.0] /home/simon/.gradle/caches/transforms-4/62b765d843b7b893ebbd05a2b6b39ae7/transformed/firebase-firestore-25.1.0/AndroidManifest.xml:13:5-24:19
 MERGED from [com.google.firebase:firebase-firestore:25.1.0] /home/simon/.gradle/caches/transforms-4/62b765d843b7b893ebbd05a2b6b39ae7/transformed/firebase-firestore-25.1.0/AndroidManifest.xml:13:5-24:19
 MERGED from [com.google.firebase:firebase-auth:23.0.0] /home/simon/.gradle/caches/transforms-4/b49bf4ffc0e9994e9792a6998cca81ea/transformed/firebase-auth-23.0.0/AndroidManifest.xml:28:5-73:19
@@ -242,6 +242,10 @@ activity#com.example.quokka_event.UserProfilePageActivity
 ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:42:9-61
 	android:name
 		ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:42:19-58
+activity#com.example.quokka_event.controllers.AdminFacilityActivity
+ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:43:9-70
+	android:name
+		ADDED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml:43:19-68
 uses-sdk
 INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/simon/cmput301group/quokka-event/app/src/main/AndroidManifest.xml

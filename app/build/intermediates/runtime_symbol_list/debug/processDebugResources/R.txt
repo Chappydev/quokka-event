@@ -3472,6 +3472,8 @@ int id expand_activities_button 0x7f080107
 int id expanded_menu 0x7f080108
 int id facility_address_field 0x7f080109
 int id facility_address_label 0x7f08010a
+int id facility_details_location 0x7f08029d
+int id facility_details_name 0x7f08029e
 int id facility_image 0x7f08010b
 int id facility_name_field 0x7f08010c
 int id facility_name_label 0x7f08010d
@@ -3786,6 +3788,7 @@ int id textView2 0x7f080241
 int id textView3 0x7f080242
 int id textView4 0x7f080243
 int id textView5 0x7f080244
+int id textView6 0x7f08029c
 int id text_input_end_icon 0x7f080245
 int id text_input_error_icon 0x7f080246
 int id text_input_start_icon 0x7f080247
@@ -3990,6 +3993,7 @@ int layout admin_event_tabs 0x7f0b0020
 int layout admin_event_view_frag 0x7f0b0094
 int layout admin_facility_activity 0x7f0b0092
 int layout admin_facility_content 0x7f0b0093
+int layout admin_facility_details 0x7f0b0095
 int layout admin_landing_page 0x7f0b0021
 int layout admin_toolbar 0x7f0b0022
 int layout all_profiles_fragment 0x7f0b0023

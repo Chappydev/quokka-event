@@ -3473,6 +3473,8 @@ id expand_activities_button
 id expanded_menu
 id facility_address_field
 id facility_address_label
+id facility_details_location
+id facility_details_name
 id facility_image
 id facility_name_field
 id facility_name_label
@@ -3787,6 +3789,7 @@ id textView2
 id textView3
 id textView4
 id textView5
+id textView6
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -3991,6 +3994,7 @@ layout admin_event_tabs
 layout admin_event_view_frag
 layout admin_facility_activity
 layout admin_facility_content
+layout admin_facility_details
 layout admin_landing_page
 layout admin_toolbar
 layout all_profiles_fragment

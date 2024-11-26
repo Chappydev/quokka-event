@@ -80,6 +80,10 @@
         "source": "/home/simon/.gradle/daemon/8.7/com.example.quokka_event.app-main-46:/layout/admin_browse_events.xml"
     },
     {
+        "merged": "com.example.quokka_event.app-debug-44:/layout_admin_facility_details.xml.flat",
+        "source": "com.example.quokka_event.app-main-46:/layout/admin_facility_details.xml"
+    },
+    {
         "merged": "/home/simon/.gradle/daemon/8.7/com.example.quokka_event.app-debug-44:/layout_organizer_events_page.xml.flat",
         "source": "/home/simon/.gradle/daemon/8.7/com.example.quokka_event.app-main-46:/layout/organizer_events_page.xml"
     },
@@ -98,10 +102,6 @@
     {
         "merged": "/home/simon/.gradle/daemon/8.7/com.example.quokka_event.app-debug-44:/mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "/home/simon/.gradle/daemon/8.7/com.example.quokka_event.app-main-46:/mipmap-anydpi-v26/ic_launcher.xml"
-    },
-    {
-        "merged": "com.example.quokka_event.app-debug-44:/layout_admin_event_tabs.xml.flat",
-        "source": "com.example.quokka_event.app-main-46:/layout/admin_event_tabs.xml"
     },
     {
         "merged": "/home/simon/.gradle/daemon/8.7/com.example.quokka_event.app-debug-44:/layout_all_profiles_fragment.xml.flat",

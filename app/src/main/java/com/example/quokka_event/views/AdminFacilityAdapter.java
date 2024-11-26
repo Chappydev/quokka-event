@@ -90,7 +90,7 @@ public class AdminFacilityAdapter extends RecyclerView.Adapter<AdminFacilityAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        holder.getTextView().setText((String)localDataSet.get(position).get("eventName"));
+        holder.getTextView().setText((String)localDataSet.get(position).get("facilityName"));
     }
 
     /**
