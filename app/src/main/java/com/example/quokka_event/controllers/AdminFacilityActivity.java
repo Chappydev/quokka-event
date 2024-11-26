@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
@@ -13,6 +14,7 @@ import com.example.quokka_event.views.AdminEventsAdapter;
 import com.example.quokka_event.views.AdminFacilityAdapter;
 import com.example.quokka_event.views.ViewButtonListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -41,6 +43,8 @@ public class AdminFacilityActivity extends AppCompatActivity implements ViewButt
 
     @Override
     public void viewButtonClick(int pos) {
-
+        Intent activity = new Intent(AdminFacilityActivity.this, AdminFacilityDetails.class);
+        activity.putExtra("facility", (Serializable) facilityList.get(pos));
+        startActivity(activity);
     }
 }

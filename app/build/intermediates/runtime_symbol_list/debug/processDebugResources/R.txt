@@ -3388,6 +3388,7 @@ int id decelerateAndComplete 0x7f0800b3
 int id decor_content_parent 0x7f0800b4
 int id default_activity_button 0x7f0800b5
 int id delete_button 0x7f08029b
+int id delete_facility_button 0x7f08029f
 int id deltaRelative 0x7f0800b6
 int id deny_button 0x7f0800b7
 int id dependency_ordering 0x7f0800b8
@@ -3472,6 +3473,7 @@ int id expand_activities_button 0x7f080107
 int id expanded_menu 0x7f080108
 int id facility_address_field 0x7f080109
 int id facility_address_label 0x7f08010a
+int id facility_details_back_button 0x7f0802a0
 int id facility_details_location 0x7f08029d
 int id facility_details_name 0x7f08029e
 int id facility_image 0x7f08010b

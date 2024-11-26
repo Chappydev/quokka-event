@@ -41,6 +41,7 @@
         <activity android:name=".controllers.EventTabsActivity" />
         <activity android:name=".UserProfilePageActivity" />
         <activity android:name=".controllers.AdminFacilityActivity"/>
+        <activity android:name=".controllers.AdminFacilityDetails"/>
     </application>
 
 </manifest>

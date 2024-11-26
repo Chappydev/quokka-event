@@ -90,6 +90,7 @@
         <activity android:name="com.example.quokka_event.controllers.EventTabsActivity" />
         <activity android:name="com.example.quokka_event.UserProfilePageActivity" />
         <activity android:name="com.example.quokka_event.controllers.AdminFacilityActivity" />
+        <activity android:name="com.example.quokka_event.controllers.AdminFacilityDetails" />
 
         <service
             android:name="com.google.firebase.components.ComponentDiscoveryService"

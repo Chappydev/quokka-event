@@ -2,7 +2,6 @@ package com.example.quokka_event.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,9 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -41,19 +38,27 @@ public class AdminEventTabsActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         DatabaseManager db = DatabaseManager.getInstance(this);
         backButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Return to event list when clicked
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Allow the admin to delete the event from the database when button is clicked
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 String eventId = (String)event_details.get("eventId");
                 db.deleteEvent(eventId, new DbCallback() {
                     @Override
                     public void onSuccess(Object result) {
-                        startEventsTab();
+                        returnToEventList();
                     }
 
                     @Override
@@ -65,10 +70,19 @@ public class AdminEventTabsActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * Set event details
+     * @return
+     */
     public Map<String, Object> getEventDetails(){
         return event_details;
     }
-    void startEventsTab(){
+
+    /**
+     * Return to events list for admins once event is deleted.
+     */
+    void returnToEventList(){
         Intent intent = new Intent(this, AdminBrowseEventsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

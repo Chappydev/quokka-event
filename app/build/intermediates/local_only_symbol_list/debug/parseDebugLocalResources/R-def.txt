@@ -52,6 +52,7 @@ id confirmationMessage
 id date_text
 id day_picker
 id delete_button
+id delete_facility_button
 id deny_button
 id editDateTextView
 id editDeadlineTextView
@@ -95,6 +96,7 @@ id event_waitlist_label
 id exitButton
 id facility_address_field
 id facility_address_label
+id facility_details_back_button
 id facility_details_location
 id facility_details_name
 id facility_image
