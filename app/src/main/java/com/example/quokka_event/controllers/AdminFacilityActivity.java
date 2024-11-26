@@ -18,6 +18,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Show a list of facilities for admin
+ */
 public class AdminFacilityActivity extends AppCompatActivity implements ViewButtonListener {
     private ArrayList<Map<String, Object>> facilityList;
     private AdminFacilityAdapter adapter;
@@ -32,6 +35,10 @@ public class AdminFacilityActivity extends AppCompatActivity implements ViewButt
         facilityRecyclerView.setLayoutManager(layoutManager);
         adapter = new AdminFacilityAdapter(facilityList, this);
         db.getAllFacilities(new DatabaseManager.RetrieveData() {
+            /**
+             * Load facilities into a recyclerview once database gets the facilities
+             * @param list
+             */
             @Override
             public void onDataLoaded(ArrayList<Map<String, Object>> list) {
                 facilityList.addAll(list);
@@ -41,6 +48,10 @@ public class AdminFacilityActivity extends AppCompatActivity implements ViewButt
         });
     }
 
+    /**
+     * Show a facilities details once view button is clicked
+     * @param pos
+     */
     @Override
     public void viewButtonClick(int pos) {
         Intent activity = new Intent(AdminFacilityActivity.this, AdminFacilityDetails.class);

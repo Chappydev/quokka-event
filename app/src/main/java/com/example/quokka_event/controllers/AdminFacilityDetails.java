@@ -15,6 +15,9 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 
 import java.util.Map;
 
+/**
+ * An activity to display a facility's details
+ */
 public class AdminFacilityDetails extends AppCompatActivity {
     TextView facilityName;
     TextView location;
@@ -50,6 +53,10 @@ public class AdminFacilityDetails extends AppCompatActivity {
         });
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Delete the facility from database and return admin to facility list
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 String facilityId = (String)facility_details.get("facilityId");
