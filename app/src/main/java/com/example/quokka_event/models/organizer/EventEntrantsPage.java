@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.ViewPagerAdapter;
 import com.example.quokka_event.controllers.ViewPagerAdapterEventEntrant;
 import com.example.quokka_event.models.event.Event;
@@ -34,6 +35,8 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
     Button backButton;
     TextView eventName;
     Event event;
+    private String eventId;
+    private DatabaseManager db;
 
     /**
      * Sets up the activity when it is created.
@@ -46,12 +49,15 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
         Log.d("message","now displaying EventEntrantsActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_entrants_tabs);
+        db = DatabaseManager.getInstance(this);
+
+        eventId = getIntent().getStringExtra("eventId");
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         backButton = findViewById(R.id.back_button);
 
-        ViewPagerAdapterEventEntrant adapter = new ViewPagerAdapterEventEntrant(this);
+        ViewPagerAdapterEventEntrant adapter = new ViewPagerAdapterEventEntrant(this, eventId);
         viewPager.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {

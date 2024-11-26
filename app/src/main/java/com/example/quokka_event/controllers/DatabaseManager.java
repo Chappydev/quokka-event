@@ -737,7 +737,86 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(callback::onError);
     }
+
+    /**
+     * Gets the list of all users invited to an event.
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getInvitedEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Invited")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> invitedEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            invitedEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(invitedEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Gets the list of all cancelled entrants for an event
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getCancelledEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Cancelled")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> cancelledEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            cancelledEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(cancelledEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
 }
+
 
 
 
