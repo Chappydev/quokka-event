@@ -660,6 +660,12 @@ public class DatabaseManager {
                 .addOnFailureListener(callback::onError);
     }
 
+    /**
+     * Gets the list of all the users on the waitlist of an event.
+     * @author speakerchef
+     * @param eventId
+     * @param callback
+     */
     public void getWaitlistEntrants(String eventId, DbCallback callback) {
         enrollsRef
                 .whereEqualTo("eventId", eventId)
@@ -687,6 +693,45 @@ public class DatabaseManager {
                                     }
                                 }
                                 callback.onSuccess(waitlistEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Gets the list of all users attending an event.
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getAttendingEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Attending")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> attendingEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            attendingEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(attendingEntrants);
                             })
                             .addOnFailureListener(callback::onError);
                 })

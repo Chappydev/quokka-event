@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.quokka_event.models.event.DetailsFragment;
+import com.example.quokka_event.models.event.EventAttendingFragment;
 import com.example.quokka_event.models.event.EventWaitlistFragment;
 import com.example.quokka_event.models.event.OverviewFragment;
 import com.example.quokka_event.models.event.QRFragment;
@@ -21,7 +22,7 @@ public class ViewPagerAdapterEventEntrant extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return EventWaitlistFragment.newInstance("wRqJ5v3rx9QTcnfSMnWw");
+                return EventAttendingFragment.newInstance("wRqJ5v3rx9QTcnfSMnWw");
             case 1:
                 return EventWaitlistFragment.newInstance("wRqJ5v3rx9QTcnfSMnWw");
             case 2:
