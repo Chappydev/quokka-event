@@ -168,7 +168,6 @@ public class DatabaseManager {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    Log.d("DB", "getUserMap callback: " + task.getResult().getData().toString());
                     callback.onSuccess(task.getResult().getData());
                 } else {
                     Log.e("DB", "getUserMap callback", task.getException());
