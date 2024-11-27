@@ -172,7 +172,7 @@ public class ProfileSystem {
         paint.setColor(color);
         //https://stackoverflow.com/questions/17954596/how-to-draw-circle-by-canvas-in-android
         canvas.drawCircle(w / 2f, h / 2f, radius / 2f, paint);
-        // CHECK FOR EMPTY STRING!!
+        // check for empty string, return a color
         if (name.isEmpty()){
             return bmp;
         }
