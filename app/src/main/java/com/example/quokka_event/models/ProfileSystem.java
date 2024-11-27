@@ -172,7 +172,10 @@ public class ProfileSystem {
         paint.setColor(color);
         //https://stackoverflow.com/questions/17954596/how-to-draw-circle-by-canvas-in-android
         canvas.drawCircle(w / 2f, h / 2f, radius / 2f, paint);
-
+        // check for empty string, return a color
+        if (name.isEmpty()){
+            return bmp;
+        }
         // Get initials
         //https://stackoverflow.com/questions/64567828/how-to-print-the-first-name-and-initials-of-a-full-name
         String initials = "";
