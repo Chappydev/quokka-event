@@ -17,6 +17,7 @@ public class Event {
     //private Organizer organizer;
     private int maxParticipants;
     private int maxWaitlist;
+    private String description;
 
     private ArrayList<ProfileSystem> participantList;
     private ArrayList<ProfileSystem> waitList;
@@ -24,17 +25,19 @@ public class Event {
 
     /**
      * Constructs an Event with specified attributes.
+     *
+     * @param eventID               identifier for the event
+     * @param eventName             name of the event
+     * @param eventDate             date of the event
+     * @param registrationDeadline  registration deadline for the event
+     * @param eventLocation         location of the event
+     * @param maxParticipants       maximum number of participants
+     * @param maxWaitlist           maximum size of the waitlist
+     * @param participantList       list of participants
+     * @param waitList              list of waitlisted entrants
+     * @param cancelledParticipants list of cancelled participants
+     * @param description           event description field
      * @author idk???
-     * @param eventID                identifier for the event
-     * @param eventName              name of the event
-     * @param eventDate              date of the event
-     * @param registrationDeadline   registration deadline for the event
-     * @param eventLocation          location of the event
-     * @param maxParticipants        maximum number of participants
-     * @param maxWaitlist            maximum size of the waitlist
-     * @param participantList        list of participants
-     * @param waitList               list of waitlisted entrants
-     * @param cancelledParticipants  list of cancelled participants
      */
     public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<ProfileSystem> participantList, ArrayList<ProfileSystem> waitList, ArrayList<ProfileSystem> cancelledParticipants) {
         this.eventID = eventID;
@@ -47,9 +50,10 @@ public class Event {
         this.participantList = participantList;
         this.waitList = waitList;
         this.cancelledParticipants = cancelledParticipants;
+        this.description = "";
     }
 
-    public Event(){
+    public Event() {
     }
 
     public String getEventID() {
@@ -109,6 +113,10 @@ public class Event {
         this.maxWaitlist = maxWaitlist;
     }
 
+    public void setDescription(String description) { this.description = description; }
+
+    public String getDescription(){ return this.description; }
+
 
     public ArrayList<ProfileSystem> getParticipantList() {
         return participantList;
@@ -138,8 +146,9 @@ public class Event {
 
     /**
      * Checks if the waitlist is full.
-     * @author Saimon and Soaiba
+     *
      * @return true if the waitlist size has reached the maximum capacity.
+     * @author Saimon and Soaiba
      */
     public boolean isWaitListFull() {
         return waitList.size() >= maxWaitlist;
@@ -147,8 +156,9 @@ public class Event {
 
     /**
      * Checks if the registration deadline has passed.
-     * @author Soaiba
+     *
      * @return true if the current date is after the registration deadline.
+     * @author Soaiba
      */
     public boolean isDeadline() {
         Date currentDate = new Date();
@@ -158,10 +168,11 @@ public class Event {
     /**
      * Adds an entrant to the waitlist if the waitlist is not full
      * and the registration deadline has not yet passed.
-     * @author Soaiba
+     *
      * @param user the user to be added to the waitlist.
+     * @author Soaiba
      */
-    public void addEntrantToWaitlist(ProfileSystem user){
+    public void addEntrantToWaitlist(ProfileSystem user) {
         //TODO **** Update Database!! ****
         if (!isWaitListFull() && !isDeadline()) {
             waitList.add(user);

@@ -2,44 +2,48 @@ package com.example.quokka_event.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.Map;
 
 /**
- * Event tabs for admin browsing.
+ * An activity to display a facility's details
  */
-public class AdminEventTabsActivity extends AppCompatActivity {
-    Map<String, Object> event_details;
+public class AdminFacilityDetails extends AppCompatActivity {
+    TextView facilityName;
+    TextView location;
     Button backButton;
     Button deleteButton;
+    Map<String, Object> facility_details;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_event_tabs);
-        backButton = findViewById(R.id.cancel_button);
-        deleteButton = findViewById(R.id.delete_button);
+        setContentView(R.layout.admin_facility_details);
+        facilityName = findViewById(R.id.facility_details_name);
+        location = findViewById(R.id.facility_details_location);
+        backButton = findViewById(R.id.facility_details_back_button);
+        deleteButton = findViewById(R.id.delete_facility_button);
+        DatabaseManager db = DatabaseManager.getInstance(this);
         Bundle extras = getIntent().getExtras();
         if (extras != null){
-            event_details = (Map<String, Object>) extras.get("event");
+            facility_details = (Map<String, Object>) extras.get("facility");
+            String facility = facility_details.get("facilityName").toString();
+            String locationStr = facility_details.get("facilityLocation").toString();
+            facilityName.setText(facility);
+            location.setText(locationStr);
         }
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        ViewPager2 viewPager = findViewById(R.id.viewPager);
-        AdminViewPagerAdapter adapter = new AdminViewPagerAdapter(this);
-        viewPager.setAdapter(adapter);
-        DatabaseManager db = DatabaseManager.getInstance(this);
         backButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Return to event list when clicked
+             * Return to facility list when clicked
              * @param view
              */
             @Override
@@ -47,18 +51,19 @@ public class AdminEventTabsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Allow the admin to delete the event from the database when button is clicked
+             * Delete the facility from database and return admin to facility list
              * @param view
              */
             @Override
             public void onClick(View view) {
-                String eventId = (String)event_details.get("eventId");
-                db.deleteEvent(eventId, new DbCallback() {
+                String facilityId = (String)facility_details.get("facilityId");
+                db.deleteFacility(facilityId, new DbCallback() {
                     @Override
                     public void onSuccess(Object result) {
-                        returnToEventList();
+                        returnToFacilityList();
                     }
 
                     @Override
@@ -72,18 +77,10 @@ public class AdminEventTabsActivity extends AppCompatActivity {
     }
 
     /**
-     * Set event details
-     * @return
+     * Return to admin's Facility List
      */
-    public Map<String, Object> getEventDetails(){
-        return event_details;
-    }
-
-    /**
-     * Return to events list for admins once event is deleted.
-     */
-    void returnToEventList(){
-        Intent intent = new Intent(this, AdminBrowseEventsActivity.class);
+    void returnToFacilityList(){
+        Intent intent = new Intent(this, AdminFacilityActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

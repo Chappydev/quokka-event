@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Quokkaevent"
         tools:targetApi="31">
         <activity
+            android:name=".controllers.WaitlistEntriesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.EventDetailsViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".QrScannerPageActivity"
             android:exported="false" />
         <activity
@@ -24,21 +30,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".controllers.AdminLandingPageActivity"/>
-        <activity android:name=".controllers.BrowseProfileDetailsActivity"/>
-        <activity android:name=".controllers.AdminBrowseEventsActivity"/>
-        <activity android:name=".controllers.AdminEventTabsActivity"/>
-
-        <activity android:name="com.example.quokka_event.controllers.MyEventsActivity" />
-        <activity android:name="com.example.quokka_event.controllers.EventDetailsActivity" />
+        <activity android:name=".controllers.AdminLandingPageActivity" />
+        <activity android:name=".controllers.BrowseProfileDetailsActivity" />
+        <activity android:name=".controllers.BrowseProfilesActivity"/>
+        <activity android:name=".controllers.AdminBrowseEventsActivity" />
+        <activity android:name=".controllers.AdminEventTabsActivity" />
+        <activity android:name=".controllers.MyEventsActivity" />
+        <activity android:name=".controllers.EventDetailsActivity" />
         <activity android:name=".controllers.ConfirmationActivity" />
         <activity android:name=".controllers.WaitlistActivity" />
         <activity android:name=".NotificationPageActivity" />
         <activity android:name=".OrganizerEventsPageActivity" />
         <activity android:name=".controllers.EventTabsActivity" />
         <activity android:name=".UserProfilePageActivity" />
+        <activity android:name=".controllers.AdminFacilityActivity"/>
+        <activity android:name=".controllers.AdminFacilityDetails"/>
     </application>
-<!--    <uses-permission android:name="android.permission.INTERNET" />-->
 
 </manifest>

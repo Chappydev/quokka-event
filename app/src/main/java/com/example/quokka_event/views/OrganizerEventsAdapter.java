@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.controllers.EventDetailsViewActivity;
 import com.example.quokka_event.controllers.EventTabsActivity;
 import com.example.quokka_event.models.event.Event;
 
@@ -77,7 +78,7 @@ public class OrganizerEventsAdapter extends RecyclerView.Adapter<OrganizerEvents
         // Set button click listener
         viewHolder.viewButton.setOnClickListener(v -> {
             Context context = v.getContext();
-            Intent intent = new Intent(context, EventTabsActivity.class);
+            Intent intent = new Intent(context, EventDetailsViewActivity.class);
             intent.putExtra("eventId", (String) event.get("eventId"));
             context.startActivity(intent);
         });

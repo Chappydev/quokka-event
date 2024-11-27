@@ -17,20 +17,11 @@ public class AdminViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 0:
-                return new AdminEventOverviewFragment();
-            case 1:
-                return new DetailsFragment();
-            case 2:
-                return new QRFragment();
-            default:
-                return new OverviewFragment();
-        }
+        return new AdminEventOverviewFragment();
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 1;
     }
 }

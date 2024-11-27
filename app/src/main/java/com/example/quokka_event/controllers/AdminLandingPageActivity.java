@@ -21,6 +21,7 @@ public class AdminLandingPageActivity extends AppCompatActivity {
 
     Button browseProfileButton;
     Button browseEventButton;
+    Button browseFacilityButton;
     /**
      * Create landing page for admins.
      * @param savedInstanceState
@@ -39,7 +40,7 @@ public class AdminLandingPageActivity extends AppCompatActivity {
 
         browseProfileButton = findViewById(R.id.browse_profile_button);
         browseEventButton = findViewById(R.id.browse_events_button);
-
+        browseFacilityButton = findViewById(R.id.admin_browse_facility);
         browseProfileButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Browse all profiles from database. start {@link BrowseProfilesActivity }
@@ -60,6 +61,13 @@ public class AdminLandingPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent showActivity = new Intent(AdminLandingPageActivity.this, AdminBrowseEventsActivity.class);
+                startActivity(showActivity);
+            }
+        });
+        browseFacilityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent showActivity = new Intent(AdminLandingPageActivity.this, AdminFacilityActivity.class);
                 startActivity(showActivity);
             }
         });

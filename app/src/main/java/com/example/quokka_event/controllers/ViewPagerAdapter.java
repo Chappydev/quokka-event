@@ -23,8 +23,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 return new OverviewFragment();
             case 1:
                 return new DetailsFragment();
-            case 2:
-                return new QRFragment();
             default:
                 return new OverviewFragment();
         }
@@ -32,7 +30,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3; // Number of tabs
+        return 2; // Number of tabs
     }
 }
 
