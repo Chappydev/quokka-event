@@ -1,6 +1,7 @@
 package com.example.quokka_event.models.organizer;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.controllers.DatabaseManager;
+import com.example.quokka_event.controllers.EventDetailsViewActivity;
+import com.example.quokka_event.controllers.EventTabsActivity;
+import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.Notification;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * This is a fragment that is displayed when an organizer clicks on the Notify Particpants button.
@@ -27,6 +35,9 @@ public class NotifyParticipantsFragment extends DialogFragment {
     Button sendButton;
     EditText notificationText;
     Spinner recipientSpinner;
+    DatabaseManager db;
+    FirebaseAuth auth;
+    EditText notificationTitle;
 
     /**
      * This sets up the notify participants fragment, when it is created.
@@ -46,12 +57,14 @@ public class NotifyParticipantsFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(com.example.quokka_event.R.layout.organizer_notify_participants_frag, container, false);
+        View view = inflater.inflate(com.example.quokka_event.R.layout.notify_participants_frag, container, false);
         eventName = view.findViewById(com.example.quokka_event.R.id.event_title_label);
         cancelButton = view.findViewById(R.id.cancel_notify_button);
         sendButton = view.findViewById(R.id.send_button);
         notificationText = view.findViewById(R.id.notification_text);
         recipientSpinner = view.findViewById(R.id.recipient_spinner);
+        notificationTitle = view.findViewById(R.id.notification_title);
+        db = DatabaseManager.getInstance(getContext());
 
         // spinner setup
         String[] participantStatuses = new String[]{"All","Accepted", "Cancelled", "Waitlisted", "Awaiting Response"};
@@ -69,7 +82,58 @@ public class NotifyParticipantsFragment extends DialogFragment {
                     .commit();
         });
 
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Notification notification = new Notification();
+
+//                // check if there is a message filled out
+//                if (!notification.setNotifMessage(notificationText.getText().toString())){
+//                    notificationText.setError("Must enter a message for your notification!");
+//                    return;
+//                }
+                notification.setNotifMessage(notificationText.getText().toString());
+                notification.setNotifTitle(notificationTitle.getText().toString());
+                //String deviceId = auth.getCurrentUser().getUid();
+                db.addNotification(notification, new DbCallback() {
+                    @Override
+                    public void onSuccess(Object result) {
+                        Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
+                        Toast.makeText(getContext(),
+                                "Notification Sent Successfully",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onError(Exception exception) {
+                        Log.e("DB", "Error Sending Notification: ", exception);
+                        Toast.makeText(getContext(),
+                                "Error Sending Notification",
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+
         return  view;
+    }
+
+    /**
+     * Method used to set the dialog fragment to fit 90% of the screen width
+     * ref: https://stackoverflow.com/questions/12478520/how-to-set-dialogfragments-width-and-height
+     * @author mylayambao
+     * @since project part 4
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            // set dialog width to 90% of screen width
+            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+            getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
     }
 
 

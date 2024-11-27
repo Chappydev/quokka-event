@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.organizer.EventEntrantsPage;
+import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.BarcodeFormat;
@@ -52,6 +53,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private String currentEventId;
     private boolean isEditMode = false;
     private FirebaseAuth auth;
+    private Button notifyParticipantsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,21 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             intent.putExtra("eventId", currentEventId);
             intent.putExtra("eventName", eventTitle.getText().toString());
             startActivity(intent);
+        });
+
+        Button notifyParticipantsButton = findViewById(R.id.notify_participants_button);
+        notifyParticipantsButton.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Sends the notification when clicking the send button
+             * @author mylayambao
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                NotifyParticipantsFragment notifyParticipantsFragment = new NotifyParticipantsFragment();
+                notifyParticipantsFragment.show(getSupportFragmentManager(), "notify participants fragment");
+            }
         });
 
         setupButtonListeners();

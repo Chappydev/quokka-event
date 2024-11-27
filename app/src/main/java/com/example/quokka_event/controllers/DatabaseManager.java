@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.Notification;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
@@ -36,6 +37,7 @@ public class DatabaseManager {
     private CollectionReference facilityRef;
     private CollectionReference eventsRef;
     private CollectionReference enrollsRef;
+    private CollectionReference notificationsRef;
     private Context applicationContext;
     private static DatabaseManager instance;
 
@@ -59,6 +61,7 @@ public class DatabaseManager {
         facilityRef = db.collection("Facility");
         eventsRef = db.collection("Events");
         enrollsRef = db.collection("Enrolls");
+        notificationsRef = db.collection("Notifications");
         return this;
     }
 
@@ -814,6 +817,32 @@ public class DatabaseManager {
                             .addOnFailureListener(callback::onError);
                 })
                 .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Creates a notification object and stores it in the database.
+     * @author mylayambao
+     * @param notification
+     * *@param deviceId
+     * @param callback
+     */
+    public void addNotification(Notification notification, DbCallback callback){
+        Map<String, Object> notificationMap = new HashMap<>();
+        //notificationMap.put("eventId", notification.getEventId());
+        notificationMap.put("notifMessage", notification.getNotifMessage());
+        notificationMap.put("notifTitle", notification.getNotifTitle());
+        //notificationMap.put("eventName", notification.getEventName());
+
+        notificationsRef
+                .add(notificationMap)
+                .addOnSuccessListener(DocumentReference -> {
+                    DocumentReference.update("notificationId", DocumentReference.getId())
+                            .addOnSuccessListener(v -> {
+                                callback.onSuccess("Notification added with ID: " + DocumentReference.getId());
+                            })
+                            .addOnFailureListener(exception -> callback.onError(exception));
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
     }
 }
 
