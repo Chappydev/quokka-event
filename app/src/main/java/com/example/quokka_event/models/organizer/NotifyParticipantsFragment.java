@@ -25,6 +25,9 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.Notification;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * This is a fragment that is displayed when an organizer clicks on the Notify Particpants button.
  * @author mylayambao
@@ -132,28 +135,202 @@ public class NotifyParticipantsFragment extends DialogFragment {
 //                    notificationText.setError("Must enter a message for your notification!");
 //                    return;
 //                }
-                notification.setNotifMessage(notificationText.getText().toString());
-                notification.setNotifTitle(notificationTitle.getText().toString());
-                notification.setEventId(currentEventId);
-                //String deviceId = auth.getCurrentUser().getUid();
-                db.addNotification(notification, new DbCallback() {
-                    @Override
-                    public void onSuccess(Object result) {
-                        Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
-                        Toast.makeText(getContext(),
-                                "Notification Sent Successfully",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onError(Exception exception) {
-                        Log.e("DB", "Error Sending Notification: ", exception);
-                        Toast.makeText(getContext(),
-                                "Error Sending Notification",
-                                Toast.LENGTH_SHORT).show();
+                // set the recipients
+                int spinnerPos = recipientSpinner.getSelectedItemPosition();
+                Log.d("spinner", String.valueOf(spinnerPos));
+                ArrayList<Map<String, Object>> recipients = new ArrayList<>();
+                if(spinnerPos == 1){
+                    db.getAttendingEntrants(currentEventId, new DbCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            notification.setRecipients(recipients);
+                            notification.setNotifMessage(notificationText.getText().toString());
+                            notification.setNotifTitle(notificationTitle.getText().toString());
+                            notification.setEventId(currentEventId);
+                            //String deviceId = auth.getCurrentUser().getUid();
+                            db.addNotification(notification, new DbCallback() {
+                                @Override
+                                public void onSuccess(Object result) {
+                                    Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
+                                    Toast.makeText(getContext(),
+                                            "Notification Sent Successfully",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                @Override
+                                public void onError(Exception exception) {
+                                    Log.e("DB", "Error Sending Notification: ", exception);
+                                    Toast.makeText(getContext(),
+                                            "Error Sending Notification",
+                                            Toast.LENGTH_SHORT).show();
 
-                    }
-                });
-                dismiss();
+                                }
+                            });
+
+                        }
+                        @Override
+                        public void onError(Exception exception) {
+                            Log.e("DB", "Error Fetching Attending Entrants: ", exception);
+                            Toast.makeText(getContext(),
+                                    "Error Fetching Recipients",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                } else if(spinnerPos == 2) {
+                    db.getCancelledEntrants(currentEventId, new DbCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            notification.setRecipients(recipients);
+                            notification.setNotifMessage(notificationText.getText().toString());
+                            notification.setNotifTitle(notificationTitle.getText().toString());
+                            notification.setEventId(currentEventId);
+                            //String deviceId = auth.getCurrentUser().getUid();
+                            db.addNotification(notification, new DbCallback() {
+                                @Override
+                                public void onSuccess(Object result) {
+                                    Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
+                                    Toast.makeText(getContext(),
+                                            "Notification Sent Successfully",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                @Override
+                                public void onError(Exception exception) {
+                                    Log.e("DB", "Error Sending Notification: ", exception);
+                                    Toast.makeText(getContext(),
+                                            "Error Sending Notification",
+                                            Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                        }
+                        @Override
+                        public void onError(Exception exception) {
+                            Log.e("DB", "Error Fetching Cancelled Entrants: ", exception);
+                            Toast.makeText(getContext(),
+                                    "Error Fetching Recipients",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                } else if (spinnerPos == 3) {
+                    db.getWaitlistEntrants(currentEventId, new DbCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            notification.setRecipients(recipients);
+                            notification.setNotifMessage(notificationText.getText().toString());
+                            notification.setNotifTitle(notificationTitle.getText().toString());
+                            notification.setEventId(currentEventId);
+                            //String deviceId = auth.getCurrentUser().getUid();
+                            db.addNotification(notification, new DbCallback() {
+                                @Override
+                                public void onSuccess(Object result) {
+                                    Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
+                                    Toast.makeText(getContext(),
+                                            "Notification Sent Successfully",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                @Override
+                                public void onError(Exception exception) {
+                                    Log.e("DB", "Error Sending Notification: ", exception);
+                                    Toast.makeText(getContext(),
+                                            "Error Sending Notification",
+                                            Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                        }
+                        @Override
+                        public void onError(Exception exception) {
+                            Log.e("DB", "Error Fetching Waitlist Entrants: ", exception);
+                            Toast.makeText(getContext(),
+                                    "Error Fetching Recipients",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                } else if (spinnerPos == 4){
+                    db.getInvitedEntrants(currentEventId, new DbCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            notification.setRecipients(recipients);
+                            notification.setNotifMessage(notificationText.getText().toString());
+                            notification.setNotifTitle(notificationTitle.getText().toString());
+                            notification.setEventId(currentEventId);
+                            //String deviceId = auth.getCurrentUser().getUid();
+                            db.addNotification(notification, new DbCallback() {
+                                @Override
+                                public void onSuccess(Object result) {
+                                    Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
+                                    Toast.makeText(getContext(),
+                                            "Notification Sent Successfully",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                @Override
+                                public void onError(Exception exception) {
+                                    Log.e("DB", "Error Sending Notification: ", exception);
+                                    Toast.makeText(getContext(),
+                                            "Error Sending Notification",
+                                            Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                        }
+                        @Override
+                        public void onError(Exception exception) {
+                            Log.e("DB", "Error Fetching Invited Entrants: ", exception);
+                            Toast.makeText(getContext(),
+                                    "Error Fetching Recipients",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                } else if (spinnerPos == 0) {
+                    db.getAllEntrants(currentEventId, new DbCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            notification.setRecipients(recipients);
+                            notification.setNotifMessage(notificationText.getText().toString());
+                            notification.setNotifTitle(notificationTitle.getText().toString());
+                            notification.setEventId(currentEventId);
+                            //String deviceId = auth.getCurrentUser().getUid();
+                            db.addNotification(notification, new DbCallback() {
+                                @Override
+                                public void onSuccess(Object result) {
+                                    Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
+                                    Toast.makeText(getContext(),
+                                            "Notification Sent Successfully",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                @Override
+                                public void onError(Exception exception) {
+                                    Log.e("DB", "Error Sending Notification: ", exception);
+                                    Toast.makeText(getContext(),
+                                            "Error Sending Notification",
+                                            Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                        }
+                        @Override
+                        public void onError(Exception exception) {
+                            Log.e("DB", "Error Fetching All Entrants: ", exception);
+                            Toast.makeText(getContext(),
+                                    "Error Fetching Recipients",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }
+
             }
         });
 

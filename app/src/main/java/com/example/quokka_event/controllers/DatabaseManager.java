@@ -820,6 +820,46 @@ public class DatabaseManager {
     }
 
     /**
+     * Gets the list of all entrants for an event
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getAllEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> cancelledEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            cancelledEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(cancelledEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+
+
+    /**
      * Creates a notification object and stores it in the database.
      * @author mylayambao
      * @param notification
@@ -832,7 +872,7 @@ public class DatabaseManager {
         notificationMap.put("notifMessage", notification.getNotifMessage());
         notificationMap.put("notifTitle", notification.getNotifTitle());
         notificationMap.put("eventId", notification.getEventId());
-        //notificationMap.put("eventName", notification.getEventName());
+        notificationMap.put("recipients", notification.getRecipients());
 
         notificationsRef
                 .add(notificationMap)
