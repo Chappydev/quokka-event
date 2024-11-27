@@ -102,16 +102,16 @@ public class DetailsFragment extends Fragment {
 
         setButtonsVisibility(View.GONE);
 
-        notifyParticipantsButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                NotifyParticipantsFragment notifyParticipantsFragment = new NotifyParticipantsFragment();
-                notifyParticipantsFragment.show(getChildFragmentManager(), "notify participant");
-            }
-
-
-        });
+//        notifyParticipantsButton.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View view) {
+//                NotifyParticipantsFragment notifyParticipantsFragment = new NotifyParticipantsFragment(event);
+//                notifyParticipantsFragment.show(getChildFragmentManager(), "notify participant");
+//            }
+//
+//
+//        });
 
         limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             /**

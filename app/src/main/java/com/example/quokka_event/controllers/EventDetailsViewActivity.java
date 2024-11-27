@@ -102,7 +102,6 @@ public class EventDetailsViewActivity extends AppCompatActivity {
 
         Button notifyParticipantsButton = findViewById(R.id.notify_participants_button);
         notifyParticipantsButton.setOnClickListener(new View.OnClickListener() {
-
             /**
              * Sends the notification when clicking the send button
              * @author mylayambao
@@ -110,7 +109,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                NotifyParticipantsFragment notifyParticipantsFragment = new NotifyParticipantsFragment();
+                NotifyParticipantsFragment notifyParticipantsFragment = NotifyParticipantsFragment.newInstance(currentEventId);
                 notifyParticipantsFragment.show(getSupportFragmentManager(), "notify participants fragment");
             }
         });

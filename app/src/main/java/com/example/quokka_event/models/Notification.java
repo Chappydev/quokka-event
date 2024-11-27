@@ -1,11 +1,16 @@
 package com.example.quokka_event.models;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class Notification {
     public String notifTitle;
     public String notifMessage;
     private String eventId;
     private String eventName;
     private String notifId;
+    private ArrayList<Map<String, Object>> recipients;
+
 
     /**
      * Constructor method for a notification object.
@@ -16,11 +21,12 @@ public class Notification {
      * @param eventId
      * @param eventName
      */
-    public Notification(String notifId, String notifTitle, String notifMessage, String eventId, String eventName){
+    public Notification(String notifId, String notifTitle, String notifMessage, String eventId, String eventName, ArrayList<Map<String, Object>> recipients){
         this.notifTitle = notifTitle;
         this.notifMessage = notifMessage;
         this.eventId = eventId;
         this.eventName = eventName;
+        this.recipients = recipients;
     }
 
     /**
@@ -91,6 +97,22 @@ public class Notification {
      * @param notifId
      */
     public void setNotifId(String notifId) {this.notifId = notifId;}
+
+    /**
+     * Gets the list of recipients.
+     * @return recipients
+     */
+    public ArrayList<Map<String, Object>> getRecipients() {
+        return recipients;
+    }
+
+    /**
+     * Sets the list of recipients.
+     * @param recipients
+     */
+    public void setRecipients(ArrayList<Map<String, Object>> recipients) {
+        this.recipients = recipients;
+    }
 }
 
 

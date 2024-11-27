@@ -831,6 +831,7 @@ public class DatabaseManager {
         //notificationMap.put("eventId", notification.getEventId());
         notificationMap.put("notifMessage", notification.getNotifMessage());
         notificationMap.put("notifTitle", notification.getNotifTitle());
+        notificationMap.put("eventId", notification.getEventId());
         //notificationMap.put("eventName", notification.getEventName());
 
         notificationsRef

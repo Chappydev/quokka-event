@@ -1,5 +1,7 @@
 package com.example.quokka_event.models.organizer;
 
+import static android.content.Intent.getIntent;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +40,41 @@ public class NotifyParticipantsFragment extends DialogFragment {
     DatabaseManager db;
     FirebaseAuth auth;
     EditText notificationTitle;
+    String currentEventId;
+
+
+    /**
+     * Factory method for the NotifyParticipantsFragment.
+     * @author mylayambao
+     * @param currentEventId
+     * @return fragment
+     */
+    public static NotifyParticipantsFragment newInstance(String currentEventId) {
+        NotifyParticipantsFragment fragment = new NotifyParticipantsFragment();
+        Bundle args = new Bundle();
+        args.putString("eventId", currentEventId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    /**
+     * On create method for when a NotifyParticipantsFragment is created.
+     * @author mylayambao
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Get the event ID from arguments
+        if (getArguments() != null) {
+            currentEventId = getArguments().getString("eventId");
+        } else {
+            Toast.makeText(getContext(), "Error: No event ID provided", Toast.LENGTH_SHORT).show();
+            dismiss();
+        }
+    }
 
     /**
      * This sets up the notify participants fragment, when it is created.
@@ -67,10 +104,11 @@ public class NotifyParticipantsFragment extends DialogFragment {
         db = DatabaseManager.getInstance(getContext());
 
         // spinner setup
-        String[] participantStatuses = new String[]{"All","Accepted", "Cancelled", "Waitlisted", "Awaiting Response"};
+        String[] participantStatuses = new String[]{"All","Attending", "Cancelled", "Waiting", "Invited"};
         ArrayAdapter<String> participantStatusAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, participantStatuses);
         participantStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         recipientSpinner.setAdapter(participantStatusAdapter);
+
 
         /**
          * On click listener for the cancel icon, to close the fragment when clicked.
@@ -96,6 +134,7 @@ public class NotifyParticipantsFragment extends DialogFragment {
 //                }
                 notification.setNotifMessage(notificationText.getText().toString());
                 notification.setNotifTitle(notificationTitle.getText().toString());
+                notification.setEventId(currentEventId);
                 //String deviceId = auth.getCurrentUser().getUid();
                 db.addNotification(notification, new DbCallback() {
                     @Override
@@ -114,6 +153,7 @@ public class NotifyParticipantsFragment extends DialogFragment {
 
                     }
                 });
+                dismiss();
             }
         });
 
