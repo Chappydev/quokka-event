@@ -90,6 +90,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
 
     /**
      * Loads user data into UI.
+     *
      * @author speakerchef and Soaiba
      */
     private void loadUserData() {
@@ -141,8 +142,9 @@ public class UserProfilePageActivity extends AppCompatActivity {
 
     /**
      * Loads facility data into UI.
-     * @author speakerchef
+     *
      * @param facilityId
+     * @author speakerchef
      */
     private void loadFacilityData(String facilityId) {
         db.getFacility(facilityId, new DbCallback() {
@@ -160,13 +162,14 @@ public class UserProfilePageActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validPhoneNumber(String phone){
+    private boolean validPhoneNumber(String phone) {
         return phone.length() <= 10 && phone.length() >= 8 && phone.matches("[0-9]+");
     }
 
 
     /**
      * Saves changes made by user to the database.
+     *
      * @author speakerchef
      */
     private void saveChanges() {
@@ -185,7 +188,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill in all profile fields!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (name.matches("[0-9]+")){
+        if (name.matches("[0-9]+")) {
             Toast.makeText(this, "Please enter a valid name!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -193,7 +196,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid email!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!(phone != "" && validPhoneNumber(phone))){
+        if (!(phone != "" && validPhoneNumber(phone))) {
             Toast.makeText(this, "Please enter a valid 8-10 digit phone number!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -267,13 +270,14 @@ public class UserProfilePageActivity extends AppCompatActivity {
     /**
      * Choose image for profile picture upload
      */
-    private void chooseImage(){
+    private void chooseImage() {
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
 
         launchSomeActivity.launch(i);
     }
+
     ActivityResultLauncher<Intent> launchSomeActivity
             = registerForActivityResult(
             new ActivityResultContracts
@@ -292,13 +296,12 @@ public class UserProfilePageActivity extends AppCompatActivity {
                                     = MediaStore.Images.Media.getBitmap(
                                     this.getContentResolver(),
                                     selectedImageUri);
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                         profilePic.setImageBitmap(
                                 selectedImageBitmap);
                     }
                 }
-            }); .
+            });
 }
