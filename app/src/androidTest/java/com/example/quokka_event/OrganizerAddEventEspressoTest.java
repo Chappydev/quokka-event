@@ -106,11 +106,12 @@ public class OrganizerAddEventEspressoTest {
     @Test
     public void testAddEvent() throws InterruptedException {
         // Click on the organizer Events button
+        Thread.sleep(5000);
         onView(withId(R.id.organizer_events_button)).perform(click());
-        Thread.sleep(10000);
+        Thread.sleep(2000);
         // Click on the add button
         onView(withId(R.id.add_button_bottom)).perform(click());
-        Thread.sleep(10000);
+        Thread.sleep(2000);
         // Add a location
         onView(withId(R.id.edit_dtl_button)).perform(click());
         onView(withId(R.id.editTextLocation)).perform(click()).perform(typeText("cmput 301"), closeSoftKeyboard());
