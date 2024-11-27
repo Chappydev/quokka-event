@@ -16,6 +16,7 @@ import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.event.DetailsFragment;
 import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.models.event.EventLotteryManager;
 import com.example.quokka_event.models.event.OverviewFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -25,6 +26,9 @@ import com.google.rpc.context.AttributeContext;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Create an event
+ */
 public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener, DetailsFragment.detailsListener {
     Button saveButton;
     Button cancelButton;
@@ -93,7 +97,9 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                         Toast.makeText(EventTabsActivity.this,
                                 "Event created successfully",
                                 Toast.LENGTH_SHORT).show();
-
+                        EventLotteryManager elm = new EventLotteryManager();
+                        long deadline = event.getRegistrationDeadline().getTime();
+                        elm.deadlineLottery(getApplicationContext(), event,deadline);
                         finish();
                     }
 
