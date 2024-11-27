@@ -3337,6 +3337,7 @@ int id browser_actions_menu_item_text 0x7f080080
 int id browser_actions_menu_items 0x7f080081
 int id browser_actions_menu_view 0x7f080082
 int id buttonPanel 0x7f080083
+int id button_container 0x7f0802a1
 int id cache_measures 0x7f080084
 int id callMeasure 0x7f080085
 int id cancel_button 0x7f080086
@@ -3423,6 +3424,7 @@ int id editDateTextView 0x7f0800d4
 int id editDeadlineTextView 0x7f0800d5
 int id editTextLocation 0x7f0800d6
 int id editTimeTextView 0x7f0800d7
+int id edit_button 0x7f0802a2
 int id edit_description_icon 0x7f0800d8
 int id edit_dtl_button 0x7f0800d9
 int id edit_event_description 0x7f0800da
@@ -3443,17 +3445,22 @@ int id end 0x7f0800e8
 int id endToStart 0x7f0800e9
 int id enterAlways 0x7f0800ea
 int id enterAlwaysCollapsed 0x7f0800eb
+int id entrant_email 0x7f0802a3
+int id entrant_name 0x7f0802a4
 int id escape 0x7f0800ec
+int id event_capacity_edit 0x7f0802a5
 int id event_capacity_label 0x7f0800ed
 int id event_date 0x7f0800ee
 int id event_date_label 0x7f0800ef
 int id event_deadline_label 0x7f0800f0
 int id event_description 0x7f0800f1
 int id event_description_box 0x7f0800f2
+int id event_description_edit 0x7f0802a6
 int id event_description_label 0x7f0800f3
 int id event_done_button 0x7f0800f4
 int id event_draw_remaining_button 0x7f0800f5
 int id event_list_recycler_view 0x7f0800f6
+int id event_location_edit 0x7f0802a7
 int id event_location_label 0x7f0800f7
 int id event_name 0x7f0800f8
 int id event_name_text 0x7f0800f9
@@ -3463,9 +3470,11 @@ int id event_seats_label 0x7f0800fc
 int id event_status 0x7f0800fd
 int id event_time_label 0x7f0800fe
 int id event_title 0x7f0800ff
+int id event_title_edit 0x7f0802a8
 int id event_title_edittext 0x7f080100
 int id event_title_label 0x7f080101
 int id event_view_button 0x7f080102
+int id event_waitlist_edit 0x7f0802a9
 int id event_waitlist_label 0x7f080104
 int id exitButton 0x7f080105
 int id exitUntilCollapsed 0x7f080106
@@ -3694,6 +3703,7 @@ int id right_icon 0x7f0801e1
 int id right_side 0x7f0801e2
 int id rounded 0x7f0801e3
 int id row_index_key 0x7f0801e4
+int id save_button 0x7f0802aa
 int id save_changes_button 0x7f0801e5
 int id save_non_transition_alpha 0x7f0801e6
 int id save_overlay_view 0x7f0801e7
@@ -3837,6 +3847,7 @@ int id user_notifications_checkbox 0x7f08026f
 int id user_phone_label 0x7f080270
 int id user_phone_number 0x7f080271
 int id user_profile_image 0x7f080272
+int id user_profile_image_view 0x7f0802ab
 int id vertical_only 0x7f080273
 int id viewPager 0x7f080274
 int id view_offset_helper 0x7f080275
@@ -3845,9 +3856,11 @@ int id view_tree_lifecycle_owner 0x7f080277
 int id view_tree_on_back_pressed_dispatcher_owner 0x7f080278
 int id view_tree_saved_state_registry_owner 0x7f080279
 int id view_tree_view_model_store_owner 0x7f08027a
+int id view_waitlist_button 0x7f0802ac
 int id visible 0x7f08027b
 int id visible_removing_fragment_view_tag 0x7f08027c
 int id waitlist_limit_checkbox 0x7f08027d
+int id waitlist_recycler_view 0x7f0802ad
 int id west 0x7f08027e
 int id wide 0x7f08027f
 int id withText 0x7f080280
@@ -3989,6 +4002,7 @@ int layout abc_select_dialog_material 0x7f0b001a
 int layout abc_tooltip 0x7f0b001b
 int layout activity_main 0x7f0b001c
 int layout activity_qr_scanner_page 0x7f0b001d
+int layout activity_waitlist_entries 0x7f0b0096
 int layout admin_browse_events 0x7f0b001e
 int layout admin_event_overview_frag 0x7f0b001f
 int layout admin_event_tabs 0x7f0b0020
@@ -4107,6 +4121,7 @@ int layout user_landing_page 0x7f0b008c
 int layout user_my_events_page 0x7f0b008d
 int layout user_notification_page 0x7f0b008e
 int layout user_toolbar 0x7f0b008f
+int layout waitlist_entry_item 0x7f0b0097
 int layout zxing_barcode_scanner 0x7f0b0090
 int layout zxing_capture 0x7f0b0091
 int mipmap ic_launcher 0x7f0d0000
@@ -4332,6 +4347,7 @@ int string path_password_eye_mask_strike_through 0x7f1000d6
 int string path_password_eye_mask_visible 0x7f1000d7
 int string path_password_strike_through 0x7f1000d8
 int string person_icon_description 0x7f1000d9
+int string profile_picture 0x7f1000e8
 int string project_id 0x7f1000da
 int string scan_qr_code_button_text 0x7f1000db
 int string search_menu_title 0x7f1000dc
