@@ -1,10 +1,15 @@
 package com.example.quokka_event;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.controllers.DatabaseManager;
@@ -21,6 +28,7 @@ import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.organizer.Facility;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -39,6 +47,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
     private Button saveButton;
     private String existingFacilityId = null;
     private CheckBox notificationCheckBox;
+    private ImageView profilePic;
 
     @Override
     /**
@@ -60,12 +69,23 @@ public class UserProfilePageActivity extends AppCompatActivity {
         facilityAddressField = findViewById(R.id.facility_address_field);
         backButton = findViewById(R.id.back_button_bottom);
         saveButton = findViewById(R.id.save_changes_button);
+        profilePic = findViewById(R.id.user_profile_image_view);
         notificationCheckBox = findViewById(R.id.user_notifications_checkbox);
 
         loadUserData();
 
         backButton.setOnClickListener(v -> finish());
         saveButton.setOnClickListener(v -> saveChanges());
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Allow user to upload a profile pic after it is clicked
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                chooseImage();
+            }
+        });
     }
 
     /**
@@ -243,4 +263,42 @@ public class UserProfilePageActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Choose image for profile picture upload
+     */
+    private void chooseImage(){
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        launchSomeActivity.launch(i);
+    }
+    ActivityResultLauncher<Intent> launchSomeActivity
+            = registerForActivityResult(
+            new ActivityResultContracts
+                    .StartActivityForResult(),
+            result -> {
+                if (result.getResultCode()
+                        == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null
+                            && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        Bitmap selectedImageBitmap = null;
+                        try {
+                            selectedImageBitmap
+                                    = MediaStore.Images.Media.getBitmap(
+                                    this.getContentResolver(),
+                                    selectedImageUri);
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        profilePic.setImageBitmap(
+                                selectedImageBitmap);
+                    }
+                }
+            }); .
 }

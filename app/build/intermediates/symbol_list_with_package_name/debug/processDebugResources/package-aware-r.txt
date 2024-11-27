@@ -3338,6 +3338,7 @@ id browser_actions_menu_item_text
 id browser_actions_menu_items
 id browser_actions_menu_view
 id buttonPanel
+id button_container
 id cache_measures
 id callMeasure
 id cancel_button
@@ -3424,6 +3425,7 @@ id editDateTextView
 id editDeadlineTextView
 id editTextLocation
 id editTimeTextView
+id edit_button
 id edit_description_icon
 id edit_dtl_button
 id edit_event_description
@@ -3444,17 +3446,22 @@ id end
 id endToStart
 id enterAlways
 id enterAlwaysCollapsed
+id entrant_email
+id entrant_name
 id escape
+id event_capacity_edit
 id event_capacity_label
 id event_date
 id event_date_label
 id event_deadline_label
 id event_description
 id event_description_box
+id event_description_edit
 id event_description_label
 id event_done_button
 id event_draw_remaining_button
 id event_list_recycler_view
+id event_location_edit
 id event_location_label
 id event_name
 id event_name_text
@@ -3464,9 +3471,11 @@ id event_seats_label
 id event_status
 id event_time_label
 id event_title
+id event_title_edit
 id event_title_edittext
 id event_title_label
 id event_view_button
+id event_waitlist_edit
 id event_waitlist_label
 id exitButton
 id exitUntilCollapsed
@@ -3695,6 +3704,7 @@ id right_icon
 id right_side
 id rounded
 id row_index_key
+id save_button
 id save_changes_button
 id save_non_transition_alpha
 id save_overlay_view
@@ -3838,6 +3848,7 @@ id user_notifications_checkbox
 id user_phone_label
 id user_phone_number
 id user_profile_image
+id user_profile_image_view
 id vertical_only
 id viewPager
 id view_offset_helper
@@ -3846,9 +3857,11 @@ id view_tree_lifecycle_owner
 id view_tree_on_back_pressed_dispatcher_owner
 id view_tree_saved_state_registry_owner
 id view_tree_view_model_store_owner
+id view_waitlist_button
 id visible
 id visible_removing_fragment_view_tag
 id waitlist_limit_checkbox
+id waitlist_recycler_view
 id west
 id wide
 id withText
@@ -3990,6 +4003,7 @@ layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_main
 layout activity_qr_scanner_page
+layout activity_waitlist_entries
 layout admin_browse_events
 layout admin_event_overview_frag
 layout admin_event_tabs
@@ -4108,6 +4122,7 @@ layout user_landing_page
 layout user_my_events_page
 layout user_notification_page
 layout user_toolbar
+layout waitlist_entry_item
 layout zxing_barcode_scanner
 layout zxing_capture
 mipmap ic_launcher
@@ -4333,6 +4348,7 @@ string path_password_eye_mask_strike_through
 string path_password_eye_mask_visible
 string path_password_strike_through
 string person_icon_description
+string profile_picture
 string project_id
 string scan_qr_code_button_text
 string search_menu_title
