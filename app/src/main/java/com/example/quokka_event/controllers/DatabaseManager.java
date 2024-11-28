@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.time.zone.ZoneOffsetTransition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -585,13 +586,7 @@ public class DatabaseManager {
      * @param phone
      * @param callback
      */
-    public void updateProfile(String deviceId, String name, String email, String phone, Boolean notificationPreference, DbCallback callback) {
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("name", name);
-        updates.put("email", email);
-        updates.put("phone", phone);
-        updates.put("notifications", notificationPreference);
-
+    public void updateProfile(String deviceId, Map<String, Object> updates, DbCallback callback) {
         usersRef.document(deviceId)
                 .update(updates)
                 .addOnSuccessListener(response -> callback.onSuccess(response))

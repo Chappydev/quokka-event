@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,12 +25,15 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,12 +45,48 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 100;
     private Boolean isAdmin = false;
     private Button adminButton;
+    private FusedLocationProviderClient locationProviderClient;
+    private Double userLat;
+    private Double userLon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_landing_page);
 
+        locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationProviderClient
+                .getLastLocation()
+                .addOnSuccessListener(v -> {
+                    String deviceId = auth.getCurrentUser().getUid();
+                    Map<String, Object> locationPayload = new HashMap<>();
+                    locationPayload.put("latitude", v.getLatitude());
+                    locationPayload.put("longitude", v.getLongitude());
+                    db.updateProfile(deviceId, locationPayload, new DbCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            Log.d("LOCATION", "onSuccess: Location updated for user: " + deviceId);
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+                            Log.e("LOCATION", "onError: Unable to update location for user: " + deviceId);
+                        }
+                    });
+                })
+                .addOnFailureListener(e -> Log.e("LOCATION", "onCreate: Unable to access user location." + e ));
 
         myEventButton = findViewById(R.id.my_events_button);
 

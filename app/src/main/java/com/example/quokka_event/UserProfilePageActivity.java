@@ -163,9 +163,8 @@ public class UserProfilePageActivity extends AppCompatActivity {
 
     /**
      * Loads facility data into UI.
-     *
-     * @param facilityId
      * @author speakerchef
+     * @param facilityId
      */
     private void loadFacilityData(String facilityId) {
         db.getFacility(facilityId, new DbCallback() {
@@ -190,7 +189,6 @@ public class UserProfilePageActivity extends AppCompatActivity {
 
     /**
      * Saves changes made by user to the database.
-     *
      * @author speakerchef
      */
     private void saveChanges() {
@@ -222,11 +220,15 @@ public class UserProfilePageActivity extends AppCompatActivity {
             return;
         }
 
-
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("name", name);
+        updates.put("email", email);
+        updates.put("phone", phone);
+        updates.put("notifications", notificationPreference);
 
         // Save profile changes first
         String deviceId = auth.getCurrentUser().getUid();
-        db.updateProfile(deviceId, name, email, phone, notificationPreference, new DbCallback() {
+        db.updateProfile(deviceId, updates, new DbCallback() {
             @Override
             public void onSuccess(Object result) {
                 // Handle facility data after profile is updated
