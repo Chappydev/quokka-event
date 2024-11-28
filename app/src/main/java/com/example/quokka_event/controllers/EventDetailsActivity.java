@@ -145,6 +145,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                 public void onSuccess(Object response) {
                     Toast.makeText(EventDetailsActivity.this, "You have canceled your waitlist spot in '" + eventName + "'", Toast.LENGTH_SHORT).show();
                     goToConfirm("Cancel", eventName);
+                    removeEvent();
                 }
 
                 @Override
@@ -181,7 +182,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             acceptButton.setEnabled(true);
             denyButton.setEnabled(true);
             cancelButton.setEnabled(false);
-        } else if ("Accepted".equalsIgnoreCase(status) || "Declined".equalsIgnoreCase(status) || "Unjoined".equalsIgnoreCase(status) || "Not Invited".equalsIgnoreCase(status)) {
+        } else if ("Accepted".equalsIgnoreCase(status) || "Declined".equalsIgnoreCase(status) || "Not Invited".equalsIgnoreCase(status)) {
             acceptButton.setEnabled(false);
             denyButton.setEnabled(false);
             cancelButton.setEnabled(false);
@@ -203,6 +204,17 @@ public class EventDetailsActivity extends AppCompatActivity {
         intent.putExtra("message_type", messageType);
         intent.putExtra("event_name", eventName);
         startActivity(intent);
+    }
+
+    /**
+     * This method removes an unjoined event from the page.
+     * @author Soaiba
+     */
+    private void removeEvent() {
+        Intent intent = new Intent(this, MyEventsActivity.class);
+        intent.putExtra("remove_event_id", eventId);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     /**

@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.Notification;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
@@ -36,6 +37,7 @@ public class DatabaseManager {
     private CollectionReference facilityRef;
     private CollectionReference eventsRef;
     private CollectionReference enrollsRef;
+    private CollectionReference notificationsRef;
     private Context applicationContext;
     private static DatabaseManager instance;
 
@@ -59,6 +61,7 @@ public class DatabaseManager {
         facilityRef = db.collection("Facility");
         eventsRef = db.collection("Events");
         enrollsRef = db.collection("Enrolls");
+        notificationsRef = db.collection("Notifications");
         return this;
     }
 
@@ -674,6 +677,12 @@ public class DatabaseManager {
                 .addOnFailureListener(callback::onError);
     }
 
+    /**
+     * Gets the list of all the users on the waitlist of an event.
+     * @author speakerchef
+     * @param eventId
+     * @param callback
+     */
     public void getWaitlistEntrants(String eventId, DbCallback callback) {
         enrollsRef
                 .whereEqualTo("eventId", eventId)
@@ -706,7 +715,192 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(callback::onError);
     }
+
+    /**
+     * Gets the list of all users attending an event.
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getAttendingEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Attending")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> attendingEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            attendingEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(attendingEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Gets the list of all users invited to an event.
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getInvitedEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Invited")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> invitedEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            invitedEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(invitedEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Gets the list of all cancelled entrants for an event
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getCancelledEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Cancelled")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> cancelledEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            cancelledEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(cancelledEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Gets the list of all entrants for an event
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getAllEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> cancelledEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            cancelledEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(cancelledEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+
+
+    /**
+     * Creates a notification object and stores it in the database.
+     * @author mylayambao
+     * @param notification
+     * *@param deviceId
+     * @param callback
+     */
+    public void addNotification(Notification notification, DbCallback callback){
+        Map<String, Object> notificationMap = new HashMap<>();
+        //notificationMap.put("eventId", notification.getEventId());
+        notificationMap.put("notifMessage", notification.getNotifMessage());
+        notificationMap.put("notifTitle", notification.getNotifTitle());
+        notificationMap.put("eventId", notification.getEventId());
+        notificationMap.put("recipients", notification.getRecipients());
+
+        notificationsRef
+                .add(notificationMap)
+                .addOnSuccessListener(DocumentReference -> {
+                    DocumentReference.update("notificationId", DocumentReference.getId())
+                            .addOnSuccessListener(v -> {
+                                callback.onSuccess("Notification added with ID: " + DocumentReference.getId());
+                            })
+                            .addOnFailureListener(exception -> callback.onError(exception));
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
+    }
 }
+
 
 
 

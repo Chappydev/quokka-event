@@ -67,7 +67,7 @@ public class MyEventsActivity extends AppCompatActivity {
         //getEvents();
 
         // Get user's events from database
-        getUserEvents();
+        getUserEvents(userId);
 
         // Handle back button activity
         Button backButton = findViewById(R.id.back_button_bottom);
@@ -123,19 +123,11 @@ public class MyEventsActivity extends AppCompatActivity {
     }
 
     /**
-     * This method gets user's enrollments.
-     * @author Soaiba
-     */
-    private void getUserEvents() {
-        getUserEnrolls(userId);
-    }
-
-    /**
-     * This method gets user's enrollments and gets those events.
+     * This method gets user's events.
      * @param userId the ID of the user we need to get events for.
      * @author Soaiba
      */
-    private void getUserEnrolls(String userId) {
+    private void getUserEvents(String userId) {
         DatabaseManager.getInstance(this).getUserEventList(userId, new DbCallback() {
             @Override
             /**
@@ -153,8 +145,12 @@ public class MyEventsActivity extends AppCompatActivity {
                     Map<String, Object> enrollData = enrollDataList.get(i);
                     String eventId = (String) enrollData.get("eventId");
                     String status = (String) enrollData.get("status");
-                    eventIds.add(eventId);
-                    eventStatusMap.put(eventId, status);
+
+                    // Doesn't display events user unjoined
+                    if (!"Unjoined".equalsIgnoreCase(status)) {
+                        eventIds.add(eventId);
+                        eventStatusMap.put(eventId, status);
+                    }
                 }
                 getEventsByIds(eventIds);
             }

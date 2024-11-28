@@ -164,6 +164,15 @@
                 android:layout_marginTop="30dp"
                 android:scaleType="fitCenter" />
 
+            <Button
+                android:id="@+id/notify_participants_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:text="Notify Participants" />
+
         </LinearLayout>
     </ScrollView>
 
@@ -200,12 +209,13 @@
             android:visibility="gone" />
 
          <Button
-            android:id="@+id/view_waitlist_button"
+            android:id="@+id/view_participants_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+             android:textSize="12dp"
             android:layout_marginStart="8dp"
-            android:text="Waitlist"
+            android:text="Participants"
              />
 
 

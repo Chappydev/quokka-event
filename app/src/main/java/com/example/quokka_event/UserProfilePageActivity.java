@@ -201,6 +201,8 @@ public class UserProfilePageActivity extends AppCompatActivity {
             return;
         }
 
+
+
         // Save profile changes first
         String deviceId = auth.getCurrentUser().getUid();
         db.updateProfile(deviceId, name, email, phone, notificationPreference, new DbCallback() {
