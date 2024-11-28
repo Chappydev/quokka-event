@@ -50,13 +50,13 @@
         app:layout_constraintTop_toBottomOf="@+id/browse_profile_button" />
 
     <Button
-        android:id="@+id/browse_events_button4"
+        android:id="@+id/admin_browse_facility"
         style="@style/landing_button_text"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginTop="64dp"
         android:background="@drawable/admin_button"
-        android:text="@string/my_events_button_text"
+        android:text="Browse Facilities"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/browse_events_button3" />

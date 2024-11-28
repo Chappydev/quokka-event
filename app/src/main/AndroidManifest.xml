@@ -32,6 +32,7 @@
         </activity>
         <activity android:name=".controllers.AdminLandingPageActivity" />
         <activity android:name=".controllers.BrowseProfileDetailsActivity" />
+        <activity android:name=".controllers.BrowseProfilesActivity"/>
         <activity android:name=".controllers.AdminBrowseEventsActivity" />
         <activity android:name=".controllers.AdminEventTabsActivity" />
         <activity android:name=".controllers.MyEventsActivity" />
@@ -43,6 +44,8 @@
         <activity android:name=".controllers.EventTabsActivity" />
         <activity android:name=".UserProfilePageActivity" />
         <activity android:name=".models.organizer.EventEntrantsPage"/>
+        <activity android:name=".controllers.AdminFacilityActivity"/>
+        <activity android:name=".controllers.AdminFacilityDetails"/>
     </application>
 
 </manifest>

@@ -10,6 +10,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/admin_purple"
         android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <!-- Notification Bell -->
@@ -25,12 +28,5 @@
             android:textStyle="bold" />
 
         <!-- Profile Button -->
-        <ImageButton
-            android:id="@+id/profile"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="end"
-            android:background="@drawable/person_icon"
-            android:contentDescription="@string/person_icon_description" />
     </androidx.appcompat.widget.Toolbar>
 </androidx.constraintlayout.widget.ConstraintLayout>
