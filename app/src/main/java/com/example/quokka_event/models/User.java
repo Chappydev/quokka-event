@@ -1,6 +1,7 @@
 package com.example.quokka_event.models;
 
 import android.content.Context;
+import android.net.Uri;
 
 // Refactor:
 // Could alternatively have a 'Profilelike' interface from which both user and ProfileSystem can draw.
@@ -68,4 +69,5 @@ public class User {
     public Context getApplicationContext() {
         return applicationContext;
     }
+
 }

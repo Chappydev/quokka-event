@@ -1,10 +1,12 @@
 package com.example.quokka_event;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,24 +14,41 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.quokka_event.controllers.DatabaseManager;
+import com.example.quokka_event.controllers.GlideApp;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.organizer.Facility;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
  * This class manages user's profile page.
  */
 public class UserProfilePageActivity extends AppCompatActivity {
+    private User user;
     private DatabaseManager db;
     private FirebaseAuth auth;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private StorageReference userImageRef;
     private EditText nameField;
     private EditText emailField;
     private EditText phoneField;
@@ -39,6 +58,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
     private Button saveButton;
     private String existingFacilityId = null;
     private CheckBox notificationCheckBox;
+    private ImageView profilePic;
 
     @Override
     /**
@@ -50,8 +70,12 @@ public class UserProfilePageActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_edit_profile);
 
+        user = User.getInstance(this.getApplicationContext());
         db = DatabaseManager.getInstance(this);
         auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+        userImageRef = storageRef.child("Users/"+user.getDeviceID()+".jpg");
 
         nameField = findViewById(R.id.user_name_field);
         emailField = findViewById(R.id.user_email);
@@ -60,16 +84,28 @@ public class UserProfilePageActivity extends AppCompatActivity {
         facilityAddressField = findViewById(R.id.facility_address_field);
         backButton = findViewById(R.id.back_button_bottom);
         saveButton = findViewById(R.id.save_changes_button);
+        profilePic = findViewById(R.id.user_profile_image_view);
         notificationCheckBox = findViewById(R.id.user_notifications_checkbox);
 
         loadUserData();
 
         backButton.setOnClickListener(v -> finish());
         saveButton.setOnClickListener(v -> saveChanges());
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Allow user to upload a profile pic after it is clicked
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                chooseImage();
+            }
+        });
     }
 
     /**
      * Loads user data into UI.
+     *
      * @author speakerchef and Soaiba
      */
     private void loadUserData() {
@@ -85,9 +121,15 @@ public class UserProfilePageActivity extends AppCompatActivity {
                 String name = (String) userData.get("name");
 
                 ProfileSystem profile = User.getInstance(getApplicationContext()).getProfile();
-                Bitmap profileImage = profile.generatePfp(name);
-                ImageView profileImageView = findViewById(R.id.user_profile_image_view);
-                profileImageView.setImageBitmap(profileImage);
+                Log.d("UserProfilePageActivity", "onCreate: " + user.getProfile().getProfileImageRef());
+                if (user.getProfile().getProfileImageRef() != null) {
+                    fetchAndApplyImage(user, profilePic);
+                } else {
+                    // generate profile picture from name
+                    Bitmap profileImage = profile.generatePfp(name);
+                    ImageView profileImageView = findViewById(R.id.user_profile_image_view);
+                    profileImageView.setImageBitmap(profileImage);
+                }
 
                 nameField.setText(name);
                 emailField.setText((String) userData.get("email"));
@@ -121,8 +163,9 @@ public class UserProfilePageActivity extends AppCompatActivity {
 
     /**
      * Loads facility data into UI.
-     * @author speakerchef
+     *
      * @param facilityId
+     * @author speakerchef
      */
     private void loadFacilityData(String facilityId) {
         db.getFacility(facilityId, new DbCallback() {
@@ -140,13 +183,14 @@ public class UserProfilePageActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validPhoneNumber(String phone){
+    private boolean validPhoneNumber(String phone) {
         return phone.length() <= 10 && phone.length() >= 8 && phone.matches("[0-9]+");
     }
 
 
     /**
      * Saves changes made by user to the database.
+     *
      * @author speakerchef
      */
     private void saveChanges() {
@@ -165,7 +209,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill in all profile fields!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (name.matches("[0-9]+")){
+        if (name.matches("[0-9]+")) {
             Toast.makeText(this, "Please enter a valid name!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -173,7 +217,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid email!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!(phone != "" && validPhoneNumber(phone))){
+        if (!(phone != "" && validPhoneNumber(phone))) {
             Toast.makeText(this, "Please enter a valid 8-10 digit phone number!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -244,5 +288,113 @@ public class UserProfilePageActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * Choose image for profile picture upload
+     */
+    private void chooseImage() {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        launchSomeActivity.launch(i);
+    }
+
+    ActivityResultLauncher<Intent> launchSomeActivity
+            = registerForActivityResult(
+            new ActivityResultContracts
+                    .StartActivityForResult(),
+            result -> {
+                if (result.getResultCode()
+                        == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null
+                            && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        try {
+                            InputStream stream = getContentResolver().openInputStream(selectedImageUri);
+                            userImageRef.putStream(stream)
+                                    .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                        @Override
+                                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                            if (!task.isSuccessful()) {
+                                                Log.e("UserProfilePageActivity",
+                                                        "profile pic upload fail: ", task.getException());
+                                                Toast.makeText(UserProfilePageActivity.this,
+                                                                "Image upload failed", Toast.LENGTH_SHORT)
+                                                        .show();
+                                                try {
+                                                    stream.close();
+                                                } catch (IOException e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                            }
+
+                                            // Continue with the task to get the download URL
+                                            return userImageRef.getDownloadUrl();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e("UserProfilePageActivity",
+                                                    "getDownloadUrl fail: ", e);
+                                            Toast.makeText(UserProfilePageActivity.this,
+                                                    "Try exiting and reopening the page",
+                                                            Toast.LENGTH_SHORT)
+                                                    .show();
+                                            try {
+                                                stream.close();
+                                            } catch (IOException exception) {
+                                                throw new RuntimeException(exception);
+                                            }
+                                        }
+                                    })
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Log.d("UserProfilePageActivity",
+                                                    "get download uri success: " + uri);
+                                            try {
+                                                stream.close();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+
+                                            // Add user image and
+                                            db.addImageToUser(user.getDeviceID(), userImageRef.getPath(), new DbCallback() {
+                                                @Override
+                                                public void onSuccess(Object result) {
+                                                    Log.d("UserProfilePageActivity",
+                                                            "update user on image upload successful");
+                                                    user.getProfile().setProfileImageRef(userImageRef);
+
+                                                    // get the image from the db and load it into the view
+                                                    fetchAndApplyImage(user, profilePic);
+                                                }
+                                                @Override
+                                                public void onError(Exception exception) {
+                                                    Log.e("UserProfilePageActivity",
+                                                            "addImageToUser onError: ", exception);
+                                                }
+                                            });
+                                        }
+                                    });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+
+    private void fetchAndApplyImage(User user, ImageView imageView) {
+        StorageReference profileImageRef = user.getProfile().getProfileImageRef();
+        if (profileImageRef != null) {
+            GlideApp.with(this)
+                    .load(profileImageRef)
+                    .into(imageView);
+        }
     }
 }

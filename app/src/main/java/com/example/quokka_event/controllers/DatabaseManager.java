@@ -1,6 +1,7 @@
 package com.example.quokka_event.controllers;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -21,6 +23,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +42,8 @@ public class DatabaseManager {
     private CollectionReference eventsRef;
     private CollectionReference enrollsRef;
     private CollectionReference notificationsRef;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
     private Context applicationContext;
     private static DatabaseManager instance;
 
@@ -62,6 +68,8 @@ public class DatabaseManager {
         eventsRef = db.collection("Events");
         enrollsRef = db.collection("Enrolls");
         notificationsRef = db.collection("Notifications");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
         return this;
     }
 
@@ -186,6 +194,11 @@ public class DatabaseManager {
         profile.setName((String) map.getOrDefault("name", ""));
         profile.setAddress((String) map.getOrDefault("address", ""));
         profile.setEmail((String) map.getOrDefault("email", ""));
+        if (map.get("profileImagePath") != null) {
+            Log.d("DB", "getProfileSystemFromMap: "+map.get("profileImagePath"));
+            StorageReference ref = storageRef.child((String) map.get("profileImagePath"));
+            profile.setProfileImageRef(ref);
+        }
         return profile;
     }
 
@@ -898,6 +911,28 @@ public class DatabaseManager {
                             .addOnFailureListener(exception -> callback.onError(exception));
                 })
                 .addOnFailureListener(exception -> callback.onError(exception));
+    }
+
+    public void addImageToUser(String deviceId, String path, DbCallback callback) {
+        usersRef.document(deviceId).update("profileImagePath", path)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("DB", "addImageToUser onFailure: ", e);
+                        callback.onError(e);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("DB", "addImageToUser succeeded!");
+                        Map<String, Object> resultInfo = new HashMap<>();
+                        resultInfo.put("success", true);
+                        resultInfo.put("deviceId", deviceId);
+                        resultInfo.put("path", path);
+                        callback.onSuccess(resultInfo);
+                    }
+                });
     }
 }
 
