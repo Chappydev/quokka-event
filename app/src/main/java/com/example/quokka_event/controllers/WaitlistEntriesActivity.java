@@ -2,6 +2,7 @@ package com.example.quokka_event.controllers;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.controllers.waitlistlottery.OrganizerDrawFragment;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class WaitlistEntriesActivity extends AppCompatActivity {
         waitlistRecyclerView = findViewById(R.id.waitlist_recycler_view);
         eventNameText = findViewById(R.id.event_name_text);
         Button backButton = findViewById(R.id.back_button_bottom);
-
+        Button drawButton = findViewById(R.id.draw_lottery_button);
         eventNameText.setText(eventName + " - Waitlist");
 
         waitlistEntrants = new ArrayList<>();
@@ -54,6 +56,17 @@ public class WaitlistEntriesActivity extends AppCompatActivity {
         loadWaitlistedUsers();
 
         backButton.setOnClickListener(v -> finish());
+        drawButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Show fragment for organizer drawing lottery
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                OrganizerDrawFragment organizerDrawFragment = new OrganizerDrawFragment();
+                organizerDrawFragment.show(getFragmentManager(), "fragment");
+            }
+        });
     }
 
     private void loadWaitlistedUsers() {
