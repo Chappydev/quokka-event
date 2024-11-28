@@ -1,6 +1,7 @@
 package com.example.quokka_event.models.event;
 
 import com.example.quokka_event.models.ProfileSystem;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,10 @@ public class Event {
     private ArrayList<ProfileSystem> participantList;
     private ArrayList<ProfileSystem> waitList;
     private ArrayList<ProfileSystem> cancelledParticipants;
+
+    // for poster
+    private StorageReference posterImageRef;
+    private int posterImage;
 
     /**
      * Constructs an Event with specified attributes.
@@ -135,6 +140,14 @@ public class Event {
         this.waitList = waitList;
         //TODO update database
     }
+
+    public StorageReference getPosterImageRef() {return posterImageRef;}
+
+    public void setPosterImageRef(StorageReference posterImageRef) {this.posterImageRef = posterImageRef;}
+
+    public int getPosterImage() {return posterImage;}
+
+    public void setPosterImage(int posterImage) {this.posterImage = posterImage;}
 
     public ArrayList<ProfileSystem> getCancelledParticipants() {
         return cancelledParticipants;

@@ -1,8 +1,10 @@
 package com.example.quokka_event.controllers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,19 +14,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quokka_event.R;
+import com.example.quokka_event.UserProfilePageActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.User;
+import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.EventEntrantsPage;
 import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,6 +71,12 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private boolean isEditMode = false;
     private FirebaseAuth auth;
     private Button notifyParticipantsButton;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private StorageReference eventImageRef;
+    private ImageView posterPic;
+    private Event event;
+    private Button uploadImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +97,20 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         eventWaitlistEdit = findViewById(R.id.event_waitlist_edit);
         eventDescriptionLabel = findViewById(R.id.event_description_label);
         eventDescriptionEdit = findViewById(R.id.event_description_edit);
+        posterPic = findViewById(R.id.poster_image);
 
         // Initialize buttons and image view
         backButton = findViewById(R.id.back_button_bottom);
         editButton = findViewById(R.id.edit_button);
         saveButton = findViewById(R.id.save_button);
         qrImage = findViewById(R.id.qr_image);
+        uploadImageButton = findViewById(R.id.upload_poster);
+
 
         db = DatabaseManager.getInstance(this);
+        auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
 
         // Get event ID from intent
         currentEventId = getIntent().getStringExtra("eventId");
@@ -91,6 +120,8 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: No event ID provided", Toast.LENGTH_SHORT).show();
             finish();
         }
+        eventImageRef = storageRef.child("Users/"+currentEventId+".jpg");
+
 
         Button viewWaitlistButton = findViewById(R.id.view_participants_button);
         viewWaitlistButton.setOnClickListener(v -> {
@@ -112,6 +143,15 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                 NotifyParticipantsFragment notifyParticipantsFragment = NotifyParticipantsFragment.newInstance(currentEventId);
                 notifyParticipantsFragment.show(getSupportFragmentManager(), "notify participants fragment");
             }
+        });
+
+        uploadImageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                chooseImage();
+            }
+
+
         });
 
         setupButtonListeners();
@@ -257,7 +297,6 @@ public class EventDetailsViewActivity extends AppCompatActivity {
      * @param eventId
      * @throws WriterException
      */
-
     private void generateQR(String eventId) throws WriterException {
 
         // create the qr map
@@ -291,23 +330,36 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         db.getSingleEvent(eventId, new DbCallback() {
             @Override
             public void onSuccess(Object result) {
-                Map<String, Object> event = (Map<String, Object>) result;
+                Map<String, Object> eventData = (Map<String, Object>) result;
 
                 try {
+
+                    // for image
+                    event = new Event(); // Assuming Event has a default constructor
+
+                    // Populate event fields from eventData map
+                    event.setEventID(eventId);
+                    event.setEventName((String) eventData.get("eventName"));
+                    event.setEventLocation((String) eventData.get("eventLocation"));
+                    event.setDescription((String) eventData.get("description"));
+                    event.setMaxParticipants((int)eventData.get("maxParticipants"));
+                    event.setMaxWaitlist((int)eventData.get("maxWaitlist"));
+                    event.setPosterImageRef(storageRef.child((String) eventData.get("posterImagePath"))); // Poster path from DB
+
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
                     SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
-                    Timestamp eventTimestamp = (Timestamp) event.get("eventDate");
-                    Timestamp deadlineTimestamp = (Timestamp) event.get("registrationDeadline");
+                    Timestamp eventTimestamp = (Timestamp) eventData.get("eventDate");
+                    Timestamp deadlineTimestamp = (Timestamp) eventData.get("registrationDeadline");
                     Date eventDate = eventTimestamp.toDate();
                     Date deadline = deadlineTimestamp.toDate();
 
                     // set all the event fields
-                    eventTitle.setText((String) event.get("eventName"));
+                    eventTitle.setText(event.getEventName());
                     eventDateLabel.setText("Date: " + dateFormat.format(eventDate));
                     eventTimeLabel.setText("Time: " + timeFormat.format(eventDate));
-                    eventLocationLabel.setText("Location: " + event.get("eventLocation"));
-                    long maxCapacity = (long) event.get("maxParticipants");
-                    long maxWaitlist = (long) event.get("maxParticipants");
+                    eventLocationLabel.setText("Location: " + eventData.get("eventLocation"));
+                    long maxCapacity = (long) eventData.get("maxParticipants");
+                    long maxWaitlist = (long) eventData.get("maxParticipants");
 
                     // clean display if capacity is maxed
                     String capacityText = (maxCapacity != Integer.MAX_VALUE ? String.valueOf(maxCapacity) : "Unlimited");
@@ -318,11 +370,14 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     eventDeadlineLabel.setText("Registration Deadline: " + dateFormat.format(deadline));
 
                     // description and possible nulls
-                    String description = (String) event.get("description");
+                    String description = (String) eventData.get("description");
                     eventDescriptionLabel.setText(description != null ? description : "No description available");
 
                     // generate & display the qr code
                     generateQR(eventId);
+
+                    // display poster
+                    fetchAndApplyImage(event, posterPic);
 
                 } catch (Exception e) {
                     Log.e("EventDetails", "Error formatting event data", e);
@@ -341,5 +396,114 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    /**
+     * Allows a user to select the image from their photos
+     * @author Chappydev
+     */
+    private void chooseImage() {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        launchSomeActivity.launch(i);
+    }
+
+    ActivityResultLauncher<Intent> launchSomeActivity
+            = registerForActivityResult(
+            new ActivityResultContracts
+                    .StartActivityForResult(),
+            result -> {
+                if (result.getResultCode()
+                        == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null
+                            && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        try {
+                            InputStream stream = getContentResolver().openInputStream(selectedImageUri);
+                            eventImageRef.putStream(stream)
+                                    .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                        @Override
+                                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                            if (!task.isSuccessful()) {
+                                                Log.e("EventDetailsViewActivity",
+                                                        "poster pic upload fail: ", task.getException());
+                                                Toast.makeText(EventDetailsViewActivity.this,
+                                                                "Image upload failed", Toast.LENGTH_SHORT)
+                                                        .show();
+                                                try {
+                                                    stream.close();
+                                                } catch (IOException e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                            }
+
+                                            // Continue with the task to get the download URL
+                                            return eventImageRef.getDownloadUrl();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e("EventDetailsViewActivity",
+                                                    "getDownloadUrl fail: ", e);
+                                            Toast.makeText(EventDetailsViewActivity.this,
+                                                            "Try exiting and reopening the page",
+                                                            Toast.LENGTH_SHORT)
+                                                    .show();
+                                            try {
+                                                stream.close();
+                                            } catch (IOException exception) {
+                                                throw new RuntimeException(exception);
+                                            }
+                                        }
+                                    })
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Log.d("EventDetailsViewActivity",
+                                                    "get download uri success: " + uri);
+                                            try {
+                                                stream.close();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+
+                                            // Add user image and
+                                            db.addImageToEvent(currentEventId, eventImageRef.getPath(), new DbCallback() {
+                                                @Override
+                                                public void onSuccess(Object result) {
+                                                    Log.d("EventDetailsViewActivity",
+                                                            "update user on image upload successful");
+                                                    event.setPosterImageRef(eventImageRef);
+
+                                                    // get the image from the db and load it into the view
+                                                    fetchAndApplyImage(event, posterPic);
+                                                }
+                                                @Override
+                                                public void onError(Exception exception) {
+                                                    Log.e("EventDetailsViewActivity",
+                                                            "addImageToUser onError: ", exception);
+                                                }
+                                            });
+                                        }
+                                    });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+
+    private void fetchAndApplyImage(Event event, ImageView imageView) {
+        StorageReference posterImageRef = event.getPosterImageRef();
+        if (posterImageRef != null) {
+            GlideApp.with(this)
+                    .load(posterImageRef)
+                    .into(imageView);
+        }
     }
 }

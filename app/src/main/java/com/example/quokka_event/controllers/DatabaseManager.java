@@ -913,6 +913,14 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    /**
+     * Adds a profile picture to the user.
+     * @author Chappydev
+     * @param deviceId user deviceId
+     * @param path path
+     * @param callback db callback
+     * @since project part 4
+     */
     public void addImageToUser(String deviceId, String path, DbCallback callback) {
         usersRef.document(deviceId).update("profileImagePath", path)
                 .addOnFailureListener(new OnFailureListener() {
@@ -929,6 +937,28 @@ public class DatabaseManager {
                         Map<String, Object> resultInfo = new HashMap<>();
                         resultInfo.put("success", true);
                         resultInfo.put("deviceId", deviceId);
+                        resultInfo.put("path", path);
+                        callback.onSuccess(resultInfo);
+                    }
+                });
+    }
+
+    public void addImageToEvent(String eventId, String path, DbCallback callback) {
+        eventsRef.document(eventId).update("posterImagePath", path)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("DB", "addImageToEvent onFailure: ", e);
+                        callback.onError(e);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("DB", "addImageEvent succeeded!");
+                        Map<String, Object> resultInfo = new HashMap<>();
+                        resultInfo.put("success", true);
+                        resultInfo.put("eventId", eventId);
                         resultInfo.put("path", path);
                         callback.onSuccess(resultInfo);
                     }
