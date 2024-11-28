@@ -121,9 +121,15 @@ public class UserProfilePageActivity extends AppCompatActivity {
                 String name = (String) userData.get("name");
 
                 ProfileSystem profile = User.getInstance(getApplicationContext()).getProfile();
-                Bitmap profileImage = profile.generatePfp(name);
-                ImageView profileImageView = findViewById(R.id.user_profile_image_view);
-                profileImageView.setImageBitmap(profileImage);
+                Log.d("UserProfilePageActivity", "onCreate: " + user.getProfile().getProfileImageRef());
+                if (user.getProfile().getProfileImageRef() != null) {
+                    fetchAndApplyImage(user, profilePic);
+                } else {
+                    // generate profile picture from name
+                    Bitmap profileImage = profile.generatePfp(name);
+                    ImageView profileImageView = findViewById(R.id.user_profile_image_view);
+                    profileImageView.setImageBitmap(profileImage);
+                }
 
                 nameField.setText(name);
                 emailField.setText((String) userData.get("email"));

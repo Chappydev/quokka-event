@@ -23,6 +23,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +42,8 @@ public class DatabaseManager {
     private CollectionReference eventsRef;
     private CollectionReference enrollsRef;
     private CollectionReference notificationsRef;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
     private Context applicationContext;
     private static DatabaseManager instance;
 
@@ -64,6 +68,8 @@ public class DatabaseManager {
         eventsRef = db.collection("Events");
         enrollsRef = db.collection("Enrolls");
         notificationsRef = db.collection("Notifications");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
         return this;
     }
 
@@ -188,6 +194,11 @@ public class DatabaseManager {
         profile.setName((String) map.getOrDefault("name", ""));
         profile.setAddress((String) map.getOrDefault("address", ""));
         profile.setEmail((String) map.getOrDefault("email", ""));
+        if (map.get("profileImagePath") != null) {
+            Log.d("DB", "getProfileSystemFromMap: "+map.get("profileImagePath"));
+            StorageReference ref = storageRef.child((String) map.get("profileImagePath"));
+            profile.setProfileImageRef(ref);
+        }
         return profile;
     }
 
