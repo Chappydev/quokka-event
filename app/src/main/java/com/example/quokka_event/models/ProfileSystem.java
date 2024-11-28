@@ -4,8 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 
 import androidx.annotation.DrawableRes;
+
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Date;
 
@@ -21,6 +24,7 @@ public class ProfileSystem {
     private Date birthday;
     private String address;
     private String deviceID;
+    private StorageReference profileImageRef;
 
     /**
      * This method creates a Profile System object.
@@ -205,5 +209,13 @@ public class ProfileSystem {
             canvas.drawText(initials, x, y, paint);
         }
         return bmp;
+    }
+
+    public StorageReference getProfileImageRef() {
+        return profileImageRef;
+    }
+
+    public void setProfileImageRef(StorageReference profileImageRef) {
+        this.profileImageRef = profileImageRef;
     }
 }
