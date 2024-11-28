@@ -58,6 +58,8 @@ dependencies {
     implementation(libs.espresso.intents)
     implementation(libs.play.services.basement)
     implementation(libs.uiautomator)
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.maps)
     androidTestImplementation(libs.espresso.contrib){
         exclude( group="com.google.protobuf", module="protobuf-lite")
     }

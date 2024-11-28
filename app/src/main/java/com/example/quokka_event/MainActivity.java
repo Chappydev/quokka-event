@@ -25,8 +25,8 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
-//import com.google.android.gms.location.FusedLocationProviderClient;
-//import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -45,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 100;
     private Boolean isAdmin = false;
     private Button adminButton;
-//    private FusedLocationProviderClient locationProviderClient;
+    private FusedLocationProviderClient locationProviderClient;
     private Double userLat;
     private Double userLon;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,38 +56,20 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_landing_page);
 
-//        locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            getAndUpdateLocation();
         }
-//        locationProviderClient
-//                .getLastLocation()
-//                .addOnSuccessListener(v -> {
-//                    String deviceId = auth.getCurrentUser().getUid();
-//                    Map<String, Object> locationPayload = new HashMap<>();
-//                    locationPayload.put("latitude", v.getLatitude());
-//                    locationPayload.put("longitude", v.getLongitude());
-//                    db.updateProfile(deviceId, locationPayload, new DbCallback() {
-//                        @Override
-//                        public void onSuccess(Object result) {
-//                            Log.d("LOCATION", "onSuccess: Location updated for user: " + deviceId);
-//                        }
-//
-//                        @Override
-//                        public void onError(Exception exception) {
-//                            Log.e("LOCATION", "onError: Unable to update location for user: " + deviceId);
-//                        }
-//                    });
-//                })
-//                .addOnFailureListener(e -> Log.e("LOCATION", "onCreate: Unable to access user location." + e ));
+
 
         myEventButton = findViewById(R.id.my_events_button);
 
@@ -196,6 +179,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("DB", "onCreate: " + user.getDeviceID());
                 isAdmin = user.isAdmin();
                 showAdminButton(isAdmin);
+
+                getAndUpdateLocation();
             }
 
             @Override
@@ -250,5 +235,37 @@ public class MainActivity extends AppCompatActivity {
         else{
             adminButton.setVisibility(View.GONE);
         }
+    }
+
+    public void getAndUpdateLocation(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        locationProviderClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null && auth.getCurrentUser() != null) {
+                        String deviceId = auth.getCurrentUser().getUid();
+                        Map<String, Object> locationPayload = new HashMap<>();
+                        locationPayload.put("latitude", location.getLatitude());
+                        locationPayload.put("longitude", location.getLongitude());
+
+                        db.updateProfile(deviceId, locationPayload, new DbCallback() {
+                            @Override
+                            public void onSuccess(Object result) {
+                                Log.d("LOCATION", "Location updated for user: " + deviceId);
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+                                Log.e("LOCATION", "Unable to update location for user: " + deviceId, exception);
+                            }
+                        });
+                    } else {
+                        Log.d("LOCATION", "Location is null or user not authenticated");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("LOCATION", "Unable to access user location", e));
     }
 }
