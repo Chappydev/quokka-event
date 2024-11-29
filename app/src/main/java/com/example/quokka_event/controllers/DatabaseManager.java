@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -908,9 +910,20 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    /**
+     * Add image path to the user's document
+     * @author Chappydev
+     * @param deviceId User id
+     * @param path path to add to user
+     * @param callback callback functions
+     */
     public void addImageToUser(String deviceId, String path, DbCallback callback) {
         usersRef.document(deviceId).update("profileImagePath", path)
                 .addOnFailureListener(new OnFailureListener() {
+                    /**
+                     * Log error and call callback
+                     * @param e
+                     */
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e("DB", "addImageToUser onFailure: ", e);
@@ -918,6 +931,10 @@ public class DatabaseManager {
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    /**
+                     * Log success and return some basic info to callback
+                     * @param unused
+                     */
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d("DB", "addImageToUser succeeded!");
@@ -926,6 +943,60 @@ public class DatabaseManager {
                         resultInfo.put("deviceId", deviceId);
                         resultInfo.put("path", path);
                         callback.onSuccess(resultInfo);
+                    }
+                });
+    }
+
+    /**
+     * Delete profile picture from Firebase Storage and the path from the Users collection
+     * @author Chappydev
+     * @param deviceId id of user
+     * @param pictureRef reference to the location of the image
+     * @param callback callback functions
+     */
+    public void deleteProfilePicture(String deviceId, StorageReference pictureRef, DbCallback callback) {
+        pictureRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    /**
+                     * When successful, also remove the path from the user document
+                     * @param unused
+                     */
+                    @Override
+                    public void onSuccess(Void unused) {
+//                        Map<String, Object> map = new HashMap<>();
+//                        map.put("")
+                        usersRef.document(deviceId)
+                                .update("profileImagePath", FieldValue.delete())
+                                .addOnFailureListener(new OnFailureListener() {
+                                    /**
+                                     * call onError callback
+                                     * @param e
+                                     */
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        callback.onError(e);
+                                    }
+                                })
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    /**
+                                     * call onSuccess callback
+                                     * @param unused
+                                     */
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        callback.onSuccess("Successfully deleted");
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    /**
+                     * call onError callback
+                     * @param e
+                     */
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onError(e);
                     }
                 });
     }

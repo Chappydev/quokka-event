@@ -14,12 +14,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.GlideApp;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
@@ -57,6 +60,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
     private EditText facilityAddressField;
     private Button backButton;
     private Button saveButton;
+    private Button deleteProfilePic;
     private String existingFacilityId = null;
     private CheckBox notificationCheckBox;
     private ImageView profilePic;
@@ -85,6 +89,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
         facilityAddressField = findViewById(R.id.facility_address_field);
         backButton = findViewById(R.id.back_button_bottom);
         saveButton = findViewById(R.id.save_changes_button);
+        deleteProfilePic = findViewById(R.id.delete_profile_pic_button);
         profilePic = findViewById(R.id.user_profile_image_view);
         notificationCheckBox = findViewById(R.id.user_notifications_checkbox);
 
@@ -102,12 +107,50 @@ public class UserProfilePageActivity extends AppCompatActivity {
                 chooseImage();
             }
         });
+        deleteProfilePic.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Delete the profile picture from db.
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                db.deleteProfilePicture(user.getDeviceID(), user.getProfile().getProfileImageRef(), new DbCallback() {
+                    /**
+                     * Remove reference form profile and replace image with auto-generated one if
+                     * successful.
+                     * @param result
+                     */
+                    @Override
+                    public void onSuccess(Object result) {
+                        ProfileSystem profile = user.getProfile();
+                        // Generate pfp from name
+                        Bitmap profileImage = profile.generatePfp(profile.getName());
+                        profilePic.setImageBitmap(profileImage);
+                        deleteProfilePic.setVisibility(View.GONE);
+                        // remove imageref so we don't search for an image that's not there
+                        profile.setProfileImageRef(null);
+                    }
+
+                    /**
+                     * Display useful error in toast
+                     * @param exception
+                     */
+                    @Override
+                    public void onError(Exception exception) {
+                        Log.e("UserProfilePageActivity", "deleteProfile pic onError: ", exception);
+                        Toast.makeText(UserProfilePageActivity.this,
+                                "Something went wrong when deleting the picture",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     /**
      * Loads user data into UI.
      *
-     * @author speakerchef and Soaiba
+     * @author speakerchef, Soaiba, and Chappydev
      */
     private void loadUserData() {
         String deviceId = auth.getCurrentUser().getUid();
@@ -122,7 +165,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
                 String name = (String) userData.get("name");
 
                 ProfileSystem profile = User.getInstance(getApplicationContext()).getProfile();
-                Log.d("UserProfilePageActivity", "onCreate: " + user.getProfile().getProfileImageRef());
+                // check if user has an image uploaded and if so, use it
                 if (user.getProfile().getProfileImageRef() != null) {
                     fetchAndApplyImage(user, profilePic);
                 } else {
@@ -232,6 +275,17 @@ public class UserProfilePageActivity extends AppCompatActivity {
         db.updateProfile(deviceId, updates, new DbCallback() {
             @Override
             public void onSuccess(Object result) {
+                // Update User profile
+                ProfileSystem userProfile = user.getProfile();
+                if (!name.equals(userProfile.getName())) {
+                    userProfile.setName(name);
+                }
+                if (!email.equals(userProfile.getEmail())) {
+                    userProfile.setEmail(email);
+                }
+                if (!phone.equals(userProfile.getPhoneNumber())) {
+                    userProfile.setPhoneNumber(phone);
+                }
                 // Handle facility data after profile is updated
                 if (!facilityName.isEmpty()) {
                     if (existingFacilityId != null) {
@@ -281,6 +335,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }
+
             }
 
             @Override
@@ -308,96 +363,138 @@ public class UserProfilePageActivity extends AppCompatActivity {
             = registerForActivityResult(
             new ActivityResultContracts
                     .StartActivityForResult(),
-            result -> {
-                if (result.getResultCode()
-                        == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    // do your operation from here....
-                    if (data != null
-                            && data.getData() != null) {
-                        Uri selectedImageUri = data.getData();
-                        try {
-                            InputStream stream = getContentResolver().openInputStream(selectedImageUri);
-                            userImageRef.putStream(stream)
-                                    .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                                        @Override
-                                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                            if (!task.isSuccessful()) {
+            new ActivityResultCallback<ActivityResult>() {
+                /**
+                 * Take selected image, upload it to storage and apply the image to the profile
+                 * picture view.
+                 * @param result Result of user's image selection
+                 */
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode()
+                            == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        // do your operation from here....
+                        if (data != null
+                                && data.getData() != null) {
+                            Uri selectedImageUri = data.getData();
+                            try {
+                                InputStream stream = UserProfilePageActivity.this.getContentResolver().openInputStream(selectedImageUri);
+                                // upload the image to storage bucket
+                                userImageRef.putStream(stream)
+                                        .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                            /**
+                                             * Continue by getting the download url for the image
+                                             * @param task
+                                             * @return task for getting download url
+                                             */
+                                            @Override
+                                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                                if (!task.isSuccessful()) {
+                                                    Log.e("UserProfilePageActivity",
+                                                            "profile pic upload fail: ", task.getException());
+                                                    Toast.makeText(UserProfilePageActivity.this,
+                                                                    "Image upload failed", Toast.LENGTH_SHORT)
+                                                            .show();
+                                                    try {
+                                                        stream.close();
+                                                    } catch (IOException e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                }
+
+                                                // Continue with the task to get the download URL
+                                                return userImageRef.getDownloadUrl();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            /**
+                                             * Display helpful toast and close stream
+                                             * @param e
+                                             */
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
                                                 Log.e("UserProfilePageActivity",
-                                                        "profile pic upload fail: ", task.getException());
+                                                        "getDownloadUrl fail: ", e);
                                                 Toast.makeText(UserProfilePageActivity.this,
-                                                                "Image upload failed", Toast.LENGTH_SHORT)
+                                                                "Try exiting and reopening the page",
+                                                                Toast.LENGTH_SHORT)
                                                         .show();
+                                                try {
+                                                    stream.close();
+                                                } catch (IOException exception) {
+                                                    throw new RuntimeException(exception);
+                                                }
+                                            }
+                                        })
+                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            /**
+                                             * On success, add the path to user document and then
+                                             * display the image
+                                             * @param uri downlaod url
+                                             */
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                Log.d("UserProfilePageActivity",
+                                                        "get download uri success: " + uri);
                                                 try {
                                                     stream.close();
                                                 } catch (IOException e) {
                                                     throw new RuntimeException(e);
                                                 }
-                                            }
 
-                                            // Continue with the task to get the download URL
-                                            return userImageRef.getDownloadUrl();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("UserProfilePageActivity",
-                                                    "getDownloadUrl fail: ", e);
-                                            Toast.makeText(UserProfilePageActivity.this,
-                                                    "Try exiting and reopening the page",
-                                                            Toast.LENGTH_SHORT)
-                                                    .show();
-                                            try {
-                                                stream.close();
-                                            } catch (IOException exception) {
-                                                throw new RuntimeException(exception);
-                                            }
-                                        }
-                                    })
-                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            Log.d("UserProfilePageActivity",
-                                                    "get download uri success: " + uri);
-                                            try {
-                                                stream.close();
-                                            } catch (IOException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                                // Add user image and
+                                                db.addImageToUser(user.getDeviceID(), userImageRef.getPath(), new DbCallback() {
+                                                    /**
+                                                     * Set imageref to user profile system and fetch
+                                                     * and apply the uploaded image
+                                                     * @param result
+                                                     */
+                                                    @Override
+                                                    public void onSuccess(Object result) {
+                                                        Log.d("UserProfilePageActivity",
+                                                                "update user on image upload successful");
+                                                        user.getProfile().setProfileImageRef(userImageRef);
 
-                                            // Add user image and
-                                            db.addImageToUser(user.getDeviceID(), userImageRef.getPath(), new DbCallback() {
-                                                @Override
-                                                public void onSuccess(Object result) {
-                                                    Log.d("UserProfilePageActivity",
-                                                            "update user on image upload successful");
-                                                    user.getProfile().setProfileImageRef(userImageRef);
+                                                        // get the image from the db and load it into the view
+                                                        fetchAndApplyImage(user, profilePic);
+                                                    }
 
-                                                    // get the image from the db and load it into the view
-                                                    fetchAndApplyImage(user, profilePic);
-                                                }
-                                                @Override
-                                                public void onError(Exception exception) {
-                                                    Log.e("UserProfilePageActivity",
-                                                            "addImageToUser onError: ", exception);
-                                                }
-                                            });
-                                        }
-                                    });
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                                                    /**
+                                                     * log error
+                                                     * @param exception
+                                                     */
+                                                    @Override
+                                                    public void onError(Exception exception) {
+                                                        Log.e("UserProfilePageActivity",
+                                                                "addImageToUser onError: ", exception);
+                                                    }
+                                                });
+                                            }
+                                        });
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
             });
 
+    /**
+     * Get the image ref and download and display the image in the profile picture view
+     * @param user user for grabbing the imageref
+     * @param imageView imageView to add image to
+     */
     private void fetchAndApplyImage(User user, ImageView imageView) {
         StorageReference profileImageRef = user.getProfile().getProfileImageRef();
         if (profileImageRef != null) {
             GlideApp.with(this)
                     .load(profileImageRef)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(imageView);
+            // show option to delete the profile picture
+            deleteProfilePic.setVisibility(View.VISIBLE);
         }
     }
 }
