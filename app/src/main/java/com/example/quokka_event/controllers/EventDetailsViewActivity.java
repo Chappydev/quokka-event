@@ -105,6 +105,10 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        /**
+         * Generates a QR code using a random UUID hash.
+         * @author speakerchef
+         * */
         generateQrButton.setOnClickListener(v -> {
             auth = FirebaseAuth.getInstance();
             String qrHash = UUID.randomUUID().toString();
@@ -140,6 +144,11 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         });
 
         deleteQrButton = findViewById(R.id.delete_qr_button);
+
+        /**
+        * Deletes the QR hash from the database
+        * @author speakerchef
+        **/
         deleteQrButton.setOnClickListener(v -> {
             auth = FirebaseAuth.getInstance();
             String deviceId = auth.getCurrentUser().getUid();
