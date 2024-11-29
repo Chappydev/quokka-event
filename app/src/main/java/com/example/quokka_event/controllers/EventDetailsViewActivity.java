@@ -57,6 +57,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private Button notifyParticipantsButton;
     private Button mapButton;
     private Button generateQrButton;
+    private Button deleteQrButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,15 +122,44 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     }
 
                     Log.d("QR", "onSuccess: QR Code generated with hash=" + qrHash);
+                    Toast.makeText(EventDetailsViewActivity.this, "QR Code Generated!", Toast.LENGTH_SHORT).show();
                     loadEventDetails(currentEventId);
                     qrImage.setVisibility(View.VISIBLE);
                     generateQrButton.setVisibility(View.GONE);
+                    deleteQrButton.setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onError(Exception exception) {
                     Toast.makeText(EventDetailsViewActivity.this, "Error: Unable to create a QR code! Please try again.", Toast.LENGTH_SHORT).show();
                     Log.e("QR", "onError: Unable to store or generate QR code with hash=" + qrHash);
+                    generateQrButton.setVisibility(View.VISIBLE);
+                    deleteQrButton.setVisibility(View.GONE);
+                }
+            });
+        });
+
+        deleteQrButton = findViewById(R.id.delete_qr_button);
+        deleteQrButton.setOnClickListener(v -> {
+            auth = FirebaseAuth.getInstance();
+            String deviceId = auth.getCurrentUser().getUid();
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("qrHash", "");
+            db.updateEvent(currentEventId, deviceId, updates, new DbCallback() {
+                @Override
+                public void onSuccess(Object result) {
+                    Log.d("DB", "QR Delete: QR Code deleted." );
+                    Toast.makeText(EventDetailsViewActivity.this, "QR Code Deleted!", Toast.LENGTH_SHORT).show();
+                    deleteQrButton.setVisibility(View.GONE);
+                    generateQrButton.setVisibility(View.VISIBLE);
+                    qrImage.setVisibility(View.GONE);
+                    loadEventDetails(currentEventId);
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Log.e("QR", "onError: Unable to delete QR Code" + exception);
+                    Toast.makeText(EventDetailsViewActivity.this, "Unable to Delete QR Code", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -369,10 +399,12 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     if (qrHash != null && !qrHash.isEmpty()){
                         generateQrButton.setVisibility(View.GONE);
                         qrImage.setVisibility(View.VISIBLE);
+                        deleteQrButton.setVisibility(View.VISIBLE);
                         generateQR(qrHash);
                     } else {
                         generateQrButton.setVisibility(View.VISIBLE);
                         qrImage.setVisibility(View.GONE);
+                        deleteQrButton.setVisibility(View.GONE);
                     }
 
                 } catch (Exception e) {
