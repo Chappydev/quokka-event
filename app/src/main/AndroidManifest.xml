@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="${MAPS_API_KEY}" />
+
+
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Quokkaevent"
         tools:targetApi="31">
+        <activity
+            android:name=".controllers.EntrantMapActivity"
+            android:exported="false" />
         <activity
             android:name=".controllers.WaitlistEntriesActivity"
             android:exported="false" />
@@ -37,7 +40,7 @@
         </activity>
         <activity android:name=".controllers.AdminLandingPageActivity" />
         <activity android:name=".controllers.BrowseProfileDetailsActivity" />
-        <activity android:name=".controllers.BrowseProfilesActivity"/>
+        <activity android:name=".controllers.BrowseProfilesActivity" />
         <activity android:name=".controllers.AdminBrowseEventsActivity" />
         <activity android:name=".controllers.AdminEventTabsActivity" />
         <activity android:name=".controllers.MyEventsActivity" />
@@ -48,9 +51,12 @@
         <activity android:name=".OrganizerEventsPageActivity" />
         <activity android:name=".controllers.EventTabsActivity" />
         <activity android:name=".UserProfilePageActivity" />
-        <activity android:name=".models.organizer.EventEntrantsPage"/>
-        <activity android:name=".controllers.AdminFacilityActivity"/>
-        <activity android:name=".controllers.AdminFacilityDetails"/>
+        <activity android:name=".models.organizer.EventEntrantsPage" />
+        <activity android:name=".controllers.AdminFacilityActivity" />
+        <activity android:name=".controllers.AdminFacilityDetails" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCqDjn3abBTvNOWWvhU3gpcFTiLhzkCOm0" />
     </application>
 
 </manifest>

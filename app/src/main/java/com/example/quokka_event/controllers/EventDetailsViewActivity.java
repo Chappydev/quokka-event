@@ -54,6 +54,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private boolean isEditMode = false;
     private FirebaseAuth auth;
     private Button notifyParticipantsButton;
+    private Button mapButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.save_button);
         qrImage = findViewById(R.id.qr_image);
 
+
         db = DatabaseManager.getInstance(this);
 
         // Get event ID from intent
@@ -91,6 +93,13 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: No event ID provided", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        mapButton = findViewById(R.id.view_map_button);
+        mapButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventDetailsViewActivity.this, EntrantMapActivity.class);
+            intent.putExtra("eventId", currentEventId);
+            startActivity(intent);
+        });
 
         Button viewWaitlistButton = findViewById(R.id.view_participants_button);
         viewWaitlistButton.setOnClickListener(v -> {
@@ -253,9 +262,9 @@ public class EventDetailsViewActivity extends AppCompatActivity {
 
     /**
      * Generates and displays a QR Code
-     * @author mylayambao
      * @param eventId
      * @throws WriterException
+     * @author mylayambao
      */
 
     private void generateQR(String eventId) throws WriterException {
@@ -277,15 +286,15 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             }
             // display the qr code
             qrImage.setImageBitmap(bitmap);
-        } catch (WriterException e){
+        } catch (WriterException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Loads the event details for the selected event
-     * @author speakerchef
      * @param eventId
+     * @author speakerchef
      */
     private void loadEventDetails(String eventId) {
         db.getSingleEvent(eventId, new DbCallback() {

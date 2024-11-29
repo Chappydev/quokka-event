@@ -173,6 +173,14 @@
                 android:layout_gravity="center"
                 android:text="Notify Participants" />
 
+            <Button
+                android:id="@+id/view_map_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="View Entrant Location"
+                android:translationX="85dp" />
+
         </LinearLayout>
     </ScrollView>
 
@@ -217,7 +225,6 @@
             android:layout_marginStart="8dp"
             android:text="Participants"
              />
-
 
 
     </LinearLayout>
