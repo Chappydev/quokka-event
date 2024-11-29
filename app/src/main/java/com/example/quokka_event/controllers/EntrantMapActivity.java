@@ -84,7 +84,7 @@ public class EntrantMapActivity extends AppCompatActivity implements OnMapReadyC
                         }
                     }
                 }
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 10));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 0));
             }
 
             @Override
