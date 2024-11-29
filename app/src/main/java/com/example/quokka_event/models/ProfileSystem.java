@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.storage.StorageReference;
 
@@ -215,7 +216,7 @@ public class ProfileSystem {
         return profileImageRef;
     }
 
-    public void setProfileImageRef(StorageReference profileImageRef) {
+    public void setProfileImageRef(@Nullable StorageReference profileImageRef) {
         this.profileImageRef = profileImageRef;
     }
 }
