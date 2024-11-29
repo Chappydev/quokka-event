@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -150,27 +151,37 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         * @author speakerchef
         **/
         deleteQrButton.setOnClickListener(v -> {
-            auth = FirebaseAuth.getInstance();
-            String deviceId = auth.getCurrentUser().getUid();
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("qrHash", null);
-            db.updateEvent(currentEventId, deviceId, updates, new DbCallback() {
-                @Override
-                public void onSuccess(Object result) {
-                    Log.d("DB", "QR Delete: QR Code deleted." );
-                    Toast.makeText(EventDetailsViewActivity.this, "QR Code Deleted!", Toast.LENGTH_SHORT).show();
-                    deleteQrButton.setVisibility(View.GONE);
-                    generateQrButton.setVisibility(View.VISIBLE);
-                    qrImage.setVisibility(View.GONE);
-                    loadEventDetails(currentEventId);
-                }
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete QR Code")
+                    .setMessage("Are you sure you want to delete this QR code? This action cannot be undone.")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        // proceed with deletion
+                        auth = FirebaseAuth.getInstance();
+                        String deviceId = auth.getCurrentUser().getUid();
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("qrHash", null);
+                        db.updateEvent(currentEventId, deviceId, updates, new DbCallback() {
+                            @Override
+                            public void onSuccess(Object result) {
+                                Log.d("DB", "QR Delete: QR Code deleted." );
+                                Toast.makeText(EventDetailsViewActivity.this, "QR Code Deleted!", Toast.LENGTH_SHORT).show();
+                                loadEventDetails(currentEventId);
+                                qrImage.setVisibility(View.GONE);
+                                generateQrButton.setVisibility(View.VISIBLE);
+                                deleteQrButton.setVisibility(View.GONE);
+                            }
 
-                @Override
-                public void onError(Exception exception) {
-                    Log.e("QR", "onError: Unable to delete QR Code" + exception);
-                    Toast.makeText(EventDetailsViewActivity.this, "Unable to Delete QR Code", Toast.LENGTH_SHORT).show();
-                }
-            });
+                            @Override
+                            public void onError(Exception exception) {
+                                Log.e("QR", "onError: Unable to delete QR Code", exception);
+                                Toast.makeText(EventDetailsViewActivity.this, "Unable to Delete QR Code", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
 
         Button viewWaitlistButton = findViewById(R.id.view_participants_button);
