@@ -21,7 +21,7 @@ public class ProfileSystem {
     private int profileImage;
     private String name;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private Date birthday;
     private String address;
     private String deviceID;
@@ -37,7 +37,7 @@ public class ProfileSystem {
      * @param birthday
      * @param address
      */
-    public ProfileSystem(String deviceID,@DrawableRes int profileImage, String name, String email, int phoneNumber, Date birthday, String address){
+    public ProfileSystem(String deviceID,@DrawableRes int profileImage, String name, String email, String phoneNumber, Date birthday, String address){
         this.deviceID = deviceID;
         this.profileImage = profileImage;
         this.email = email;
@@ -104,7 +104,7 @@ public class ProfileSystem {
      * This method sets the phone number of the user.
      * @param newPhoneNumber the user's phone number
      */
-    public void setPhoneNumber(int newPhoneNumber){
+    public void setPhoneNumber(String newPhoneNumber){
         phoneNumber = newPhoneNumber;
     }
 
@@ -112,7 +112,7 @@ public class ProfileSystem {
      * This method gets the user's phone number.
      * @return the phone number of the user
      */
-    public int getPhoneNumber(){
+    public String getPhoneNumber(){
         return phoneNumber;
     }
 

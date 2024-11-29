@@ -275,6 +275,17 @@ public class UserProfilePageActivity extends AppCompatActivity {
         db.updateProfile(deviceId, updates, new DbCallback() {
             @Override
             public void onSuccess(Object result) {
+                // Update User profile
+                ProfileSystem userProfile = user.getProfile();
+                if (!name.equals(userProfile.getName())) {
+                    userProfile.setName(name);
+                }
+                if (!email.equals(userProfile.getEmail())) {
+                    userProfile.setEmail(email);
+                }
+                if (!phone.equals(userProfile.getPhoneNumber())) {
+                    userProfile.setPhoneNumber(phone);
+                }
                 // Handle facility data after profile is updated
                 if (!facilityName.isEmpty()) {
                     if (existingFacilityId != null) {
@@ -324,6 +335,7 @@ public class UserProfilePageActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }
+
             }
 
             @Override
