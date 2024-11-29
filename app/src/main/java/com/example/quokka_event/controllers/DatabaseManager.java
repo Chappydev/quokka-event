@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -943,6 +944,14 @@ public class DatabaseManager {
                 });
     }
 
+    /**
+     * Adds an image (poster) to an event.
+     * @author mylayambao & Chappydev
+     * @param eventId event id
+     * @param path path to the image
+     * @param callback db callback
+     * @since project part 4
+     */
     public void addImageToEvent(String eventId, String path, DbCallback callback) {
         eventsRef.document(eventId).update("posterImagePath", path)
                 .addOnFailureListener(new OnFailureListener() {
@@ -963,6 +972,20 @@ public class DatabaseManager {
                         callback.onSuccess(resultInfo);
                     }
                 });
+    }
+
+    /**
+     * Deletes an event poster from the database.
+     * @author mylayambao
+     * @param eventId event id
+     * @param callback db callback
+     * @since project part 4
+     */
+    public void deleteEventPoster(String eventId, DbCallback callback){
+        db.collection("Events").document(eventId)
+                .update("posterPath", FieldValue.delete())
+                .addOnSuccessListener(response -> callback.onSuccess(null))
+                .addOnFailureListener(callback::onError);
     }
 }
 

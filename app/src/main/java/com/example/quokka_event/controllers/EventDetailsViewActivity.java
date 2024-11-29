@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.quokka_event.R;
 import com.example.quokka_event.UserProfilePageActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
@@ -77,6 +78,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private ImageView posterPic;
     private Event event;
     private Button uploadImageButton;
+    private Button deleteImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.save_button);
         qrImage = findViewById(R.id.qr_image);
         uploadImageButton = findViewById(R.id.upload_poster);
+        deleteImageButton = findViewById(R.id.delete_poster);
 
 
         db = DatabaseManager.getInstance(this);
@@ -120,7 +123,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: No event ID provided", Toast.LENGTH_SHORT).show();
             finish();
         }
-        eventImageRef = storageRef.child("Users/"+currentEventId+".jpg");
+        eventImageRef = storageRef.child("Events/"+currentEventId+".jpg");
 
 
         Button viewWaitlistButton = findViewById(R.id.view_participants_button);
@@ -149,9 +152,18 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 chooseImage();
+                fetchAndApplyImage(currentEventId, posterPic);
             }
 
 
+        });
+
+        deleteImageButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                deletePoster(eventImageRef, currentEventId);
+            }
         });
 
         setupButtonListeners();
@@ -331,20 +343,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Object result) {
                 Map<String, Object> eventData = (Map<String, Object>) result;
-
                 try {
-
-                    // for image
-                    event = new Event(); // Assuming Event has a default constructor
-
-                    // Populate event fields from eventData map
-                    event.setEventID(eventId);
-                    event.setEventName((String) eventData.get("eventName"));
-                    event.setEventLocation((String) eventData.get("eventLocation"));
-                    event.setDescription((String) eventData.get("description"));
-                    event.setMaxParticipants((int)eventData.get("maxParticipants"));
-                    event.setMaxWaitlist((int)eventData.get("maxWaitlist"));
-                    event.setPosterImageRef(storageRef.child((String) eventData.get("posterImagePath"))); // Poster path from DB
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
                     SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
@@ -354,7 +353,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     Date deadline = deadlineTimestamp.toDate();
 
                     // set all the event fields
-                    eventTitle.setText(event.getEventName());
+                    eventTitle.setText((String) eventData.get("eventName"));
                     eventDateLabel.setText("Date: " + dateFormat.format(eventDate));
                     eventTimeLabel.setText("Time: " + timeFormat.format(eventDate));
                     eventLocationLabel.setText("Location: " + eventData.get("eventLocation"));
@@ -376,8 +375,13 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     // generate & display the qr code
                     generateQR(eventId);
 
-                    // display poster
-                    fetchAndApplyImage(event, posterPic);
+                    //fetchAndApplyImage(eventId, posterPic);
+                    String posterPath = (String) eventData.get("posterImagePath");
+                    if (posterPath != null && !posterPath.isEmpty()) {
+                        fetchAndApplyImage(eventId, posterPic);
+                    } else {
+                        posterPic.setVisibility(View.GONE); // Hide ImageView if no poster exists
+                    }
 
                 } catch (Exception e) {
                     Log.e("EventDetails", "Error formatting event data", e);
@@ -410,100 +414,143 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         launchSomeActivity.launch(i);
     }
 
-    ActivityResultLauncher<Intent> launchSomeActivity
-            = registerForActivityResult(
-            new ActivityResultContracts
-                    .StartActivityForResult(),
+    // Allows for image upload
+    ActivityResultLauncher<Intent> launchSomeActivity = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if (result.getResultCode()
-                        == Activity.RESULT_OK) {
+                if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    // do your operation from here....
-                    if (data != null
-                            && data.getData() != null) {
+                    if (data != null && data.getData() != null) {
                         Uri selectedImageUri = data.getData();
-                        try {
-                            InputStream stream = getContentResolver().openInputStream(selectedImageUri);
-                            eventImageRef.putStream(stream)
-                                    .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                                        @Override
-                                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                            if (!task.isSuccessful()) {
-                                                Log.e("EventDetailsViewActivity",
-                                                        "poster pic upload fail: ", task.getException());
-                                                Toast.makeText(EventDetailsViewActivity.this,
-                                                                "Image upload failed", Toast.LENGTH_SHORT)
-                                                        .show();
-                                                try {
-                                                    stream.close();
-                                                } catch (IOException e) {
-                                                    throw new RuntimeException(e);
-                                                }
-                                            }
-
-                                            // Continue with the task to get the download URL
-                                            return eventImageRef.getDownloadUrl();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("EventDetailsViewActivity",
-                                                    "getDownloadUrl fail: ", e);
-                                            Toast.makeText(EventDetailsViewActivity.this,
-                                                            "Try exiting and reopening the page",
-                                                            Toast.LENGTH_SHORT)
-                                                    .show();
-                                            try {
-                                                stream.close();
-                                            } catch (IOException exception) {
-                                                throw new RuntimeException(exception);
-                                            }
-                                        }
-                                    })
-                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            Log.d("EventDetailsViewActivity",
-                                                    "get download uri success: " + uri);
-                                            try {
-                                                stream.close();
-                                            } catch (IOException e) {
-                                                throw new RuntimeException(e);
-                                            }
-
-                                            // Add user image and
-                                            db.addImageToEvent(currentEventId, eventImageRef.getPath(), new DbCallback() {
-                                                @Override
-                                                public void onSuccess(Object result) {
-                                                    Log.d("EventDetailsViewActivity",
-                                                            "update user on image upload successful");
-                                                    event.setPosterImageRef(eventImageRef);
-
-                                                    // get the image from the db and load it into the view
-                                                    fetchAndApplyImage(event, posterPic);
-                                                }
-                                                @Override
-                                                public void onError(Exception exception) {
-                                                    Log.e("EventDetailsViewActivity",
-                                                            "addImageToUser onError: ", exception);
-                                                }
-                                            });
-                                        }
-                                    });
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if (selectedImageUri != null) {
+                            posterPic.setImageURI(selectedImageUri);
+                            uploadImage(selectedImageUri);
+                        } else {
+                            Toast.makeText(this, "Invalid image selected", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             });
 
-    private void fetchAndApplyImage(Event event, ImageView imageView) {
-        StorageReference posterImageRef = event.getPosterImageRef();
-        if (posterImageRef != null) {
-            GlideApp.with(this)
-                    .load(posterImageRef)
-                    .into(imageView);
+    /**
+     * Uploads a poster image
+     * @author mylayambao & Chappydev
+     * @param selectedImageUri poster image uri
+     */
+    private void uploadImage(Uri selectedImageUri) {
+        try {
+            InputStream stream = getContentResolver().openInputStream(selectedImageUri);
+            if (stream == null) {
+                Toast.makeText(this, "Failed to open image stream", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Upload the image
+            eventImageRef.putStream(stream)
+                    .continueWithTask(task -> {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        return eventImageRef.getDownloadUrl();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("UploadImage", "Image upload failed", e);
+                        Toast.makeText(this, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        try {
+                            stream.close();
+                        } catch (IOException ex) {
+                            Log.e("UploadImage", "Error closing stream", ex);
+                        }
+                    })
+                    .addOnSuccessListener(uri -> {
+                        try {
+                            stream.close();
+                            updatePosterPathInDatabase(uri.toString());
+                            fetchAndApplyImage(currentEventId, posterPic); // update the image
+                        } catch (IOException e) {
+                            Log.e("UploadImage", "Error closing stream", e);
+                        }
+                    });
+        } catch (IOException e) {
+            Log.e("UploadImage", "Error uploading image", e);
+            Toast.makeText(this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * updates the poster path in the database
+     * @author mylayambao & Chappydev
+     * @param downloadUrl url for the poster
+     */
+    private void updatePosterPathInDatabase(String downloadUrl) {
+        db.addImageToEvent(currentEventId, downloadUrl, new DbCallback() {
+            @Override
+            public void onSuccess(Object result) {
+                Log.d("UploadImage", "Image path updated in database");
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("UploadImage", "Failed to update image path in database", e);
+                Toast.makeText(EventDetailsViewActivity.this, "Failed to update image in database", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    /**
+     * Fetches and displays an image using Glide for display.
+     * @author mylayambao
+     * @param eventId Id of an event
+     * @param imageView Where the image will be displayed
+     */
+    private void fetchAndApplyImage(String eventId, ImageView imageView) {
+        StorageReference posterRef = storageRef.child("Events/" + eventId + ".jpg");
+
+        posterRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    Log.d("FetchImage", "Loading image from URI: " + uri.toString());
+
+                    Glide.with(EventDetailsViewActivity.this)
+                            .load(uri)
+                            .into(imageView);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FetchImage", "Failed to load image for event: " + eventId, e);
+                    Toast.makeText(EventDetailsViewActivity.this,
+                            "Unable to load poster image",
+                            Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    /**
+     * Deletes a poster image from an event.
+     * @author mylayambao
+     * @param eventImageRef refference to the events poster
+     * @param eventId event id
+     */
+    private void deletePoster(StorageReference eventImageRef, String eventId){
+        if (eventImageRef != null){
+            eventImageRef.delete()
+                    .addOnSuccessListener(response -> {
+                        db.deleteEventPoster(eventId, new DbCallback() {
+                            @Override
+                            public void onSuccess(Object result) {
+                                Toast.makeText(EventDetailsViewActivity.this, "Poster removed successfully", Toast.LENGTH_SHORT).show();
+                                posterPic.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+                                Toast.makeText(EventDetailsViewActivity.this, "Failed to remove poster from database", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
+                    .addOnFailureListener(e ->{
+                        Toast.makeText(EventDetailsViewActivity.this, "Failed to remove poster from database", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(EventDetailsViewActivity.this, "No poster to remove", Toast.LENGTH_SHORT).show();
         }
     }
 }
