@@ -165,6 +165,16 @@
                 android:scaleType="fitCenter" />
 
             <Button
+                android:id="@+id/generate_qr_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/organizer_blue"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:text="Generate QR Code"
+                android:scaleType="fitCenter" />
+
+            <Button
                 android:id="@+id/notify_participants_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

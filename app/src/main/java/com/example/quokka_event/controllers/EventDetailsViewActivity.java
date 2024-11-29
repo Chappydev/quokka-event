@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 public class EventDetailsViewActivity extends AppCompatActivity {
     private TextView eventDateLabel;
@@ -55,6 +56,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private Button notifyParticipantsButton;
     private Button mapButton;
+    private Button generateQrButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         editButton = findViewById(R.id.edit_button);
         saveButton = findViewById(R.id.save_button);
         qrImage = findViewById(R.id.qr_image);
+        generateQrButton = findViewById(R.id.generate_qr_button);
 
 
         db = DatabaseManager.getInstance(this);
@@ -99,6 +102,36 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             Intent intent = new Intent(EventDetailsViewActivity.this, EntrantMapActivity.class);
             intent.putExtra("eventId", currentEventId);
             startActivity(intent);
+        });
+
+        generateQrButton.setOnClickListener(v -> {
+            auth = FirebaseAuth.getInstance();
+            String qrHash = UUID.randomUUID().toString();
+            String deviceId = auth.getCurrentUser().getUid();
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("qrHash", qrHash);
+            db.updateEvent(currentEventId, deviceId, updates, new DbCallback() {
+                @Override
+                public void onSuccess(Object result) {
+                    try {
+                        generateQR(qrHash);
+                    } catch (WriterException e){
+                        Log.e("QR", "onSuccess: UNABLE TO GENERATE QR CODE: " + e);
+                        return;
+                    }
+
+                    Log.d("QR", "onSuccess: QR Code generated with hash=" + qrHash);
+                    loadEventDetails(currentEventId);
+                    qrImage.setVisibility(View.VISIBLE);
+                    generateQrButton.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Toast.makeText(EventDetailsViewActivity.this, "Error: Unable to create a QR code! Please try again.", Toast.LENGTH_SHORT).show();
+                    Log.e("QR", "onError: Unable to store or generate QR code with hash=" + qrHash);
+                }
+            });
         });
 
         Button viewWaitlistButton = findViewById(R.id.view_participants_button);
@@ -262,12 +295,12 @@ public class EventDetailsViewActivity extends AppCompatActivity {
 
     /**
      * Generates and displays a QR Code
-     * @param eventId
+     * @param qrHash
      * @throws WriterException
      * @author mylayambao
      */
 
-    private void generateQR(String eventId) throws WriterException {
+    private void generateQR(String qrHash) throws WriterException {
 
         // create the qr map
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
@@ -276,7 +309,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
 
         // ref :https://stackoverflow.com/questions/41606384/how-to-generate-qr-code-using-zxing-library
         try {
-            BitMatrix bitMatrix = qrCodeWriter.encode(eventId, BarcodeFormat.QR_CODE, width, height);
+            BitMatrix bitMatrix = qrCodeWriter.encode(qrHash, BarcodeFormat.QR_CODE, width, height);
 
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
             for (int x = 0; x < width; x++) {
@@ -284,9 +317,10 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
                 }
             }
-            // display the qr code
+//          display the qr code
             qrImage.setImageBitmap(bitmap);
         } catch (WriterException e) {
+            Log.e("QR", "generateQR: QR Generation failed" );
             e.printStackTrace();
         }
     }
@@ -317,6 +351,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     eventLocationLabel.setText("Location: " + event.get("eventLocation"));
                     long maxCapacity = (long) event.get("maxParticipants");
                     long maxWaitlist = (long) event.get("maxParticipants");
+                    String qrHash = (String) event.get("qrHash");
 
                     // clean display if capacity is maxed
                     String capacityText = (maxCapacity != Integer.MAX_VALUE ? String.valueOf(maxCapacity) : "Unlimited");
@@ -331,7 +366,14 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     eventDescriptionLabel.setText(description != null ? description : "No description available");
 
                     // generate & display the qr code
-                    generateQR(eventId);
+                    if (qrHash != null && !qrHash.isEmpty()){
+                        generateQrButton.setVisibility(View.GONE);
+                        qrImage.setVisibility(View.VISIBLE);
+                        generateQR(qrHash);
+                    } else {
+                        generateQrButton.setVisibility(View.VISIBLE);
+                        qrImage.setVisibility(View.GONE);
+                    }
 
                 } catch (Exception e) {
                     Log.e("EventDetails", "Error formatting event data", e);
