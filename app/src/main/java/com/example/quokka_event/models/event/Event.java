@@ -28,6 +28,8 @@ public class Event {
     private StorageReference posterImageRef;
     private int posterImage;
 
+    private String imageUrl;
+
     /**
      * Constructs an Event with specified attributes.
      *
@@ -59,6 +61,14 @@ public class Event {
     }
 
     public Event() {
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getEventID() {
@@ -191,4 +201,5 @@ public class Event {
             waitList.add(user);
         }
     }
+
 }
