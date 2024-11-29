@@ -144,7 +144,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             auth = FirebaseAuth.getInstance();
             String deviceId = auth.getCurrentUser().getUid();
             Map<String, Object> updates = new HashMap<>();
-            updates.put("qrHash", "");
+            updates.put("qrHash", null);
             db.updateEvent(currentEventId, deviceId, updates, new DbCallback() {
                 @Override
                 public void onSuccess(Object result) {
