@@ -203,6 +203,36 @@
                 android:layout_weight="1"
                 android:text="View Entrant Map" />
 
+            <ImageView
+                android:id="@+id/poster_image"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:scaleType="fitCenter" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TableRow>
+                    <Button
+                        android:id="@+id/upload_poster"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="10dp"
+                        android:text="Upload Poster" />
+                    <Button
+                        android:id="@+id/delete_poster"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="10dp"
+                        android:text="Delete Poster" />
+                </TableRow>
+
+            </TableLayout>
+
         </LinearLayout>
     </ScrollView>
 

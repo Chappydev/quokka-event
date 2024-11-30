@@ -3,6 +3,7 @@ package com.example.quokka_event.models.organizer;
 import static android.app.PendingIntent.getActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -93,6 +94,11 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
 
     @Override
     public void setDescription(String description) {
+
+    }
+
+    @Override
+    public void setImageUri(Uri imageUri) {
 
     }
 }
