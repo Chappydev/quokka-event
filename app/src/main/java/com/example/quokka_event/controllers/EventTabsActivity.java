@@ -101,18 +101,20 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String eventID = event.getEventID();
                 String deviceId = auth.getCurrentUser().getUid();
 
                 // Save the event to the database first
                 db.addEvent(event, deviceId, new DbCallback() {
                     @Override
                     public void onSuccess(Object result) {
+                        String eventID = result.toString(); // firebase id for the evnt
+                        event.setEventID(eventID);
+                        Log.d("ImageDebug", eventID);
                         Toast.makeText(EventTabsActivity.this, "Event created successfully!", Toast.LENGTH_SHORT).show();
 
-                        // Now check if there is an image to upload
+                        // check if there is an image to upload
                         if (imageUri != null) {
-                            StorageReference imageRef = storageReference.child("Events/" + event.getEventName() + ".jpg");
+                            StorageReference imageRef = storageReference.child("Events/" + eventID + ".jpg");
 
                             // Upload the image to Firebase Storage
                             imageRef.putFile(imageUri)
