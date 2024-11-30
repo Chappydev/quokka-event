@@ -25,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.rpc.context.AttributeContext;
 
+import java.text.SimpleDateFormat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -101,6 +102,50 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name  = event.getEventName();
+                String location = event.getEventLocation();
+                Date eventDate = event.getEventDate();
+                Date registrationDate = event.getRegistrationDeadline();
+                int maxEntrants = event.getMaxWaitlist();
+
+                // Valid Entry Logic
+                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null) {
+                    Toast.makeText(EventTabsActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (name.length() > 100) {
+                    Toast.makeText(EventTabsActivity.this, "Please limit book name to 50 characters", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                try {
+                    // Check if either date is in the past
+                    if (eventDate.before(currentDate) || registrationDate.before(currentDate)) {
+                        Toast.makeText(EventTabsActivity.this, "Please enter a future date and time", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Ensure event date is after the registration deadline
+                    if (eventDate.before(registrationDate)) {
+                        Toast.makeText(EventTabsActivity.this, "Event date must be AFTER the registration deadline", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Validate the year range for both dates
+                    SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+                    int eventYear = Integer.parseInt(yearFormat.format(eventDate));
+                    int registrationYear = Integer.parseInt(yearFormat.format(registrationDate));
+
+                    if (eventYear < 2024 || eventYear > 3000 || registrationYear < 2024 || registrationYear > 3000) {
+                        Toast.makeText(EventTabsActivity.this, "Please enter a valid year (2024-3000)", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(EventTabsActivity.this, "An unexpected error occurred. Please check your input.", Toast.LENGTH_SHORT).show();
+                    Log.e("DateValidation", "Error validating dates");
+                    return;
+                }
+
                 String deviceId = auth.getCurrentUser().getUid();
 
                 // Save the event to the database first
