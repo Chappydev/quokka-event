@@ -948,6 +948,50 @@ public class DatabaseManager {
     }
 
     /**
+     * Adds an image (poster) to an event.
+     * @author mylayambao & Chappydev
+     * @param eventId event id
+     * @param path path to the image
+     * @param callback db callback
+     * @since project part 4
+     */
+    public void addImageToEvent(String eventId, String path, DbCallback callback) {
+        eventsRef.document(eventId).update("posterImagePath", path)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("DB", "addImageToEvent onFailure: ", e);
+                        callback.onError(e);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("DB", "addImageEvent succeeded!");
+                        Map<String, Object> resultInfo = new HashMap<>();
+                        resultInfo.put("success", true);
+                        resultInfo.put("eventId", eventId);
+                        resultInfo.put("path", path);
+                        callback.onSuccess(resultInfo);
+                    }
+                });
+    }
+
+    /**
+     * Deletes an event poster from the database.
+     * @author mylayambao
+     * @param eventId event id
+     * @param callback db callback
+     * @since project part 4
+     */
+    public void deleteEventPoster(String eventId, DbCallback callback){
+        db.collection("Events").document(eventId)
+                .update("posterPath", FieldValue.delete())
+                .addOnSuccessListener(response -> callback.onSuccess(null))
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
      * Delete profile picture from Firebase Storage and the path from the Users collection
      * @author Chappydev
      * @param deviceId id of user
