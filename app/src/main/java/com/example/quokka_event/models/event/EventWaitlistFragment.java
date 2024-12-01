@@ -1,5 +1,7 @@
 package com.example.quokka_event.models.event;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,9 +44,6 @@ public class EventWaitlistFragment extends Fragment {
         // leave empty
     }
 
-    public interface eventWaitlistListener{
-
-    }
 
     /**
      * Creates a new instance of the fragment given an eventId.
@@ -76,7 +76,7 @@ public class EventWaitlistFragment extends Fragment {
         eventWaitlistList = new ArrayList<>();
     }
 
-    private eventWaitlistListener listener;
+    private EventAttendingFragment.EventAttendingListener listener;
     /**
      * Method for the creation view of a event waitlist fragement
      * @author mylayambao
@@ -103,6 +103,11 @@ public class EventWaitlistFragment extends Fragment {
         waitlistRecyclerView.setLayoutManager(layoutManager);
         adapter = new WaitlistEntriesAdapter(eventWaitlistList);
         waitlistRecyclerView.setAdapter(adapter);
+        // selection listener
+        adapter.setOnSelectionChangeListener(selectedItems -> {
+            notifySelectedParticipants();
+        });
+        waitlistRecyclerView.setAdapter(adapter);
         loadWaitlistedUsers();
 
         return view;
@@ -111,6 +116,67 @@ public class EventWaitlistFragment extends Fragment {
     }
 
 
+    /**
+     * Gets the list selected participants.
+     * @author mylayambo
+     * @return ArrayList<>(adapter.getSelectedItems())
+     */
+    public ArrayList<Map<String, Object>> getSelectedParticipants() {
+        return new ArrayList<>(adapter.getSelectedItems()); //
+    }
+
+    /**
+     * Listener to pass the attending participants.
+     * @author mylayambao
+     */
+    public interface EventAttendingListener {
+        void onDismiss(@NonNull DialogInterface dialog);
+        void onParticipantsSelected(ArrayList<Map<String, Object>> selectedParticipants);
+    }
+
+    /**
+     * Helps implement the listener.
+     * @author mylayambao
+     * @param context listener
+     */
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof EventAttendingFragment.EventAttendingListener) {
+            listener = (EventAttendingFragment.EventAttendingListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement EventAttendingListener");
+        }
+    }
+
+    /**
+     * Detaches the listener
+     * @author mylayambao
+     */
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    /**
+     * Use the listener and notify that the participants are selected.
+     * @author mylayambao
+     */
+    private void notifySelectedParticipants() {
+        if (listener != null) {
+            listener.onParticipantsSelected(getSelectedParticipants());
+        }
+    }
+
+    /**
+     * clear selected
+     * @author mylayambao
+     */
+    public void clearSelection() {
+        adapter.clearSelections();
+        adapter.notifyDataSetChanged();
+    }
     /**
      * Load the users on the waitlist from the db
      * @author sohan

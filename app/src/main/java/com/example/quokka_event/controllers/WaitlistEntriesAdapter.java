@@ -27,6 +27,11 @@ public class WaitlistEntriesAdapter extends RecyclerView.Adapter<WaitlistEntries
     private ArrayList<Map<String, Object>> localDataSet;
     private Set<Integer> selectedItems = new HashSet<>(); // to keep track of selected
 
+    public void clearSelections() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
+
     // listener
     public interface OnSelectionChangeListener {
         void onSelectionChanged(ArrayList<Map<String, Object>> selectedItems);

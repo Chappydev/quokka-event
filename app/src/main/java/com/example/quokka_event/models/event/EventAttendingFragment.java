@@ -2,6 +2,7 @@ package com.example.quokka_event.models.event;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,10 +45,6 @@ public class EventAttendingFragment extends Fragment {
     public EventAttendingFragment(){
         // leave empty
     }
-
-//    public interface eventAttendingListener{
-//
-//    }
 
     /**
      * Creates a new instance of the fragment given an eventId.
@@ -120,17 +117,30 @@ public class EventAttendingFragment extends Fragment {
 
     }
 
+    /**
+     * Gets the list selected participants.
+     * @author mylayambo
+     * @return ArrayList<>(adapter.getSelectedItems())
+     */
     public ArrayList<Map<String, Object>> getSelectedParticipants() {
         return new ArrayList<>(adapter.getSelectedItems()); //
     }
 
-
-    // listener to pass attending
+    /**
+     * Listener to pass the attending participants.
+     * @author mylayambao
+     */
     public interface EventAttendingListener {
+        void onDismiss(@NonNull DialogInterface dialog);
+
         void onParticipantsSelected(ArrayList<Map<String, Object>> selectedParticipants);
     }
 
-
+    /**
+     * Helps implement the listener.
+     * @author mylayambao
+     * @param context listener
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -141,17 +151,35 @@ public class EventAttendingFragment extends Fragment {
         }
     }
 
+    /**
+     * Detaches the listener
+     * @author mylayambao
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         listener = null;
     }
 
+    /**
+     * Use the listener and notify that the participants are selected.
+     * @author mylayambao
+     */
     private void notifySelectedParticipants() {
         if (listener != null) {
             listener.onParticipantsSelected(getSelectedParticipants());
         }
     }
+
+    /**
+     * clear selected
+     * @author mylayambao
+     */
+    public void clearSelection() {
+        adapter.clearSelections();
+        adapter.notifyDataSetChanged();
+    }
+
 
     /**
      * Load the users on the waitlist from the db
@@ -181,8 +209,6 @@ public class EventAttendingFragment extends Fragment {
             }
         });
     }
-
-
 
 }
 

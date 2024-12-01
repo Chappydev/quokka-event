@@ -1,6 +1,7 @@
 package com.example.quokka_event.models.organizer;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.quokka_event.R;
@@ -58,6 +60,29 @@ public class NotifySelectedFragment extends DialogFragment {
         args.putSerializable("selectedParticipants", selectedParticipants);
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    /**
+     * Listener to communicate when the fragment is closed
+     * @author mylayambao
+     */
+    public interface NotifySelectedListener {
+        void onNotifyFragmentDismissed();
+    }
+
+    private NotifySelectedListener notifySelectedListener;
+
+    public void setNotifySelectedListener(NotifySelectedListener listener) {
+        this.notifySelectedListener = listener;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (notifySelectedListener != null) {
+            notifySelectedListener.onNotifyFragmentDismissed();
+        }
     }
 
     /**
@@ -121,6 +146,11 @@ public class NotifySelectedFragment extends DialogFragment {
 
         sendButton.setOnClickListener(new View.OnClickListener() {
 
+            /**
+             * Creates a notification when the send button is clicked.
+             * @author mylayambao
+             * @param view view
+             */
             @Override
             public void onClick(View view) {
                 Log.d("Notif", "selectedParticipants: " + selectedParticipants);
@@ -132,6 +162,11 @@ public class NotifySelectedFragment extends DialogFragment {
 
                 // set the recipients
                 db.addNotification(notification, new DbCallback() {
+                    /**
+                     * Indicates the notification was successfully added to the db.
+                     * @author mylayambao
+                     * @param result notification
+                     */
                     @Override
                     public void onSuccess(Object result) {
                         Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
@@ -139,6 +174,12 @@ public class NotifySelectedFragment extends DialogFragment {
                                 "Notification Sent Successfully",
                                 Toast.LENGTH_SHORT).show();
                     }
+
+                    /**
+                     * Indicates there was an error adding the notification to the db.
+                     * @author mylayambao
+                     * @param exception exception
+                     */
                     @Override
                     public void onError(Exception exception) {
                         Log.e("DB", "Error Sending Notification: ", exception);
