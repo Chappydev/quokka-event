@@ -155,10 +155,32 @@ public class NotifySelectedFragment extends DialogFragment {
             public void onClick(View view) {
                 Log.d("Notif", "selectedParticipants: " + selectedParticipants);
                 Notification notification = new Notification();
-                notification.setRecipients(selectedParticipants);
+                //notification.setRecipients(selectedParticipants);
                 notification.setNotifMessage(notificationText.getText().toString());
                 notification.setNotifTitle(notificationTitle.getText().toString());
                 notification.setEventId(currentEventId);
+
+                if (selectedParticipants == null || selectedParticipants.isEmpty()) {
+                    Toast.makeText(getContext(), "No participants selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // filter participants where "notifications" is true
+                ArrayList<Map<String, Object>> filteredRecipients = new ArrayList<>();
+                for (Map<String, Object> participant : selectedParticipants) {
+                    Object notificationsEnabled = participant.get("notifications");
+                    if (notificationsEnabled instanceof Boolean && (Boolean) notificationsEnabled) {
+                        filteredRecipients.add(participant);
+                    }
+                }
+
+                if (filteredRecipients.isEmpty()) {
+                    Toast.makeText(getContext(), "No participants have notifications enabled", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Log.d("Notif", "Filtered Recipients: " + filteredRecipients);
+                notification.setRecipients(filteredRecipients);
 
                 // set the recipients
                 db.addNotification(notification, new DbCallback() {
