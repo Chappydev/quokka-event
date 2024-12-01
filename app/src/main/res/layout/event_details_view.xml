@@ -164,6 +164,75 @@
                 android:layout_marginTop="30dp"
                 android:scaleType="fitCenter" />
 
+            <Button
+                android:id="@+id/delete_qr_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/error_red"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginTop="30dp"
+                android:text="Delete QR Code"
+                android:scaleType="fitCenter" />
+
+            <Button
+                android:id="@+id/generate_qr_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/organizer_blue"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:text="Generate QR Code"
+                android:scaleType="fitCenter" />
+
+            <Button
+                android:id="@+id/notify_participants_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:text="Notify Participants" />
+
+            <Button
+                android:id="@+id/view_map_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:text="View Entrant Map" />
+
+            <ImageView
+                android:id="@+id/poster_image"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:scaleType="fitCenter" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TableRow>
+                    <Button
+                        android:id="@+id/upload_poster"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="10dp"
+                        android:text="Upload Poster" />
+                    <Button
+                        android:id="@+id/delete_poster"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="10dp"
+                        android:text="Delete Poster" />
+                </TableRow>
+
+            </TableLayout>
+
         </LinearLayout>
     </ScrollView>
 
@@ -200,14 +269,14 @@
             android:visibility="gone" />
 
          <Button
-            android:id="@+id/view_waitlist_button"
+            android:id="@+id/view_participants_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+             android:textSize="12dp"
             android:layout_marginStart="8dp"
-            android:text="Waitlist"
+            android:text="Entrants"
              />
-
 
 
     </LinearLayout>

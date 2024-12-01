@@ -6,6 +6,9 @@ import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Activity for displaying notification page
+ */
 public class NotificationPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,5 +22,4 @@ public class NotificationPageActivity extends AppCompatActivity {
             finish();
         });
     }
-
 }

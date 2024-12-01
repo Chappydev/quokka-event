@@ -2,7 +2,6 @@ package com.example.quokka_event.models.event;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.quokka_event.R;
-import com.example.quokka_event.controllers.EventTabsActivity;
 
+/**
+ * Fragment for managing event details like seat and waitlist capacities
+ */
 public class DetailsFragment extends Fragment {
 
     TextView remainSeatTextView;
@@ -33,6 +33,7 @@ public class DetailsFragment extends Fragment {
     EditText participantCapEditText;
     Boolean isWaitlistLimit;
     Boolean isParticipantLimit;
+    Button notifyParticipantsButton;
 
 
     int participantLimit;
@@ -49,23 +50,25 @@ public class DetailsFragment extends Fragment {
 
     private detailsListener listener;
 
-    public DetailsFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public DetailsFragment() {    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         Log.d("FragmentDebug", "Context class: " + context.getClass().getName());
         if(context instanceof OverviewFragment.overviewEditListener){
-            listener = (DetailsFragment.detailsListener) context;
+            listener = (detailsListener) context;
         } else {
             throw new RuntimeException(context + "must implement overeditListener");
         }
     }
+
     /**
      * Attach the detailsListener listener to EventTabsActivity.java
-     * @param context
+     * *@param context
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,12 +77,6 @@ public class DetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.event_view_details_frag, container, false);
 
-        // Set up a click listener for the edit button
-//        Button editButton = view.findViewById(R.id.edit_event_button);
-//        editButton.setOnClickListener(v -> {
-//            new EditEventDetailsFragment().show(requireActivity().getSupportFragmentManager(), "Edit Event");
-//
-//        });
 
         changeSeatButton = view.findViewById(R.id.change_seat_button);
         confirmChangeSeatButton = view.findViewById(R.id.confirm_change_seat_button);
@@ -88,7 +85,7 @@ public class DetailsFragment extends Fragment {
         limitParticipantCheckBox = view.findViewById(R.id.limit_participant_checkbox);
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
         remainSeatTextView = view.findViewById(R.id.event_seats_label);
-
+        notifyParticipantsButton = view.findViewById(R.id.notify_participants_button);
 
         // setting defaults to max values
         participantLimit = Integer.MAX_VALUE;
@@ -98,7 +95,23 @@ public class DetailsFragment extends Fragment {
 
         setButtonsVisibility(View.GONE);
 
+//        notifyParticipantsButton.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View view) {
+//                NotifyParticipantsFragment notifyParticipantsFragment = new NotifyParticipantsFragment(event);
+//                notifyParticipantsFragment.show(getChildFragmentManager(), "notify participant");
+//            }
+//
+//
+//        });
+
         limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * Show waitlist edittext if the limit waitlist checkbox is checked.
+             * @param compoundButton
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 isWaitlistLimit = isChecked;
@@ -114,6 +127,11 @@ public class DetailsFragment extends Fragment {
         });
 
         limitParticipantCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * Show participantCapEditText if limitParticipantCheckBox is checked.
+             * @param compoundButton
+             * @param isChecked
+             */
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 isParticipantLimit = isChecked;

@@ -1,9 +1,6 @@
 package com.example.quokka_event;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +8,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -23,11 +16,9 @@ import com.budiyev.android.codescanner.DecodeCallback;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.WaitlistActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.models.event.Event;
 import com.google.firebase.Timestamp;
 import com.google.zxing.Result;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -38,7 +29,6 @@ public class QrScannerPageActivity extends AppCompatActivity {
     private CodeScanner codeScanner;
     private CodeScannerView scannerView;
     private DatabaseManager db;
-
 
     /**
      * Setting up the codeScanner
@@ -70,7 +60,7 @@ public class QrScannerPageActivity extends AppCompatActivity {
                         String resultText = result.getText();
                         Log.d("QR", "run: " + resultText);
                         if (resultText != null && resultText.length() > 0 && !resultText.contains("/")) {
-                            db.getSingleEvent(resultText, new DbCallback() {
+                            db.getEventByQRHash(resultText, new DbCallback() {
                                 @Override
                                 public void onSuccess(Object result) {
                                     Map<String, Object> eventMap = (Map<String, Object>) result;
@@ -140,14 +130,14 @@ public class QrScannerPageActivity extends AppCompatActivity {
         Intent showActivity = new Intent(QrScannerPageActivity.this, WaitlistActivity.class);
         Timestamp eventDate = (Timestamp) eventMap.get("eventDate");
         Timestamp registrationDeadline = (Timestamp) eventMap.get("registrationDeadline");
-        showActivity.putExtra("eventId", (String) eventMap.get("id"));
+        showActivity.putExtra("eventId", (String) eventMap.get("eventId"));
         showActivity.putExtra("eventDate", eventDate.toDate());
         showActivity.putExtra("eventLocation", (String) eventMap.get("eventLocation"));
         showActivity.putExtra("eventName", (String) eventMap.get("eventName"));
         showActivity.putExtra("maxParticipants", (int)(long) eventMap.get("maxParticipants"));
         showActivity.putExtra("registrationDeadline", registrationDeadline.toDate());
         showActivity.putExtra("maxWaitlist", (int)(long) eventMap.get("maxWaitlist"));
+        showActivity.putExtra("posterImagePath", (String) eventMap.get("posterImagePath"));
         QrScannerPageActivity.this.startActivity(showActivity);
     }
-
 }

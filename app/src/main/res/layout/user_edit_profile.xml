@@ -4,6 +4,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profile_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -56,7 +57,22 @@
                 </androidx.cardview.widget.CardView>
 
             </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/delete_profile_pic_button"
+                style="@style/landing_button_text"
+                android:visibility="gone"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:background="@drawable/delete_button"
+                android:text="@string/delete_image"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                app:layout_constraintLeft_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="parent" />
+
             <!-- Name Label -->
+
             <TextView
                 android:id="@+id/user_name_label"
                 android:layout_width="wrap_content"
@@ -260,6 +276,7 @@
                     android:background="@drawable/landing_button"
                     android:text="Save Changes" />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

@@ -84,10 +84,12 @@ public class OrganizerEventsAdapter extends RecyclerView.Adapter<OrganizerEvents
         });
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    /**
+     * Returns number of items in local data set
+     * @return size of local data set
+     */
     @Override
     public int getItemCount() {
         return localDataSet.size();
     }
-
 }

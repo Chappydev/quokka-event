@@ -4,8 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
+
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Date;
 
@@ -17,10 +21,11 @@ public class ProfileSystem {
     private int profileImage;
     private String name;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private Date birthday;
     private String address;
     private String deviceID;
+    private StorageReference profileImageRef;
 
     /**
      * This method creates a Profile System object.
@@ -32,7 +37,7 @@ public class ProfileSystem {
      * @param birthday
      * @param address
      */
-    public ProfileSystem(String deviceID,@DrawableRes int profileImage, String name, String email, int phoneNumber, Date birthday, String address){
+    public ProfileSystem(String deviceID,@DrawableRes int profileImage, String name, String email, String phoneNumber, Date birthday, String address){
         this.deviceID = deviceID;
         this.profileImage = profileImage;
         this.email = email;
@@ -99,7 +104,7 @@ public class ProfileSystem {
      * This method sets the phone number of the user.
      * @param newPhoneNumber the user's phone number
      */
-    public void setPhoneNumber(int newPhoneNumber){
+    public void setPhoneNumber(String newPhoneNumber){
         phoneNumber = newPhoneNumber;
     }
 
@@ -107,7 +112,7 @@ public class ProfileSystem {
      * This method gets the user's phone number.
      * @return the phone number of the user
      */
-    public int getPhoneNumber(){
+    public String getPhoneNumber(){
         return phoneNumber;
     }
 
@@ -164,37 +169,54 @@ public class ProfileSystem {
         // Set pfp color
         //https://developer.android.com/reference/android/graphics/Color#HSVToColor(float[])
         //https://stackoverflow.com/questions/33219638/how-to-make-a-hashcodeinteger-value-positive
+        int hashCode;
+        if (name != null && !name.trim().isEmpty()) {
+            hashCode = name.hashCode();
+        }
+        // If no name is provided
+        else {
+            hashCode = 0;
+        }
+
         int color = Color.HSVToColor(new float[]{
-                (name.hashCode() & 0x7FFFFFFF) % 360,
+                (hashCode & 0x7FFFFFFF) % 360,
                 1,
                 1
         });
         paint.setColor(color);
         //https://stackoverflow.com/questions/17954596/how-to-draw-circle-by-canvas-in-android
         canvas.drawCircle(w / 2f, h / 2f, radius / 2f, paint);
-        // check for empty string, return a color
-        if (name.isEmpty()){
-            return bmp;
-        }
+
         // Get initials
         //https://stackoverflow.com/questions/64567828/how-to-print-the-first-name-and-initials-of-a-full-name
         String initials = "";
-        String[] nameSplit = name.split("\\s+");
-        if (nameSplit.length > 0) {
-            initials += nameSplit[0].charAt(0);
+        if (name != null && !name.trim().isEmpty()) {
+            String[] nameSplit = name.split("\\s+");
+            if (nameSplit.length > 0) {
+                initials += nameSplit[0].charAt(0);
+            }
+            if (nameSplit.length > 1) {
+                initials += nameSplit[1].charAt(0);
+            }
+            initials = initials.toUpperCase();
         }
-        if (nameSplit.length > 1) {
-            initials += nameSplit[1].charAt(0);
+
+        if (!initials.isEmpty()) {
+            paint.setColor(Color.WHITE);
+            paint.setTextSize(w / 3f);
+            paint.setTextAlign(Paint.Align.CENTER);
+            float x = w / 2f;
+            float y = h / 2f - (paint.descent() + paint.ascent()) / 2;
+            canvas.drawText(initials, x, y, paint);
         }
-        initials = initials.toUpperCase();
-
-        paint.setColor(Color.WHITE);
-        paint.setTextSize(w / 3f);
-        paint.setTextAlign(Paint.Align.CENTER);
-        float x = w / 2f;
-        float y = h / 2f - (paint.descent() + paint.ascent()) / 2;
-        canvas.drawText(initials, x, y, paint);
-
         return bmp;
+    }
+
+    public StorageReference getProfileImageRef() {
+        return profileImageRef;
+    }
+
+    public void setProfileImageRef(@Nullable StorageReference profileImageRef) {
+        this.profileImageRef = profileImageRef;
     }
 }

@@ -19,8 +19,16 @@ import java.util.Calendar;
 
 import javax.annotation.Nullable;
 
+/**
+ * Fragment for adding or editing event details
+ */
 public class AddEditEventFragment extends DialogFragment {
 
+    /**
+     * Creates dialog for adding or editing an event
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     * @return Configured dialog
+     */
     @NonNull
     @Override
     // @author mylayambao

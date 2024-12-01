@@ -2,8 +2,6 @@ package com.example.quokka_event.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.provider.ContactsContract;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +16,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * This class displays a list of events to the admin. Admins can also view details.
+ */
 public class AdminBrowseEventsActivity extends AppCompatActivity implements ViewButtonListener {
     private ArrayList<Map<String, Object>> eventList;
     private AdminEventsAdapter adapter;
+
+    /**
+     * Sets up the RecyclerView and initialize the event list from firebase
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +45,12 @@ public class AdminBrowseEventsActivity extends AppCompatActivity implements View
                 eventRecyclerView.setAdapter(adapter);
             }
         });
-
     }
 
+    /**
+     * Passes the selected event data to the AdminEventTabsActivity
+     * @param pos The position of the clicked event in the list
+     */
     @Override
     public void viewButtonClick(int pos) {
         Intent activity = new Intent(AdminBrowseEventsActivity.this, AdminEventTabsActivity.class);

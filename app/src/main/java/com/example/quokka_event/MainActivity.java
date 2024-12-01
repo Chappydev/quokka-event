@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,14 +24,20 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Main activity for user authentication, navigation, and location
+ */
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseManager db;
@@ -41,12 +47,34 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 100;
     private Boolean isAdmin = false;
     private Button adminButton;
+    private FusedLocationProviderClient locationProviderClient;
+    private Double userLat;
+    private Double userLon;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 101;
+
+    /**
+     * Initializes user, location, and UI components
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_landing_page);
 
+        locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            getAndUpdateLocation();
+        }
 
         myEventButton = findViewById(R.id.my_events_button);
 
@@ -117,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         // Switch the activity to the OrganizerEventsPageActivity when the organizer events button is clicked
         final Button organizerEventsButton = findViewById(R.id.organizer_events_button);
         organizerEventsButton.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Initializes user by getting profile data from database
+     * @param uid
+     */
     private void initUser(String uid) {
         User user = User.getInstance(this);
 
@@ -156,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("DB", "onCreate: " + user.getDeviceID());
                 isAdmin = user.isAdmin();
                 showAdminButton(isAdmin);
+
+                getAndUpdateLocation();
             }
 
             @Override
@@ -163,9 +194,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("DB", "onError: ", exception);
             }
         }, uid);
-
-
-
     }
 
     // Switch activity to WaitlistActivity TEMPORARY FOR TESTING WAITLIST ACTIVITY.
@@ -174,6 +202,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Result of permission requests like for the camera
+     * @param requestCode Request code passed in requestPermissions
+     * @param permissions Requested permissions
+     * @param grantResults The results for requested permissions
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -210,5 +244,40 @@ public class MainActivity extends AppCompatActivity {
         else{
             adminButton.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * Updates user's location and updates database
+     */
+    public void getAndUpdateLocation(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        locationProviderClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null && auth.getCurrentUser() != null) {
+                        String deviceId = auth.getCurrentUser().getUid();
+                        Map<String, Object> locationPayload = new HashMap<>();
+                        locationPayload.put("latitude", location.getLatitude());
+                        locationPayload.put("longitude", location.getLongitude());
+
+                        db.updateProfile(deviceId, locationPayload, new DbCallback() {
+                            @Override
+                            public void onSuccess(Object result) {
+                                Log.d("LOCATION", "Location updated for user: " + deviceId);
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+                                Log.e("LOCATION", "Unable to update location for user: " + deviceId, exception);
+                            }
+                        });
+                    } else {
+                        Log.d("LOCATION", "Location is null or user not authenticated");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("LOCATION", "Unable to access user location", e));
     }
 }

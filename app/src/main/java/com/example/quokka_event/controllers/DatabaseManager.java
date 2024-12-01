@@ -1,16 +1,19 @@
 package com.example.quokka_event.controllers;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.Notification;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -18,11 +21,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.time.zone.ZoneOffsetTransition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +46,9 @@ public class DatabaseManager {
     private CollectionReference facilityRef;
     private CollectionReference eventsRef;
     private CollectionReference enrollsRef;
+    private CollectionReference notificationsRef;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
     private Context applicationContext;
     private static DatabaseManager instance;
 
@@ -61,6 +72,9 @@ public class DatabaseManager {
         facilityRef = db.collection("Facility");
         eventsRef = db.collection("Events");
         enrollsRef = db.collection("Enrolls");
+        notificationsRef = db.collection("Notifications");
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
         return this;
     }
 
@@ -180,11 +194,22 @@ public class DatabaseManager {
         });
     }
 
+    /**
+     * Converts map of profile data into a ProfileSystem object
+     *
+     * @param map
+     * @return ProfileSystem object with the profile data
+     */
     private ProfileSystem getProfileSystemFromMap(Map<String, Object> map) {
         ProfileSystem profile = new ProfileSystem();
         profile.setName((String) map.getOrDefault("name", ""));
         profile.setAddress((String) map.getOrDefault("address", ""));
         profile.setEmail((String) map.getOrDefault("email", ""));
+        if (map.get("profileImagePath") != null) {
+            Log.d("DB", "getProfileSystemFromMap: "+map.get("profileImagePath"));
+            StorageReference ref = storageRef.child((String) map.get("profileImagePath"));
+            profile.setProfileImageRef(ref);
+        }
         return profile;
     }
 
@@ -332,7 +357,7 @@ public class DatabaseManager {
                                 @Override
                                 public void accept(QueryDocumentSnapshot queryDocumentSnapshot) {
                                     Map<String, Object> event = queryDocumentSnapshot.getData();
-                                    Task<DocumentSnapshot> task = eventsRef.document((String) event.get("eventId"))
+                                    Task<DocumentSnapshot> task = eventsRef.document(queryDocumentSnapshot.getId())
                                             .get()
                                             .addOnFailureListener(e -> Log.e("DB", "grabbing event details for getUserEventList: ", e));
                                     taskList.add(task);
@@ -390,7 +415,8 @@ public class DatabaseManager {
     }
 
     /**
-     * Get a single event's details as a Map
+     * Gets a single event from the database with its ID
+     *
      * @param eventId
      * @param callback
      */
@@ -528,6 +554,11 @@ public class DatabaseManager {
                 .addOnSuccessListener(documentReference -> callback.onSuccess(documentReference.getId()))
                 .addOnFailureListener(e -> callback.onError(e));
     }
+
+    /**
+     * Gets all facilities from database
+     * @param callback
+     */
     public void getAllFacilities(RetrieveData callback){
         final ArrayList<Map<String, Object>> facilityList = new ArrayList();
         facilityRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -543,6 +574,7 @@ public class DatabaseManager {
             }
         });
     }
+
     /**
      * Grab all events from database
      * @param callback
@@ -571,18 +603,10 @@ public class DatabaseManager {
      * Update profile information
      * @author speakerchef
      * @param deviceId
-     * @param name
-     * @param email
-     * @param phone
+     * @param updates
      * @param callback
      */
-    public void updateProfile(String deviceId, String name, String email, String phone, Boolean notificationPreference, DbCallback callback) {
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("name", name);
-        updates.put("email", email);
-        updates.put("phone", phone);
-        updates.put("notifications", notificationPreference);
-
+    public void updateProfile(String deviceId, Map<String, Object> updates, DbCallback callback) {
         usersRef.document(deviceId)
                 .update(updates)
                 .addOnSuccessListener(response -> callback.onSuccess(response))
@@ -627,11 +651,6 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-    /**
-     * Get all events created by organizer
-     * @param deviceId the device id associated with device
-     * @param callback callback interface that can be overridden
-     */
     public void getOrganizerEvents(String deviceId, DbCallback callback){
         usersRef
                 .document(deviceId)
@@ -687,7 +706,8 @@ public class DatabaseManager {
     }
 
     /**
-     * Get all waitlist entrants
+     * Gets the list of all the users on the waitlist of an event.
+     * @author speakerchef
      * @param eventId
      * @param callback
      */
@@ -724,6 +744,343 @@ public class DatabaseManager {
                 .addOnFailureListener(callback::onError);
     }
 
+    /**
+     * Gets the list of all users attending an event.
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getAttendingEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Attending")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> attendingEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            attendingEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(attendingEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Gets the list of all users invited to an event.
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getInvitedEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Invited")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> invitedEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            invitedEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(invitedEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Gets the list of all cancelled entrants for an event
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getCancelledEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .whereEqualTo("status", "Cancelled")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> cancelledEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            cancelledEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(cancelledEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+
+        }
+
+
+    /**
+     * Gets the list of all entrants for an event
+     * @author speakerchef (edited by mylayambao)
+     * @param eventId
+     * @param callback
+     */
+    public void getAllEntrants(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> cancelledEntrants = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (Task<?> task : tasks) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            cancelledEntrants.add(userDoc.getData());
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(cancelledEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+
+
+    /**
+     * Creates a notification object and stores it in the database.
+     * @author mylayambao
+     * @param notification
+     * *@param deviceId
+     * @param callback
+     */
+    public void addNotification(Notification notification, DbCallback callback){
+        Map<String, Object> notificationMap = new HashMap<>();
+        //notificationMap.put("eventId", notification.getEventId());
+        notificationMap.put("notifMessage", notification.getNotifMessage());
+        notificationMap.put("notifTitle", notification.getNotifTitle());
+        notificationMap.put("eventId", notification.getEventId());
+        notificationMap.put("recipients", notification.getRecipients());
+
+        notificationsRef
+                .add(notificationMap)
+                .addOnSuccessListener(DocumentReference -> {
+                    DocumentReference.update("notificationId", DocumentReference.getId())
+                            .addOnSuccessListener(v -> {
+                                callback.onSuccess("Notification added with ID: " + DocumentReference.getId());
+                            })
+                            .addOnFailureListener(exception -> callback.onError(exception));
+                })
+                .addOnFailureListener(exception -> callback.onError(exception));
+    }
+
+    /**
+     * Add image path to the user's document
+     * @author Chappydev
+     * @param deviceId User id
+     * @param path path to add to user
+     * @param callback callback functions
+     */
+    public void addImageToUser(String deviceId, String path, DbCallback callback) {
+        usersRef.document(deviceId).update("profileImagePath", path)
+                .addOnFailureListener(new OnFailureListener() {
+                    /**
+                     * Log error and call callback
+                     * @param e
+                     */
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("DB", "addImageToUser onFailure: ", e);
+                        callback.onError(e);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    /**
+                     * Log success and return some basic info to callback
+                     * @param unused
+                     */
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("DB", "addImageToUser succeeded!");
+                        Map<String, Object> resultInfo = new HashMap<>();
+                        resultInfo.put("success", true);
+                        resultInfo.put("deviceId", deviceId);
+                        resultInfo.put("path", path);
+                        callback.onSuccess(resultInfo);
+                    }
+                });
+    }
+
+    /**
+     * Adds an image (poster) to an event.
+     * @author mylayambao & Chappydev
+     * @param eventId event id
+     * @param path path to the image
+     * @param callback db callback
+     * @since project part 4
+     */
+    public void addImageToEvent(String eventId, String path, DbCallback callback) {
+        eventsRef.document(eventId).update("posterImagePath", path)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("DB", "addImageToEvent onFailure: ", e);
+                        callback.onError(e);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("DB", "addImageEvent succeeded!");
+                        Map<String, Object> resultInfo = new HashMap<>();
+                        resultInfo.put("success", true);
+                        resultInfo.put("eventId", eventId);
+                        resultInfo.put("path", path);
+                        callback.onSuccess(resultInfo);
+                    }
+                });
+    }
+
+    /**
+     * Deletes an event poster from the database.
+     * @author mylayambao
+     * @param eventId event id
+     * @param callback db callback
+     * @since project part 4
+     */
+    public void deleteEventPoster(String eventId, DbCallback callback){
+        db.collection("Events").document(eventId)
+                .update("posterPath", FieldValue.delete())
+                .addOnSuccessListener(response -> callback.onSuccess(null))
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Delete profile picture from Firebase Storage and the path from the Users collection
+     * @author Chappydev
+     * @param deviceId id of user
+     * @param pictureRef reference to the location of the image
+     * @param callback callback functions
+     */
+    public void deleteProfilePicture(String deviceId, StorageReference pictureRef, DbCallback callback) {
+        pictureRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    /**
+                     * When successful, also remove the path from the user document
+                     * @param unused
+                     */
+                    @Override
+                    public void onSuccess(Void unused) {
+//                        Map<String, Object> map = new HashMap<>();
+//                        map.put("")
+                        usersRef.document(deviceId)
+                                .update("profileImagePath", FieldValue.delete())
+                                .addOnFailureListener(new OnFailureListener() {
+                                    /**
+                                     * call onError callback
+                                     * @param e
+                                     */
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        callback.onError(e);
+                                    }
+                                })
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    /**
+                                     * call onSuccess callback
+                                     * @param unused
+                                     */
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        callback.onSuccess("Successfully deleted");
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    /**
+                     * call onError callback
+                     * @param e
+                     */
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onError(e);
+                    }
+                });
+    }
+
+    public void getEventByQRHash(String qrHash, DbCallback callback){
+        eventsRef
+                .whereEqualTo("qrHash", qrHash)
+                .get()
+                .addOnSuccessListener(querySnapshot-> {
+                    if (!querySnapshot.isEmpty()){
+                        DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+                        Map<String, Object> data = documentSnapshot.getData();
+                        data.put("eventId", documentSnapshot.getId());
+                        callback.onSuccess(data);
+                    } else {
+                        callback.onError(new Exception("No event found"));
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+    }
 
     /**
      * Returns all entrants for an event with their status.
@@ -803,6 +1160,7 @@ public class DatabaseManager {
                 .addOnFailureListener(callback::onError);
     }
 }
+
 
 
 

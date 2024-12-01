@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * The activity to display all waitlisted user in the event.
+ * Displays the waitlist for a specific event.
  */
 public class WaitlistEntriesActivity extends AppCompatActivity {
     private RecyclerView waitlistRecyclerView;
@@ -35,6 +35,10 @@ public class WaitlistEntriesActivity extends AppCompatActivity {
     private TextView eventNameText;
     private long maxSlots = 0;
 
+    /**
+     * Sets up the UI and loads the waitlist.
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

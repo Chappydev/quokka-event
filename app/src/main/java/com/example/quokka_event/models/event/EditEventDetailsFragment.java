@@ -14,6 +14,9 @@ import com.example.quokka_event.R;
 
 import javax.annotation.Nullable;
 
+/**
+ * DialogFragment for editing specific event details
+ */
 public class EditEventDetailsFragment extends DialogFragment {
     @NonNull
     @Override

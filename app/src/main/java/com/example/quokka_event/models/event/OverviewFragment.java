@@ -1,5 +1,8 @@
 package com.example.quokka_event.models.event;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,21 +13,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
+import com.bumptech.glide.Glide;
+import com.example.quokka_event.controllers.EventTabsActivity;
 import com.example.quokka_event.models.organizer.EditEventDTLFragment;
 import com.example.quokka_event.models.organizer.EditEventTitleFragment;
 import com.example.quokka_event.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This fragment allows users to view and edit event details
+ */
 public class OverviewFragment extends Fragment {
     ImageButton editNameButton;
     ImageButton editDTLButton;
@@ -35,18 +48,50 @@ public class OverviewFragment extends Fragment {
     TextView deadlineTextView;
     private EditText descriptionEditText;
 
+    StorageReference storageReference;
+    FirebaseStorage firebaseStorage;
+    Uri image;
+    Button uploadImageButton;
+    ImageView posterImage;
+    // Initialize Firebase Storage
+
+    ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                    image = result.getData().getData();
+                    Glide.with(requireContext()).load(image).into(posterImage);
+                    notifyImageSelected(image);
+                }
+            }
+    );
+
+    /**
+     * Listener interface for updates to event details
+     */
     public interface overviewEditListener{
         void setEventName(String eventTitle);
         void setEventDate(Date eventDate);
         void setLocation(String location);
         void setDeadline(Date deadline);
         void setDescription(String description);
+        void setImageUri(Uri imageUri);
     }
 
     private overviewEditListener listener;
 
     public OverviewFragment() {
         // leave empty
+    }
+
+    /**
+     * Notifies the listener when image is selected
+     * @param imageUri
+     */
+    private void notifyImageSelected(Uri imageUri) {
+        if (listener instanceof EventTabsActivity) {
+            ((EventTabsActivity) listener).setImageUri(imageUri);
+        }
     }
 
     @Override
@@ -76,7 +121,8 @@ public class OverviewFragment extends Fragment {
         locationTextView = view.findViewById(R.id.event_location_label);
         deadlineTextView = view.findViewById(R.id.event_deadline_label);
         descriptionEditText = view.findViewById(R.id.event_description);
-
+        posterImage = view.findViewById(R.id.poster_image);
+        uploadImageButton = view.findViewById(R.id.upload_poster);
 
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
             @Override
@@ -118,9 +164,6 @@ public class OverviewFragment extends Fragment {
             }
         });
 
-
-
-
         editNameButton.setOnClickListener(new View.OnClickListener() {
             /**
              * When the button is clicked, edit the event name
@@ -161,18 +204,24 @@ public class OverviewFragment extends Fragment {
             }
         });
 
-
-        /*
-        // Set up a click listener for the edit button
-        Button editButton = view.findViewById(R.id.event_edit_button);
-        editButton.setOnClickListener(v -> {
-            // need to add functionality
-            new AddEditEventFragment().show(requireActivity().getSupportFragmentManager(), "Edit Event");
-
+        uploadImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDeviceGallery();
+            }
         });
-         */
 
         return view;
 
+    }
+
+    /**
+     * Allows the user to select an image from their device
+     * @author mylayambao
+     */
+    private void openDeviceGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        imageLauncher.launch(intent);
     }
 }
