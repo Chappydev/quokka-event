@@ -130,13 +130,14 @@ public class QrScannerPageActivity extends AppCompatActivity {
         Intent showActivity = new Intent(QrScannerPageActivity.this, WaitlistActivity.class);
         Timestamp eventDate = (Timestamp) eventMap.get("eventDate");
         Timestamp registrationDeadline = (Timestamp) eventMap.get("registrationDeadline");
-        showActivity.putExtra("eventId", (String) eventMap.get("id"));
+        showActivity.putExtra("eventId", (String) eventMap.get("eventId"));
         showActivity.putExtra("eventDate", eventDate.toDate());
         showActivity.putExtra("eventLocation", (String) eventMap.get("eventLocation"));
         showActivity.putExtra("eventName", (String) eventMap.get("eventName"));
         showActivity.putExtra("maxParticipants", (int)(long) eventMap.get("maxParticipants"));
         showActivity.putExtra("registrationDeadline", registrationDeadline.toDate());
         showActivity.putExtra("maxWaitlist", (int)(long) eventMap.get("maxWaitlist"));
+        showActivity.putExtra("posterImagePath", (String) eventMap.get("posterImagePath"));
         QrScannerPageActivity.this.startActivity(showActivity);
     }
 }

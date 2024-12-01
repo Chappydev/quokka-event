@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.quokka_event.QrScannerPageActivity;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
@@ -17,6 +19,8 @@ import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.entrant.EventManager;
 import com.example.quokka_event.models.event.Event;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +35,7 @@ import java.util.Locale;
 public class WaitlistActivity extends AppCompatActivity {
     private DatabaseManager db;
     private Event event;
+    private String eventId;
     private TextView eventTitle;
     private TextView dateText;
     private TextView timeText;
@@ -39,10 +44,14 @@ public class WaitlistActivity extends AppCompatActivity {
     private EventManager eventManager;
     private Button joinButton;
     private Button exitButton;
+    private ImageView posterView;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
     /**
      * This method displays event details.
      * Handles join button activity.
+     *
      * @author Simon, Soaiba, Daniel
      */
     @Override
@@ -52,6 +61,10 @@ public class WaitlistActivity extends AppCompatActivity {
 
         User currentUser = User.getInstance(this.getApplicationContext());
         db = DatabaseManager.getInstance(this);
+
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -63,6 +76,7 @@ public class WaitlistActivity extends AppCompatActivity {
             event.setMaxParticipants((int) extras.get("maxParticipants"));
             event.setRegistrationDeadline((Date) extras.get("registrationDeadline"));
             event.setMaxWaitlist((int) extras.get("maxWaitlist"));
+            event.setPosterImage((String) extras.get("posterImagePath"));
         }
 
         // Initialize views and buttons
@@ -72,6 +86,10 @@ public class WaitlistActivity extends AppCompatActivity {
         locationText = findViewById(R.id.location_text);
         organizerText = findViewById(R.id.organizer_text);
         joinButton = findViewById(R.id.join_waitlist_button);
+        posterView = findViewById(R.id.imageView);
+
+        eventId = event.getEventID();
+        Log.d("EventDetailsActivity", "Event Id: " + eventId);
 
         // Format date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
@@ -87,6 +105,17 @@ public class WaitlistActivity extends AppCompatActivity {
         timeText.setText("Time: " + formattedTime);
         locationText.setText("Location: " + event.getEventLocation());
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
+
+        // display the image if there is one
+        String posterPath = event.getPosterImage();
+
+        Log.d("EventDetailsActivity", "Event Id: " + eventId);
+        Log.d("EventDetailsActivity", "Poster Path: " + posterPath);
+        if (posterPath != null && !posterPath.isEmpty()) {
+            fetchAndApplyImage(eventId, posterView);
+        } else {
+            posterView.setVisibility(View.GONE); // Hide ImageView if no poster exists
+        }
 
         // Join button activity
         joinButton.setOnClickListener(new View.OnClickListener() {
@@ -116,5 +145,34 @@ public class WaitlistActivity extends AppCompatActivity {
                 });
             }
         });
+
+
+    }
+
+
+    /**
+     * Fetches and displays an image using Glide for display.
+     *
+     * @param eventId   Id of an event
+     * @param imageView Where the image will be displayed
+     * @author mylayambao
+     */
+    private void fetchAndApplyImage(String eventId, ImageView imageView) {
+        StorageReference posterRef = storageRef.child("Events/" + eventId + ".jpg");
+
+        posterRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    Log.d("FetchImage", "Loading image from URI: " + uri.toString());
+
+                    Glide.with(WaitlistActivity.this)
+                            .load(uri)
+                            .into(imageView);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FetchImage", "Failed to load image for event: " + eventId, e);
+                    Toast.makeText(WaitlistActivity.this,
+                            "Unable to load poster image",
+                            Toast.LENGTH_SHORT).show();
+                });
     }
 }

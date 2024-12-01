@@ -3,15 +3,20 @@ package com.example.quokka_event.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +31,9 @@ public class EventDetailsActivity extends AppCompatActivity {
     private String eventId;
     private User user;
     private String userId;
+    private ImageView posterView;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
     @Override
     /**
@@ -64,6 +72,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         TextView locationText = findViewById(R.id.location_text);
         TextView organizerText = findViewById(R.id.organizer_text);
         TextView statusText = findViewById(R.id.status_text);
+        posterView = findViewById(R.id.imageView);
 
         // Initialize buttons
         Button acceptButton = findViewById(R.id.accept_button);
@@ -78,6 +87,8 @@ public class EventDetailsActivity extends AppCompatActivity {
         locationText.setText("Location: " + eventLocation);
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
         statusText.setText("Status: " + status);
+
+
 
         // Set button visibility based on status
         setButtonVisibility(status, acceptButton, denyButton, cancelButton);
@@ -226,5 +237,30 @@ public class EventDetailsActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
+    }
+
+    /**
+     * Fetches and displays an image using Glide for display.
+     * @author mylayambao
+     * @param eventId Id of an event
+     * @param imageView Where the image will be displayed
+     */
+    private void fetchAndApplyImage(String eventId, ImageView imageView) {
+        StorageReference posterRef = storageRef.child("Events/" + eventId + ".jpg");
+
+        posterRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    Log.d("FetchImage", "Loading image from URI: " + uri.toString());
+
+                    Glide.with(EventDetailsActivity.this)
+                            .load(uri)
+                            .into(imageView);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FetchImage", "Failed to load image for event: " + eventId, e);
+                    Toast.makeText(EventDetailsActivity.this,
+                            "Unable to load poster image",
+                            Toast.LENGTH_SHORT).show();
+                });
     }
 }
