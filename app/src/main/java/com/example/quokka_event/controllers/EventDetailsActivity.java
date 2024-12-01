@@ -88,13 +88,6 @@ public class EventDetailsActivity extends AppCompatActivity {
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
         statusText.setText("Status: " + status);
 
-        // display the image if there is one
-        String posterPath = (String) getIntent().getStringExtra("posterImagePath");
-        if (posterPath != null && !posterPath.isEmpty()) {
-            fetchAndApplyImage(eventId, posterView);
-        } else {
-            posterView.setVisibility(View.GONE); // Hide ImageView if no poster exists
-        }
 
 
         // Set button visibility based on status

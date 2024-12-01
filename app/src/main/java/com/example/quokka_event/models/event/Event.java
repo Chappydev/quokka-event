@@ -26,7 +26,7 @@ public class Event {
 
     // for poster
     private StorageReference posterImageRef;
-    private int posterImage;
+    private String posterImage;
 
     private String imageUrl;
 
@@ -155,9 +155,9 @@ public class Event {
 
     public void setPosterImageRef(StorageReference posterImageRef) {this.posterImageRef = posterImageRef;}
 
-    public int getPosterImage() {return posterImage;}
+    public String getPosterImage() {return posterImage;}
 
-    public void setPosterImage(int posterImage) {this.posterImage = posterImage;}
+    public void setPosterImage(String posterImage) {this.posterImage = posterImage;}
 
     public ArrayList<ProfileSystem> getCancelledParticipants() {
         return cancelledParticipants;
