@@ -723,6 +723,53 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(callback::onError);
     }
+
+
+    /**
+     * Returns all entrants for an event with their status.
+     * @param eventId
+     * @param callback
+     */
+    public void getEnrolls(String eventId, DbCallback callback) {
+        enrollsRef
+                .whereEqualTo("eventId", eventId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Map<String, Object>> enrolledUsers = new ArrayList<>();
+                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
+
+                    ArrayList<DocumentSnapshot> enrollDocs = new ArrayList<>(querySnapshot.getDocuments());
+
+                    for (DocumentSnapshot enrollDoc : enrollDocs) {
+                        String userId = enrollDoc.getString("userId");
+                        if (userId != null) {
+                            userTasks.add(usersRef.document(userId).get());
+                        }
+                    }
+
+                    Tasks.whenAllComplete(userTasks)
+                            .addOnSuccessListener(tasks -> {
+                                for (int i = 0; i < tasks.size(); i++) {
+                                    Task<?> task = tasks.get(i);
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
+                                        if (userDoc.exists()) {
+                                            Map<String, Object> userData = userDoc.getData();
+                                            if (userData != null) {
+                                                // add enrollment status to user data
+                                                userData.put("status", enrollDocs.get(i).getString("status"));
+                                                enrolledUsers.add(userData);
+                                            }
+                                        }
+                                    }
+                                }
+                                callback.onSuccess(enrolledUsers);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
     /**
      * Get all participants
      * @param eventId

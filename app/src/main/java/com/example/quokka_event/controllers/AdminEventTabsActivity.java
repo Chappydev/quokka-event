@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.event.LotteryChecker;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Map;
@@ -69,6 +71,15 @@ public class AdminEventTabsActivity extends AppCompatActivity {
             }
         });
 
+        // Add debug lottery button
+        Button debugLotteryButton = findViewById(R.id.debug_lottery_button);
+        debugLotteryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testLottery();
+            }
+        });
+
     }
 
     /**
@@ -86,5 +97,25 @@ public class AdminEventTabsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AdminBrowseEventsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void testLottery() {
+        // Get event details from your existing event_details map
+        String eventId = (String) event_details.get("eventId");
+        String eventName = (String) event_details.get("eventName");
+        long maxParticipants = (long) event_details.get("maxParticipants");
+
+        // Create intent similar to what AlarmManager would create
+        Intent testIntent = new Intent();
+        testIntent.putExtra("eventId", eventId);
+        testIntent.putExtra("eventName", eventName);
+        testIntent.putExtra("maxParticipants", (int) maxParticipants);
+
+        // Run the lottery
+        LotteryChecker checker = new LotteryChecker();
+        checker.onReceive(getApplicationContext(), testIntent);
+
+        // Show a toast so we know it started
+        Toast.makeText(this, "Running lottery test...", Toast.LENGTH_SHORT).show();
     }
 }
