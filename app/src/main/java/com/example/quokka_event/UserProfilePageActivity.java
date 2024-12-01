@@ -65,11 +65,11 @@ public class UserProfilePageActivity extends AppCompatActivity {
     private CheckBox notificationCheckBox;
     private ImageView profilePic;
 
-    @Override
     /**
      * This method initializes the activity.
-     * @param savedInstanceState
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
      */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -149,7 +149,6 @@ public class UserProfilePageActivity extends AppCompatActivity {
 
     /**
      * Loads user data into UI.
-     *
      * @author speakerchef, Soaiba, and Chappydev
      */
     private void loadUserData() {
@@ -226,10 +225,14 @@ public class UserProfilePageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Return boolean if phone number is formatted correctly
+     * @param phone phone number entered
+     * @return boolean depending on number
+     */
     private boolean validPhoneNumber(String phone) {
         return phone.length() <= 10 && phone.length() >= 8 && phone.matches("[0-9]+");
     }
-
 
     /**
      * Saves changes made by user to the database.

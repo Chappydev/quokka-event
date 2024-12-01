@@ -1,6 +1,5 @@
 package com.example.quokka_event.models.event;
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Fragment to display the list of users cancelled from attending an event
+ */
 public class EventCancelledFragment extends Fragment {
 
     ArrayList<Map<String,Object>> cancelledAttendingList;
@@ -111,7 +113,6 @@ public class EventCancelledFragment extends Fragment {
 
     }
 
-
     /**
      * Load the users on the waitlist from the db
      * @author speakerchef (edited by mylayambao)
@@ -140,8 +141,4 @@ public class EventCancelledFragment extends Fragment {
             }
         });
     }
-
-
-
 }
-

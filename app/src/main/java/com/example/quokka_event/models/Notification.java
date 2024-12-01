@@ -3,6 +3,9 @@ package com.example.quokka_event.models;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * This class sets up an Notification object
+ */
 public class Notification {
     public String notifTitle;
     public String notifMessage;
@@ -10,7 +13,6 @@ public class Notification {
     private String eventName;
     private String notifId;
     private ArrayList<Map<String, Object>> recipients;
-
 
     /**
      * Constructor method for a notification object.
@@ -36,7 +38,6 @@ public class Notification {
     public Notification(){
         // leave empty
     }
-
 
     /**
      * Gets the notification title

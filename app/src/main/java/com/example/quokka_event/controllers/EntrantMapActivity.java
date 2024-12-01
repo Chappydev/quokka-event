@@ -1,9 +1,5 @@
 package com.example.quokka_event.controllers;
-/*
-* This activity serves to open a google maps fragment
-* using the google maps API and displays the location
-* of a selected entrant.
-* */
+
 import android.os.Bundle;
 import android.util.Log;
 
@@ -21,10 +17,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * This activity serves to open a google maps fragment using the
+ * Google Maps API and displays the location of a selected entrant
+ */
 public class EntrantMapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private String eventId;
     private DatabaseManager db;
 
+    /**
+     * Initializes activity, gets event ID from intent and prepares map
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +41,6 @@ public class EntrantMapActivity extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
 
     /**
      * Loads map once user location data is retrieved

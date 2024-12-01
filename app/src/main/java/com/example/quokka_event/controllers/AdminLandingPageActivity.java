@@ -24,7 +24,7 @@ public class AdminLandingPageActivity extends AppCompatActivity {
     Button browseFacilityButton;
     /**
      * Create landing page for admins.
-     * @param savedInstanceState
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
      */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class AdminLandingPageActivity extends AppCompatActivity {
         browseFacilityButton = findViewById(R.id.admin_browse_facility);
         browseProfileButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Browse all profiles from database. start {@link BrowseProfilesActivity }
+             * Browse all profiles from database. start {@link BrowseProfilesActivity}
              * @param view
              */
             @Override
@@ -55,7 +55,7 @@ public class AdminLandingPageActivity extends AppCompatActivity {
 
         browseEventButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Launch browse events activity for admins when browse event button is clicked.
+             * Launch browse events activity for admins when browse event button is clicked
              * @param view
              */
             @Override
@@ -65,6 +65,10 @@ public class AdminLandingPageActivity extends AppCompatActivity {
             }
         });
         browseFacilityButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Launch browse facilities activity for admins when browse facility button is clicked
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent showActivity = new Intent(AdminLandingPageActivity.this, AdminFacilityActivity.class);

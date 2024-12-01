@@ -16,8 +16,7 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import java.util.Map;
 
 /**
- * Activity where the user's details are displayed for admins.
- * Shows name, email, phone
+ * Activity where the user's details are displayed for admins. Shows name, email, phone number.
  */
 public class BrowseProfileDetailsActivity extends AppCompatActivity {
     TextView nameTextView;
@@ -26,10 +25,9 @@ public class BrowseProfileDetailsActivity extends AppCompatActivity {
     Button backButton;
     Button deleteButton;
     /**
-     * Create the profile details activity for admin. Get Bundle that contains
-     * profile details as a Map<String, Object> object from ProfileListFragment.java
-     * Set the textview to match profile details.
-     * @param savedInstanceState
+     * Create the profile details activity for admin. Get Bundle that contains profile details as
+     * a Map<String, Object> object from {@link ProfileListFragment}. Set the textview to match profile details
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
      */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +89,7 @@ public class BrowseProfileDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Start the browse profile again and clear this activity.
+     * Start the browse profile again and clear this activity
      */
     void startBrowseProfiles(){
         Intent intent = new Intent(this, BrowseProfilesActivity.class);

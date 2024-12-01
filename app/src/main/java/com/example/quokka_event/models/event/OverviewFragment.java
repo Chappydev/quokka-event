@@ -24,23 +24,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
 import com.bumptech.glide.Glide;
-import com.example.quokka_event.controllers.DatabaseManager;
-import com.example.quokka_event.controllers.EventDetailsViewActivity;
 import com.example.quokka_event.controllers.EventTabsActivity;
-import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.organizer.EditEventDTLFragment;
 import com.example.quokka_event.models.organizer.EditEventTitleFragment;
 import com.example.quokka_event.R;
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This fragment allows users to view and edit event details
+ */
 public class OverviewFragment extends Fragment {
     ImageButton editNameButton;
     ImageButton editDTLButton;
@@ -58,7 +55,6 @@ public class OverviewFragment extends Fragment {
     ImageView posterImage;
     // Initialize Firebase Storage
 
-
     ActivityResultLauncher<Intent> imageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -70,8 +66,9 @@ public class OverviewFragment extends Fragment {
             }
     );
 
-
-
+    /**
+     * Listener interface for updates to event details
+     */
     public interface overviewEditListener{
         void setEventName(String eventTitle);
         void setEventDate(Date eventDate);
@@ -87,6 +84,10 @@ public class OverviewFragment extends Fragment {
         // leave empty
     }
 
+    /**
+     * Notifies the listener when image is selected
+     * @param imageUri
+     */
     private void notifyImageSelected(Uri imageUri) {
         if (listener instanceof EventTabsActivity) {
             ((EventTabsActivity) listener).setImageUri(imageUri);
@@ -122,7 +123,6 @@ public class OverviewFragment extends Fragment {
         descriptionEditText = view.findViewById(R.id.event_description);
         posterImage = view.findViewById(R.id.poster_image);
         uploadImageButton = view.findViewById(R.id.upload_poster);
-
 
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
             @Override
@@ -164,7 +164,6 @@ public class OverviewFragment extends Fragment {
             }
         });
 
-
         editNameButton.setOnClickListener(new View.OnClickListener() {
             /**
              * When the button is clicked, edit the event name
@@ -204,6 +203,7 @@ public class OverviewFragment extends Fragment {
                 }
             }
         });
+
         uploadImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,10 +211,10 @@ public class OverviewFragment extends Fragment {
             }
         });
 
-
         return view;
 
     }
+
     /**
      * Allows the user to select an image from their device
      * @author mylayambao
@@ -224,8 +224,4 @@ public class OverviewFragment extends Fragment {
         intent.setType("image/*");
         imageLauncher.launch(intent);
     }
-
-
-
-
 }

@@ -11,9 +11,18 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.InputStream;
 
+/**
+ * Custom Glide module for integrating Firebase Storage with Glide for efficient image loading
+ */
 @GlideModule
 public class MyAppGlideModule extends AppGlideModule {
 
+    /**
+     * Registers FirebaseImageLoader to load images from Firebase references.
+     * @param context
+     * @param glide
+     * @param registry
+     */
     @Override
     public void registerComponents(Context context, Glide glide, Registry registry) {
         // Register FirebaseImageLoader to handle StorageReference

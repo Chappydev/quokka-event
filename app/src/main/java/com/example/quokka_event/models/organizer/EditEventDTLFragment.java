@@ -66,7 +66,6 @@ public class EditEventDTLFragment extends DialogFragment {
             }
         };
 
-
         // code taken from https://stackoverflow.com/questions/14933330/datepicker-how-to-popup-datepicker-when-click-on-edittext
         dateTextView.setOnClickListener(new View.OnClickListener() {
             /**
@@ -81,7 +80,6 @@ public class EditEventDTLFragment extends DialogFragment {
                 datePicker.show();
             }
         });
-
 
         deadlineTextView.setOnClickListener(new View.OnClickListener() {
             /**
