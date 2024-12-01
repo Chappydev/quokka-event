@@ -48,7 +48,7 @@ public class LotteryChecker extends BroadcastReceiver {
      */
     private void sendInviteNotification(Context context, String userId, String eventId, String eventName) {
         Intent intent = new Intent(context, EventDetailsActivity.class);
-        intent.putExtra("event_id", eventId);
+        intent.putExtra("eventId", eventId);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
@@ -101,11 +101,11 @@ public class LotteryChecker extends BroadcastReceiver {
                 }
 
                 // Get waitlist and run lottery
-                db.getWaitlistEntrants(eventId, new DbCallback() {
+                db.getEnrolls(eventId, new DbCallback() {
                     @Override
                     public void onSuccess(Object result) {
                         ArrayList<Map<String, Object>> waitlistEntrants = (ArrayList<Map<String, Object>>) result;
-
+                        Log.d(TAG, "onSuccess: eventId" + eventId + waitlistEntrants.toString());
                         if (waitlistEntrants.isEmpty()) {
                             Log.e(TAG, "No users in waitlist");
                             return;
@@ -116,7 +116,8 @@ public class LotteryChecker extends BroadcastReceiver {
 
                         // Update status for winners
                         for (Map<String, Object> winner : winners) {
-                            String userId = (String) winner.get("userId");
+                            String userId = (String) winner.get("deviceId");
+                            Log.d(TAG, "onSuccess: userId" + userId);
                             if (userId != null) {
                                 db.updateEventStatus(eventId, userId, "Invited", new DbCallback() {
                                     @Override
