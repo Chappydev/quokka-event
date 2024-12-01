@@ -70,7 +70,7 @@ public class QrScannerPageActivity extends AppCompatActivity {
                         String resultText = result.getText();
                         Log.d("QR", "run: " + resultText);
                         if (resultText != null && resultText.length() > 0 && !resultText.contains("/")) {
-                            db.getSingleEvent(resultText, new DbCallback() {
+                            db.getEventByQRHash(resultText, new DbCallback() {
                                 @Override
                                 public void onSuccess(Object result) {
                                     Map<String, Object> eventMap = (Map<String, Object>) result;
