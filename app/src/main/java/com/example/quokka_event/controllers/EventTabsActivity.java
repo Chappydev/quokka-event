@@ -23,14 +23,13 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.rpc.context.AttributeContext;
 
 import java.text.SimpleDateFormat;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
-import java.util.Objects;
 
+/**
+ * Manages the event creation and editing interface with Firebase integration, event validation, and image upload
+ */
 public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener, DetailsFragment.detailsListener {
     Button saveButton;
     Button cancelButton;
@@ -308,21 +307,22 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 //            }
 //        });
 
-
-
         cancelButton.setOnClickListener(v -> {
             finish();
         });
     }
 
     /**
-     * sets the image uri
+     * Sets the image uri for the event
      * @param uri
      */
     public void setImageUri(Uri uri) {
         this.imageUri = uri;
     }
 
+    /**
+     * Uploads image to Firebase and saves the event
+     */
     private void uploadImageAndSaveEvent() {
         String eventID = event.getEventID();
         StorageReference imageRef = storageReference.child("Events/" + eventID + ".jpg");
@@ -344,6 +344,10 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 });
     }
 
+    /**
+     * Saves the event to Firebase with  image URL
+     * @param imageUrl
+     */
     private void saveEvent(String imageUrl) {
         event.setImageUrl(imageUrl); // Assuming Event class has setImageUrl()
 
@@ -414,4 +418,3 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setMaxParticipants(partCap);
     }
 }
-

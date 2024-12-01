@@ -1,9 +1,6 @@
 package com.example.quokka_event;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +8,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -23,11 +16,9 @@ import com.budiyev.android.codescanner.DecodeCallback;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.WaitlistActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.models.event.Event;
 import com.google.firebase.Timestamp;
 import com.google.zxing.Result;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -38,7 +29,6 @@ public class QrScannerPageActivity extends AppCompatActivity {
     private CodeScanner codeScanner;
     private CodeScannerView scannerView;
     private DatabaseManager db;
-
 
     /**
      * Setting up the codeScanner
@@ -149,5 +139,4 @@ public class QrScannerPageActivity extends AppCompatActivity {
         showActivity.putExtra("maxWaitlist", (int)(long) eventMap.get("maxWaitlist"));
         QrScannerPageActivity.this.startActivity(showActivity);
     }
-
 }

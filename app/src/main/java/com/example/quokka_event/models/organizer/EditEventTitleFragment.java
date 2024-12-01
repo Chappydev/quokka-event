@@ -13,14 +13,11 @@ import android.widget.EditText;
 
 import com.example.quokka_event.R;
 
-
 public class EditEventTitleFragment extends DialogFragment {
     /**
      * Show a dialog to edit event name
-     * @param savedInstanceState The last saved instance state of the Fragment,
-     * or null if this is a freshly created Fragment.
-     *
-     * @return
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     * @return The dialog used to edit the event title.
      */
     @NonNull
     @Override

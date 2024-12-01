@@ -31,7 +31,6 @@ import java.util.Date;
  * @author mylayambao
  * @since project part 4
  */
-
 public class EventEntrantsPage extends AppCompatActivity implements EventWaitlistFragment.eventWaitlistListener, OverviewFragment.overviewEditListener {
     Button backButton;
     TextView eventName;
@@ -78,27 +77,23 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
         }).attach();
 
         backButton.setOnClickListener(v -> finish());
-
-
-
     }
 
     @Override
     public void setEventName(String eventTitle) {}
+
     @Override
     public void setEventDate(Date eventDate) {}
+
     @Override
     public void setLocation(String location) {}
+
     @Override
     public void setDeadline(Date deadline) {}
 
     @Override
-    public void setDescription(String description) {
-
-    }
+    public void setDescription(String description) {}
 
     @Override
-    public void setImageUri(Uri imageUri) {
-
-    }
+    public void setImageUri(Uri imageUri) {}
 }

@@ -262,6 +262,9 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         setEditMode(false);
     }
 
+    /**
+     * Sets up the button listeners for back, edit, and save buttons
+     */
     private void setupButtonListeners() {
         backButton.setOnClickListener(v -> {
             if (isEditMode) {
@@ -283,6 +286,10 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validates the inputs for event details
+     * @return true if all inputs are valid, false otherwise
+     */
     private boolean validateInputs() {
         if (eventTitleEdit.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, "Event title cannot be empty", Toast.LENGTH_SHORT).show();
@@ -325,6 +332,10 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Toggles between edit mode and view mode for event details
+     * @param editMode boolean to toggle edit mode
+     */
     private void setEditMode(boolean editMode) {
         isEditMode = editMode;
 
@@ -368,7 +379,6 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         String capacityText = eventCapacityEdit.getText().toString().trim();
         String waitlistText = eventWaitlistEdit.getText().toString().trim();
 
-
         int capacity = "Unlimited".equals(capacityText) ? Integer.MAX_VALUE : Integer.parseInt(capacityText);
         int waitlist = "Unlimited".equals(waitlistText) ? Integer.MAX_VALUE : Integer.parseInt(waitlistText);
         updates.put("maxParticipants", capacity);
@@ -394,14 +404,12 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         });
     }
 
-
     /**
      * Generates and displays a QR Code
      * @param qrHash
      * @throws WriterException
      * @author mylayambao
      */
-
     private void generateQR(String qrHash) throws WriterException {
 
         // create the qr map
@@ -419,7 +427,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
                 }
             }
-//          display the qr code
+            // display the qr code
             qrImage.setImageBitmap(bitmap);
         } catch (WriterException e) {
             Log.e("QR", "generateQR: QR Generation failed" );

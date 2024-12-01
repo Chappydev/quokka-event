@@ -25,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Fragment to display the list of users waitlisted for an event
+ */
 public class EventWaitlistFragment extends Fragment {
 
     ArrayList<Map<String,Object>> eventWaitlistList;
@@ -35,7 +38,6 @@ public class EventWaitlistFragment extends Fragment {
     private String eventId;
     private String eventName;
     private RecyclerView waitlistRecyclerView;
-
 
     public EventWaitlistFragment(){
         // leave empty
@@ -77,6 +79,7 @@ public class EventWaitlistFragment extends Fragment {
     }
 
     private eventWaitlistListener listener;
+
     /**
      * Method for the creation view of a event waitlist fragement
      * @author mylayambao
@@ -93,8 +96,6 @@ public class EventWaitlistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         // inflate the layout for this frag
         View view = inflater.inflate(R.layout.activity_waitlist_entries, container, false);
         //setupRecyclerView(view);
@@ -106,17 +107,13 @@ public class EventWaitlistFragment extends Fragment {
         loadWaitlistedUsers();
 
         return view;
-
-
     }
-
 
     /**
      * Load the users on the waitlist from the db
      * @author sohan
      * @since project part 4
      */
-
     private void loadWaitlistedUsers() {
         if (eventId == null) {
             Toast.makeText(getContext(), "Error: No event ID provided", Toast.LENGTH_SHORT).show();
@@ -139,7 +136,4 @@ public class EventWaitlistFragment extends Fragment {
             }
         });
     }
-
-
-
 }

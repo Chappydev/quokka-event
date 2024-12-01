@@ -1,31 +1,26 @@
 package com.example.quokka_event.views;
 
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.SearchRecentSuggestionsProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
-import com.example.quokka_event.controllers.EventTabsActivity;
-import com.example.quokka_event.models.event.Event;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
+/**
+ * Adapter for displaying list of entrants in the event waitlist
+ */
 public class EventWaitlistAdapter extends RecyclerView.Adapter<EventWaitlistAdapter.ViewHolder> {
     private ArrayList<Map<String, Object>> waitlist;
+
+    /**
+     * ViewHolder class that holds references to each item of waitlist
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView entrantName;
 
@@ -39,7 +34,6 @@ public class EventWaitlistAdapter extends RecyclerView.Adapter<EventWaitlistAdap
 
     /**
      * Initialize the dataset of the Adapter
-     *
      * @param waitlist String[] containing the data to populate views to be used
      * by RecyclerView
      */
@@ -48,6 +42,12 @@ public class EventWaitlistAdapter extends RecyclerView.Adapter<EventWaitlistAdap
     }
 
     // Create new views (invoked by the layout manager)
+    /**
+     * Creates new ViewHolder for an item view
+     * @param viewGroup The parent view group
+     * @param viewType The view type of the item
+     * @return New ViewHolder for item view
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
@@ -58,6 +58,11 @@ public class EventWaitlistAdapter extends RecyclerView.Adapter<EventWaitlistAdap
     }
 
     // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Binds data to a certain item view
+     * @param viewHolder The ViewHolder to bind data to
+     * @param position The position of the item
+     */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Map<String, Object> user = waitlist.get(position); // get user from waitlist
@@ -68,9 +73,12 @@ public class EventWaitlistAdapter extends RecyclerView.Adapter<EventWaitlistAdap
     }
 
     // Return the size of your dataset (invoked by the layout manager)
+    /**
+     * Returns number of items in waitlist
+     * @return size of waitlist
+     */
     @Override
     public int getItemCount() {
         return waitlist.size();
     }
-
 }

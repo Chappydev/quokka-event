@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Event overview tab for admin
+ * Event Details Fragment for admins
  */
 public class AdminEventOverviewFragment extends Fragment {
     TextView eventNameTextView;
@@ -30,16 +30,11 @@ public class AdminEventOverviewFragment extends Fragment {
     TextView deadlineTextView;
 
     /**
-     * Create the admin overview fragment and set the text to event details.
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
-     * @return
+     * Create the admin overview fragment and set the text to event details
+     * @param inflater LayoutInflater object for all views
+     * @param container The container for all UI elements
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     * @return View for the fragment's UI (null if no UI)
      */
     @Nullable
     @Override

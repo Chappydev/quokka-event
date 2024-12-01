@@ -24,6 +24,10 @@ public class AdminFacilityDetails extends AppCompatActivity {
     Button backButton;
     Button deleteButton;
     Map<String, Object> facility_details;
+
+    /**
+     * Initializes activity and loads facility list.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

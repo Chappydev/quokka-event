@@ -109,16 +109,20 @@ public class AdminFacilityAdapter extends RecyclerView.Adapter<AdminFacilityAdap
         return new ViewHolder(view, viewButtonListener);
     }
 
-
+    /**
+     * Returns number of items in local data set
+     * @return size of local data set
+     */
     @Override
     public int getItemCount() {
         return localDataSet.size();
     }
 
-    public void setLocalDataSet(ArrayList<Map<String, Object>> data){
+    /**
+     * Sets local data set with a new list of data
+     * @param data new data set
+     */
+    public void setLocalDataSet(ArrayList<Map<String, Object>> data) {
         localDataSet = data;
     }
-
-
 }
-

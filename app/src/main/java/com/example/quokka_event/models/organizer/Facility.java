@@ -1,5 +1,8 @@
 package com.example.quokka_event.models.organizer;
 
+/**
+ * This class sets up a Facility object
+ */
 public class Facility {
     private String facilityName;
     private String facilityLocation;
@@ -11,6 +14,9 @@ public class Facility {
 //        this.facilityId = facilityId;
 //    }
 
+    /**
+     * Constructor for the Facility class
+     */
     public Facility() {
         this.facilityName = facilityName;
         this.facilityLocation = facilityLocation;
@@ -21,12 +27,12 @@ public class Facility {
         return facilityName;
     }
 
-    public String getFacilityLocation() {
-        return facilityLocation;
-    }
-
     public void setFacilityName(String facilityName) {
         this.facilityName = facilityName;
+    }
+
+    public String getFacilityLocation() {
+        return facilityLocation;
     }
 
     public void setFacilityLocation(String facilityLocation) {
