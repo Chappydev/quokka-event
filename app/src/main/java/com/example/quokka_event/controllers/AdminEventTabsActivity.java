@@ -16,12 +16,17 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.Map;
 
 /**
- * Event tabs for admin browsing.
+ * Displays event details for admins while navigating tabs
  */
 public class AdminEventTabsActivity extends AppCompatActivity {
     Map<String, Object> event_details;
     Button backButton;
     Button deleteButton;
+
+    /**
+     * Initializes activity, sets up tab layout and UI
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +78,7 @@ public class AdminEventTabsActivity extends AppCompatActivity {
 
     /**
      * Set event details
-     * @return
+     * @return Map with all event details
      */
     public Map<String, Object> getEventDetails(){
         return event_details;

@@ -192,6 +192,12 @@ public class DatabaseManager {
         });
     }
 
+    /**
+     * Converts map of profile data into a ProfileSystem object
+     *
+     * @param map
+     * @return ProfileSystem object with the profile data
+     */
     private ProfileSystem getProfileSystemFromMap(Map<String, Object> map) {
         ProfileSystem profile = new ProfileSystem();
         profile.setName((String) map.getOrDefault("name", ""));
@@ -406,6 +412,12 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    /**
+     * Gets a single event from the database with its ID
+     *
+     * @param eventId
+     * @param callback
+     */
     public void getSingleEvent(String eventId, DbCallback callback){
         eventsRef
                 .document(eventId)
@@ -540,6 +552,11 @@ public class DatabaseManager {
                 .addOnSuccessListener(documentReference -> callback.onSuccess(documentReference.getId()))
                 .addOnFailureListener(e -> callback.onError(e));
     }
+
+    /**
+     * Gets all facilities from database
+     * @param callback
+     */
     public void getAllFacilities(RetrieveData callback){
         final ArrayList<Map<String, Object>> facilityList = new ArrayList();
         facilityRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -555,6 +572,7 @@ public class DatabaseManager {
             }
         });
     }
+
     /**
      * Grab all events from database
      * @param callback
@@ -583,9 +601,7 @@ public class DatabaseManager {
      * Update profile information
      * @author speakerchef
      * @param deviceId
-     * @param name
-     * @param email
-     * @param phone
+     * @param updates
      * @param callback
      */
     public void updateProfile(String deviceId, Map<String, Object> updates, DbCallback callback) {

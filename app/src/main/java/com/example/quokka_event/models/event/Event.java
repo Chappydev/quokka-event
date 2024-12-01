@@ -60,8 +60,7 @@ public class Event {
         this.description = "";
     }
 
-    public Event() {
-    }
+    public Event() {}
 
     public String getImageUrl() {
         return imageUrl;
@@ -106,7 +105,6 @@ public class Event {
     public String getEventLocation() {
         return eventLocation;
     }
-
 
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
@@ -201,5 +199,4 @@ public class Event {
             waitList.add(user);
         }
     }
-
 }

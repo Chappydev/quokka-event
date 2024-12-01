@@ -29,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Fragment to display the list of users invited to an event
+ */
 public class EventInvitedFragment extends Fragment {
 
     ArrayList<Map<String,Object>> invitedAttendingList;
@@ -39,7 +42,6 @@ public class EventInvitedFragment extends Fragment {
     private String eventId;
     private String eventName;
     private RecyclerView waitlistRecyclerView;
-
 
     public EventInvitedFragment(){
         // leave empty
@@ -93,8 +95,6 @@ public class EventInvitedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         // inflate the layout for this frag
         View view = inflater.inflate(R.layout.activity_waitlist_entries, container, false);
         //setupRecyclerView(view);
@@ -206,8 +206,4 @@ public class EventInvitedFragment extends Fragment {
             }
         });
     }
-
-
-
 }
-

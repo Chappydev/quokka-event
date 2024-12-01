@@ -22,23 +22,17 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * A fragment that contains the recyclerview to display all profiles in database.
+ * Fragment that contains the recyclerview to display profiles
  */
 public class ProfileListFragment extends Fragment implements ViewButtonListener {
     private ArrayList<Map<String, Object>> profileList;
     private ProfileAdapter adapter;
 
     /**
-     * Create list of all profiles as a fragment to be displayed.
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
-     * @return
+     * Create list of all profiles as a fragment to be displayed
+     * @param inflater The LayoutInflater object to inflate views in the fragment
+     * @param container The parent view container for the fragment's UI
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
      */
     @Nullable
     @Override
@@ -52,8 +46,8 @@ public class ProfileListFragment extends Fragment implements ViewButtonListener 
         adapter = new ProfileAdapter(profileList, this);
         db.getAllProfiles(new DatabaseManager.RetrieveData() {
             /**
-             * After DatabaseManager.java grabs all the profiles from database set the profile list to
-             * ProfileAdapter and set adapter to the recyclerview.
+             * After {@link DatabaseManager} grabs all the profiles from database,
+             * set the profile list to ProfileAdapter and set adapter to the recyclerview.
              * @param list
              */
             @Override
@@ -64,16 +58,12 @@ public class ProfileListFragment extends Fragment implements ViewButtonListener 
             }
         });
 
-
-
-
-
         return view;
     }
 
     /**
-     * Calls when view button is clicked on a recyclerview button.
-     * Starts BrowseProfileDetailsActivity.java to display user details (name, email, phone).
+     * Calls when view button is clicked on a recyclerview button
+     * Starts {@link BrowseProfileDetailsActivity} to display user details
      * @param pos
      */
     @Override
@@ -86,5 +76,4 @@ public class ProfileListFragment extends Fragment implements ViewButtonListener 
     void test(ArrayList<Map<String, Object>> profiles, ArrayList<Map<String, Object>> copyProfiles){
 
     }
-
 }

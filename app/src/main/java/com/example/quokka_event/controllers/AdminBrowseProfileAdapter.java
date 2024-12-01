@@ -10,17 +10,21 @@ import com.example.quokka_event.models.event.OverviewFragment;
 import com.example.quokka_event.models.event.QRFragment;
 
 /**
- * A tab adapter for fragment to show all profiles or violations.
+ * Adapter for profiles in a list in admin fragment. Displays based on tab selected
  */
 public class AdminBrowseProfileAdapter extends FragmentStateAdapter{
+    /**
+     * AdminBrowseProfileAdapter Constructor
+     * @param fragmentActivity FragmentActivity
+     */
     public AdminBrowseProfileAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
     /**
      * Show a fragment depending on tab
-     * @param position
-     * @return
+     * @param position The position of the tab.
+     * @return The fragment to be displayed
      */
     @NonNull
     @Override
@@ -34,6 +38,10 @@ public class AdminBrowseProfileAdapter extends FragmentStateAdapter{
 
     }
 
+    /**
+     * Getter for the total number of tabs
+     * @return The number of tabs (currently at 1)
+     */
     @Override
     public int getItemCount() {
         return 1;

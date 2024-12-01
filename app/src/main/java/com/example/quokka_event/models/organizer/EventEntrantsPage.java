@@ -184,27 +184,24 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
 
     @Override
     public void setEventName(String eventTitle) {}
+
     @Override
     public void setEventDate(Date eventDate) {}
+
     @Override
     public void setLocation(String location) {}
+
     @Override
     public void setDeadline(Date deadline) {}
 
     @Override
-    public void setDescription(String description) {
-
-    }
+    public void setDescription(String description) {}
 
     @Override
-    public void setImageUri(Uri imageUri) {
-
-    }
+    public void setImageUri(Uri imageUri) {}
 
     @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-
-    }
+    public void onDismiss(@NonNull DialogInterface dialog) {}
 
     @Override
     public void onParticipantsSelected(ArrayList<Map<String, Object>> selectedParticipants) {

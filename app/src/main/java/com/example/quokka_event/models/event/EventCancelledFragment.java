@@ -29,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Fragment to display the list of users cancelled from attending an event
+ */
 public class EventCancelledFragment extends Fragment {
 
     ArrayList<Map<String,Object>> cancelledAttendingList;
@@ -210,4 +213,3 @@ public class EventCancelledFragment extends Fragment {
     }
 
 }
-

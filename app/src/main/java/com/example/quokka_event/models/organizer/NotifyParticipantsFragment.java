@@ -1,7 +1,5 @@
 package com.example.quokka_event.models.organizer;
 
-import static android.content.Intent.getIntent;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.DatabaseManager;
-import com.example.quokka_event.controllers.EventDetailsViewActivity;
-import com.example.quokka_event.controllers.EventTabsActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.Notification;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +29,6 @@ import java.util.Map;
  * @author mylayambao
  * @since project part 4
  */
-
 public class NotifyParticipantsFragment extends DialogFragment {
     TextView eventName;
     ImageButton cancelButton;
@@ -92,7 +87,6 @@ public class NotifyParticipantsFragment extends DialogFragment {
      * @since project part 4
      * @return view
      */
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,7 +106,6 @@ public class NotifyParticipantsFragment extends DialogFragment {
         participantStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         recipientSpinner.setAdapter(participantStatusAdapter);
 
-
         /**
          * On click listener for the cancel icon, to close the fragment when clicked.
          * @author mylayambao
@@ -122,7 +115,6 @@ public class NotifyParticipantsFragment extends DialogFragment {
                     .remove(this) // change later if we have time
                     .commit();
         });
-
 
         sendButton.setOnClickListener(new View.OnClickListener() {
 
@@ -352,6 +344,4 @@ public class NotifyParticipantsFragment extends DialogFragment {
             getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }
-
-
 }

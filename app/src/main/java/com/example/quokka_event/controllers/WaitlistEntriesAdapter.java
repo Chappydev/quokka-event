@@ -55,7 +55,7 @@ public class WaitlistEntriesAdapter extends RecyclerView.Adapter<WaitlistEntries
      *               an adapter position.
      * @param viewType The view type of the new View.
      *
-     * @return
+     * @return New viewholder instance
      */
     @NonNull
     @Override

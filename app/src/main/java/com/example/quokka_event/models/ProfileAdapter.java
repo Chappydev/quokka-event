@@ -14,7 +14,6 @@ import com.example.quokka_event.views.ViewButtonListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-
 /**
  * Profile Adapter to class for recycler view to hold a list of profiles.
  */
@@ -109,15 +108,20 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         viewHolder.getTextView().setText((String)localDataSet.get(position).get("name"));
     }
 
+    /**
+     * Returns Item Count
+     * @return item count
+     */
     @Override
     public int getItemCount() {
         return localDataSet.size();
     }
 
+    /**
+     * Sets local data set with provided list
+     * @param data
+     */
     public void setLocalDataSet(ArrayList<Map<String, Object>> data){
         localDataSet = data;
     }
-
-
 }
-

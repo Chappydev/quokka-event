@@ -30,6 +30,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Fragment to display the list of users attending an event
+ */
 public class EventAttendingFragment extends Fragment {
 
     ArrayList<Map<String,Object>> eventAttendingList;
@@ -94,8 +97,6 @@ public class EventAttendingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         // inflate the layout for this frag
         View view = inflater.inflate(R.layout.activity_waitlist_entries, container, false);
         //setupRecyclerView(view);
@@ -113,8 +114,6 @@ public class EventAttendingFragment extends Fragment {
         loadAttendingUsers();
 
         return view;
-
-
     }
 
     /**
@@ -186,7 +185,6 @@ public class EventAttendingFragment extends Fragment {
      * @author speakerchef (edited by mylayambao)
      * @since project part 4
      */
-
     private void loadAttendingUsers() {
         if (eventId == null) {
             Toast.makeText(getContext(), "Error: No event ID provided", Toast.LENGTH_SHORT).show();
@@ -211,4 +209,3 @@ public class EventAttendingFragment extends Fragment {
     }
 
 }
-

@@ -2,7 +2,6 @@ package com.example.quokka_event.models.event;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,19 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.quokka_event.OrganizerEventsPageActivity;
 import com.example.quokka_event.R;
-import com.example.quokka_event.controllers.EventTabsActivity;
-import com.example.quokka_event.models.organizer.EventEntrantsPage;
-import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
-import com.example.quokka_event.models.organizer.EventEntrantsPage;
-import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
-import com.example.quokka_event.models.organizer.EventEntrantsPage;
-import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
 
+/**
+ * Fragment for managing event details like seat and waitlist capacities
+ */
 public class DetailsFragment extends Fragment {
 
     TextView remainSeatTextView;
@@ -58,9 +50,10 @@ public class DetailsFragment extends Fragment {
 
     private detailsListener listener;
 
-    public DetailsFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public DetailsFragment() {    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -72,6 +65,7 @@ public class DetailsFragment extends Fragment {
             throw new RuntimeException(context + "must implement overeditListener");
         }
     }
+
     /**
      * Attach the detailsListener listener to EventTabsActivity.java
      * *@param context
@@ -92,7 +86,6 @@ public class DetailsFragment extends Fragment {
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
         remainSeatTextView = view.findViewById(R.id.event_seats_label);
         notifyParticipantsButton = view.findViewById(R.id.notify_participants_button);
-
 
         // setting defaults to max values
         participantLimit = Integer.MAX_VALUE;

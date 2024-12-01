@@ -15,18 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.controllers.EventTabsActivity;
 import com.example.quokka_event.views.OrganizerEventsAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.type.DateTime;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 
+/**
+ * Displays a list of organizer events. Allows managing and creation of events
+ */
 public class OrganizerEventsPageActivity extends AppCompatActivity {
     Button addButton;
     Button saveButton;
@@ -35,6 +33,10 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
     ArrayList<Map<String,Object>> eventList;
     OrganizerEventsAdapter customAdapter;
 
+    /**
+     * Initializes the UI elements, sets up RecyclerView and handles button clicks.
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +84,6 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
 
             // generate and display a qr code
         });
-
-
      }
 
     private void setupRecyclerView() {
@@ -95,7 +95,10 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));  // Optional: adds dividers
     }
 
-   private void loadOrganizerEvents() {
+    /**
+     * Sets up RecyclerView to display a list of events
+     */
+    private void loadOrganizerEvents() {
         String deviceId = auth.getCurrentUser().getUid();
         db.getOrganizerEvents(deviceId, new DbCallback() {
             @Override
@@ -113,10 +116,12 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * When activity is resumed, loads the organizer events
+     */
     @Override
     protected void onResume() {
         super.onResume();
         loadOrganizerEvents();
     }
-
 }

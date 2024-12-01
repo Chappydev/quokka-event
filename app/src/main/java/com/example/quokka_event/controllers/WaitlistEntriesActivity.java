@@ -6,20 +6,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+/**
+ * Displays the waitlist for a specific event.
+ */
 public class WaitlistEntriesActivity extends AppCompatActivity {
     private RecyclerView waitlistRecyclerView;
     private ArrayList<Map<String, Object>> waitlistEntrants;
@@ -28,6 +27,10 @@ public class WaitlistEntriesActivity extends AppCompatActivity {
     private String eventId;
     private TextView eventNameText;
 
+    /**
+     * Sets up the UI and loads the waitlist.
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,9 @@ public class WaitlistEntriesActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
     }
 
+    /**
+     * Fetches and updates the waitlist.
+     */
     private void loadWaitlistedUsers() {
         if (eventId == null) {
             Toast.makeText(this, "Error: No event ID provided", Toast.LENGTH_SHORT).show();

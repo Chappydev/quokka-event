@@ -1,25 +1,25 @@
 package com.example.quokka_event.controllers;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.quokka_event.R;
-import com.example.quokka_event.models.ProfileAdapter;
-import com.example.quokka_event.models.ProfileSystem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
-import java.util.Map;
-
+/**
+ * Activity for browsing profiles for admins. Uses a ViewPager with tabs to display different sections.
+ */
 public class BrowseProfilesActivity extends AppCompatActivity{
     DatabaseManager db;
+
+    /**
+     * Initializes activity, sets up ViewPager and TabLayout
+     * @param savedInstanceState This bundle has all the data in the fragment in case the fragment restarts
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,6 @@ public class BrowseProfilesActivity extends AppCompatActivity{
         AdminBrowseProfileAdapter adapter = new AdminBrowseProfileAdapter(this);
         viewPager.setAdapter(adapter);
 
-
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
            switch (position){
                case 0:
@@ -41,8 +40,5 @@ public class BrowseProfilesActivity extends AppCompatActivity{
                    tab.setText("Violations");
            }
         }).attach();
-
-
     }
-    
 }
