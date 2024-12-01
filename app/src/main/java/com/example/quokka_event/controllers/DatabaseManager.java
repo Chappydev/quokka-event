@@ -1044,6 +1044,23 @@ public class DatabaseManager {
                     }
                 });
     }
+
+    public void getEventByQRHash(String qrHash, DbCallback callback){
+        eventsRef
+                .whereEqualTo("qrHash", qrHash)
+                .get()
+                .addOnSuccessListener(querySnapshot-> {
+                    if (!querySnapshot.isEmpty()){
+                        DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+                        Map<String, Object> data = documentSnapshot.getData();
+                        data.put("eventId", documentSnapshot.getId());
+                        callback.onSuccess(data);
+                    } else {
+                        callback.onError(new Exception("No event found"));
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+    }
 }
 
 
