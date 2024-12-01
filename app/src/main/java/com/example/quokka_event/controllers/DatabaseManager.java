@@ -17,9 +17,11 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -387,6 +389,11 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    /**
+     * Get a single event's details as a Map
+     * @param eventId
+     * @param callback
+     */
     public void getSingleEvent(String eventId, DbCallback callback){
         eventsRef
                 .document(eventId)
@@ -620,6 +627,11 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    /**
+     * Get all events created by organizer
+     * @param deviceId the device id associated with device
+     * @param callback callback interface that can be overridden
+     */
     public void getOrganizerEvents(String deviceId, DbCallback callback){
         usersRef
                 .document(deviceId)
@@ -743,6 +755,37 @@ public class DatabaseManager {
                                     }
                                 }
                                 callback.onSuccess(waitlistEntrants);
+                            })
+                            .addOnFailureListener(callback::onError);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    public void inviteUsers(String eventId, ArrayList<Map<String, Object>> waitList, DbCallback callback){
+        WriteBatch batch = db.batch();
+        Map<String, Object> invite = new HashMap<>();
+        invite.put("status", "Invited");
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+        for (Map<String, Object>enroll : waitList){
+            String userId = (String) enroll.get("deviceId");
+            Task<QuerySnapshot> task = enrollsRef
+                    .whereEqualTo("eventId", eventId)
+                    .whereEqualTo("status", "Waiting")
+                    .whereEqualTo("userId", userId)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()){
+                            batch.update(doc.getReference(), "status", "Invited");
+                        }
+                    })
+                    .addOnFailureListener(callback::onError);
+            tasks.add(task);
+        }
+        Tasks.whenAllSuccess(tasks)
+                .addOnSuccessListener(success -> {
+                    batch.commit()
+                            .addOnSuccessListener(s -> {
+                                callback.onSuccess(waitList);
                             })
                             .addOnFailureListener(callback::onError);
                 })
