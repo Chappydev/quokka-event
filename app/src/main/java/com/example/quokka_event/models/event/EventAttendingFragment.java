@@ -1,6 +1,7 @@
 package com.example.quokka_event.models.event;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public class EventAttendingFragment extends Fragment {
 
@@ -42,9 +45,9 @@ public class EventAttendingFragment extends Fragment {
         // leave empty
     }
 
-    public interface eventAttendingListener{
-
-    }
+//    public interface eventAttendingListener{
+//
+//    }
 
     /**
      * Creates a new instance of the fragment given an eventId.
@@ -77,7 +80,7 @@ public class EventAttendingFragment extends Fragment {
         eventAttendingList = new ArrayList<>();
     }
 
-    private eventAttendingListener listener;
+    private EventAttendingListener listener;
     /**
      * Method for the creation view of a event waitlist fragement
      * @author mylayambao
@@ -103,6 +106,12 @@ public class EventAttendingFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         waitlistRecyclerView.setLayoutManager(layoutManager);
         adapter = new WaitlistEntriesAdapter(eventAttendingList);
+
+        // selection listener
+        adapter.setOnSelectionChangeListener(selectedItems -> {
+            notifySelectedParticipants();
+        });
+
         waitlistRecyclerView.setAdapter(adapter);
         loadAttendingUsers();
 
@@ -111,6 +120,38 @@ public class EventAttendingFragment extends Fragment {
 
     }
 
+    public ArrayList<Map<String, Object>> getSelectedParticipants() {
+        return new ArrayList<>(adapter.getSelectedItems()); //
+    }
+
+
+    // listener to pass attending
+    public interface EventAttendingListener {
+        void onParticipantsSelected(ArrayList<Map<String, Object>> selectedParticipants);
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof EventAttendingListener) {
+            listener = (EventAttendingListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement EventAttendingListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    private void notifySelectedParticipants() {
+        if (listener != null) {
+            listener.onParticipantsSelected(getSelectedParticipants());
+        }
+    }
 
     /**
      * Load the users on the waitlist from the db
