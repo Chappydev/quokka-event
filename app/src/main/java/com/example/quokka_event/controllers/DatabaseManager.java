@@ -355,7 +355,7 @@ public class DatabaseManager {
                                 @Override
                                 public void accept(QueryDocumentSnapshot queryDocumentSnapshot) {
                                     Map<String, Object> event = queryDocumentSnapshot.getData();
-                                    Task<DocumentSnapshot> task = eventsRef.document((String) event.get("eventId"))
+                                    Task<DocumentSnapshot> task = eventsRef.document(queryDocumentSnapshot.getId())
                                             .get()
                                             .addOnFailureListener(e -> Log.e("DB", "grabbing event details for getUserEventList: ", e));
                                     taskList.add(task);
