@@ -727,6 +727,7 @@ public class DatabaseManager {
 
     /**
      * Returns all entrants for an event with their status.
+     * @author speakerchef
      * @param eventId
      * @param callback
      */
@@ -770,43 +771,6 @@ public class DatabaseManager {
                 .addOnFailureListener(callback::onError);
     }
 
-    /**
-     * Get all participants
-     * @param eventId
-     * @param callback
-     */
-    public void getParticipants(String eventId, DbCallback callback) {
-        enrollsRef
-                .whereEqualTo("eventId", eventId)
-                .whereEqualTo("status", "Attending")
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    ArrayList<Map<String, Object>> waitlistEntrants = new ArrayList<>();
-                    ArrayList<Task<DocumentSnapshot>> userTasks = new ArrayList<>();
-
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        String userId = doc.getString("userId");
-                        if (userId != null) {
-                            userTasks.add(usersRef.document(userId).get());
-                        }
-                    }
-
-                    Tasks.whenAllComplete(userTasks)
-                            .addOnSuccessListener(tasks -> {
-                                for (Task<?> task : tasks) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot userDoc = (DocumentSnapshot) task.getResult();
-                                        if (userDoc.exists()) {
-                                            waitlistEntrants.add(userDoc.getData());
-                                        }
-                                    }
-                                }
-                                callback.onSuccess(waitlistEntrants);
-                            })
-                            .addOnFailureListener(callback::onError);
-                })
-                .addOnFailureListener(callback::onError);
-    }
 
     public void inviteUsers(String eventId, ArrayList<Map<String, Object>> waitList, DbCallback callback){
         WriteBatch batch = db.batch();
