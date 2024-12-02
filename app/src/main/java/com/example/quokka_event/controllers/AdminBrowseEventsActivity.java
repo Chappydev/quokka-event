@@ -41,23 +41,11 @@ public class AdminBrowseEventsActivity extends AppCompatActivity implements View
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         eventRecyclerView.setLayoutManager(layoutManager);
         adapter = new AdminEventsAdapter(eventList, this);
+        eventRecyclerView.setAdapter(adapter);
         db.getAllEvents(new DatabaseManager.RetrieveData() {
             @Override
             public void onDataLoaded(ArrayList<Map<String, Object>> list) {
                 eventList.addAll(list);
-                adapter.setLocalDataSet(list);
-                eventRecyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        db.getAllEvents(new DatabaseManager.RetrieveData() {
-            @Override
-            public void onDataLoaded(ArrayList<Map<String, Object>> list) {
-                Log.d("onResume", "onDataLoaded: THINGSS");
                 adapter.setLocalDataSet(list);
                 adapter.notifyDataSetChanged();
             }

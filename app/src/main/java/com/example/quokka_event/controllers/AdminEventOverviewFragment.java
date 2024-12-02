@@ -97,8 +97,8 @@ public class AdminEventOverviewFragment extends Fragment {
         if (currentEventId != null) {
             if (event.get("posterImagePath") != null) {
                 eventImageRef = storageRef.child("Events/"+currentEventId+".jpg");
-                updateImage(currentEventId);
             }
+            updateImage(currentEventId);
 //            loadEventDetails(currentEventId);
         } else {
             Toast.makeText(activity, "Error: No event ID provided", Toast.LENGTH_SHORT).show();
@@ -162,6 +162,7 @@ public class AdminEventOverviewFragment extends Fragment {
             Log.d("UPDATEIMGAGE", "updateImage: YAYYYY");
             fetchAndApplyImage(eventId, posterPic);
         } else {
+            Log.d("UPDATEIMGAGE", "updateImage: SADDD:((((");
             hidePosterStuff();
         }
     }
