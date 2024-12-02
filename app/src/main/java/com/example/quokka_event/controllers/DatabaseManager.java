@@ -1,7 +1,6 @@
 package com.example.quokka_event.controllers;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,26 +10,21 @@ import com.example.quokka_event.models.Notification;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.organizer.Facility;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.firestore.WriteBatch;
 
-import java.time.zone.ZoneOffsetTransition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +78,7 @@ public class DatabaseManager {
     public interface RetrieveData {
         /**
          * Retrieve profiles once firebase grabs the documents
+         *
          * @param list
          */
         void onDataLoaded(ArrayList<Map<String, Object>> list);
@@ -92,9 +87,10 @@ public class DatabaseManager {
     /**
      * This function will either find the user or if it doesn't exist yet, it will create a new user
      * with the deviceId.
-     * @author Chappydev
-     * @param cb An instance of the db callback interface.
+     *
+     * @param cb       An instance of the db callback interface.
      * @param deviceId The String deviceId value of the current device.
+     * @author Chappydev
      * @see DbCallback
      */
     public void getDeviceUser(DbCallback cb, String deviceId) {
@@ -117,12 +113,12 @@ public class DatabaseManager {
                         userData.put("admin", document.get("isAdmin"));
                         cb.onSuccess(userData);
 
-                    // Successful search but no such user
+                        // Successful search but no such user
                     } else {
                         createProfile(cb, deviceId);
                     }
 
-                // There was an error when trying to get the user data:
+                    // There was an error when trying to get the user data:
                 } else {
                     Log.e("DB", "Query for User: something went wrong", task.getException());
                     // Can handle this error in the UI through the onError callback
@@ -134,11 +130,12 @@ public class DatabaseManager {
 
     /**
      * Creates a new profile in the firestore database
-     * @author Chappydev and Soaiba
+     *
      * @param cb
      * @param deviceId
+     * @author Chappydev and Soaiba
      */
-    public void createProfile(DbCallback cb, String deviceId){
+    public void createProfile(DbCallback cb, String deviceId) {
         // So we will create the user instead:
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("deviceId", deviceId);
@@ -162,7 +159,7 @@ public class DatabaseManager {
                     userData.put("admin", false);
                     cb.onSuccess(userData);
 
-                // There was an error trying to create the new user
+                    // There was an error trying to create the new user
                 } else {
                     Log.e("DB", "Write for User: something went wrong creating the new user", task.getException());
                     // Can handle this error in the UI through the onError callback
@@ -174,9 +171,10 @@ public class DatabaseManager {
 
     /**
      * This function will find a single user based on their deviceID.
-     * @author Chappydev
+     *
      * @param callback An instance of the db callback interface.
      * @param deviceId The deviceID of the user to find
+     * @author Chappydev
      * @see DbCallback
      */
     public void getUserData(DbCallback callback, String deviceId) {
@@ -206,7 +204,7 @@ public class DatabaseManager {
         profile.setAddress((String) map.getOrDefault("address", ""));
         profile.setEmail((String) map.getOrDefault("email", ""));
         if (map.get("profileImagePath") != null) {
-            Log.d("DB", "getProfileSystemFromMap: "+map.get("profileImagePath"));
+            Log.d("DB", "getProfileSystemFromMap: " + map.get("profileImagePath"));
             StorageReference ref = storageRef.child((String) map.get("profileImagePath"));
             profile.setProfileImageRef(ref);
         }
@@ -215,12 +213,13 @@ public class DatabaseManager {
 
     /**
      * Adds an event to the db
-     * @author speakerchef
+     *
      * @param event
      * @param deviceId
      * @param callback
+     * @author speakerchef
      */
-    public void addEvent(Event event, String deviceId, DbCallback callback){
+    public void addEvent(Event event, String deviceId, DbCallback callback) {
         Map<String, Object> eventPayload = new HashMap<>();
         eventPayload.put("eventId", event.getEventID());
         eventPayload.put("eventName", event.getEventName());
@@ -236,11 +235,11 @@ public class DatabaseManager {
                 .document(deviceId)
                 .get()
                 .addOnSuccessListener(userSnapShot -> {
-                    if (!userSnapShot.exists()){
+                    if (!userSnapShot.exists()) {
                         callback.onError(new Exception("ERROR: User not found"));
                     }
                     Map<String, Object> userMap = userSnapShot.getData();
-                    if (userMap.get("facilityId") == null){
+                    if (userMap.get("facilityId") == null) {
                         callback.onError(new Exception("ERROR: No facility owned. Please create a facility first!"));
                     } else {
                         eventPayload.put("facilityId", userSnapShot.get("facilityId"));
@@ -250,7 +249,7 @@ public class DatabaseManager {
                                     DocumentReference.update("eventId", DocumentReference.getId())
                                             .addOnSuccessListener(response -> {
                                                 ArrayList<Map<String, Object>> currentEvents = (ArrayList<Map<String, Object>>) userMap.get("events");
-                                                if (currentEvents == null){
+                                                if (currentEvents == null) {
                                                     currentEvents = new ArrayList<>();
                                                 }
                                                 eventPayload.put("eventId", DocumentReference.getId());
@@ -270,11 +269,12 @@ public class DatabaseManager {
 
     /**
      * delete event from firestore, making sure that it also deletes any data associated with it
-     * @author speakerchef
+     *
      * @param eventId
      * @param callback
+     * @author speakerchef
      */
-    public void deleteEvent(String eventId, DbCallback callback){
+    public void deleteEvent(String eventId, DbCallback callback) {
         eventsRef
                 .document(eventId)
                 .delete()
@@ -283,12 +283,12 @@ public class DatabaseManager {
     }
 
     /**
-     * @author speakerchef
-     * deletes user profile from database.
      * @param deviceId
      * @param callback
+     * @author speakerchef
+     * deletes user profile from database.
      */
-    public void deleteProfile(String deviceId, DbCallback callback){
+    public void deleteProfile(String deviceId, DbCallback callback) {
         usersRef
                 .document(deviceId)
                 .delete()
@@ -298,12 +298,13 @@ public class DatabaseManager {
 
     /**
      * Adds a facility profile to firestore
-     * @author speakerchef
+     *
      * @param facility
      * @param deviceId
      * @param callback
+     * @author speakerchef
      */
-    public void addFacility(Facility facility, String deviceId, DbCallback callback){
+    public void addFacility(Facility facility, String deviceId, DbCallback callback) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("facilityName", facility.getFacilityName());
         payload.put("facilityLocation", facility.getFacilityLocation());
@@ -324,11 +325,12 @@ public class DatabaseManager {
 
     /**
      * Deletes a facility profile
-     * @author speakerchef
+     *
      * @param facilityId
      * @param callback
+     * @author speakerchef
      */
-    public void deleteFacility(String facilityId, DbCallback callback){
+    public void deleteFacility(String facilityId, DbCallback callback) {
         facilityRef
                 .document(facilityId)
                 .delete()
@@ -338,9 +340,10 @@ public class DatabaseManager {
 
     /**
      * Gets events associated with a user
-     * @author ChappyDev
+     *
      * @param userId
      * @param callback
+     * @author ChappyDev
      */
     public void getUserEventList(String userId, DbCallback callback) {
         Log.d("DB", "getUserEventList: " + userId);
@@ -364,32 +367,32 @@ public class DatabaseManager {
                                 }
                             });
                             Tasks.whenAllComplete(taskList)
-                                .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
-                                    @Override
-                                    public void onSuccess(List<Task<?>> tasks) {
-                                        ArrayList<Map<String, Object>> payload = new ArrayList<>();
-                                        queryDocumentSnapshots.forEach(new Consumer<QueryDocumentSnapshot>() {
-                                            @Override
-                                            public void accept(QueryDocumentSnapshot queryDocumentSnapshot) {
-                                                Map<String, Object> dataCopy = new HashMap<>(queryDocumentSnapshot.getData());
-                                                for (Task task : tasks) {
-                                                    if (task.isSuccessful()) {
-                                                        Object result = task.getResult();
-                                                        if (result instanceof DocumentSnapshot) {
-                                                            DocumentSnapshot ds = (DocumentSnapshot) result;
-                                                            Map<String, Object> event = ds.getData();
-                                                            if (ds.getId().equals(dataCopy.get("eventId"))) {
-                                                                dataCopy.put("event", event);
+                                    .addOnSuccessListener(new OnSuccessListener<List<Task<?>>>() {
+                                        @Override
+                                        public void onSuccess(List<Task<?>> tasks) {
+                                            ArrayList<Map<String, Object>> payload = new ArrayList<>();
+                                            queryDocumentSnapshots.forEach(new Consumer<QueryDocumentSnapshot>() {
+                                                @Override
+                                                public void accept(QueryDocumentSnapshot queryDocumentSnapshot) {
+                                                    Map<String, Object> dataCopy = new HashMap<>(queryDocumentSnapshot.getData());
+                                                    for (Task task : tasks) {
+                                                        if (task.isSuccessful()) {
+                                                            Object result = task.getResult();
+                                                            if (result instanceof DocumentSnapshot) {
+                                                                DocumentSnapshot ds = (DocumentSnapshot) result;
+                                                                Map<String, Object> event = ds.getData();
+                                                                if (ds.getId().equals(dataCopy.get("eventId"))) {
+                                                                    dataCopy.put("event", event);
+                                                                }
                                                             }
                                                         }
                                                     }
+                                                    payload.add(dataCopy);
                                                 }
-                                                payload.add(dataCopy);
-                                            }
-                                        });
-                                        callback.onSuccess(payload);
-                                    }
-                                });
+                                            });
+                                            callback.onSuccess(payload);
+                                        }
+                                    });
                         }
                     }
                 })
@@ -398,8 +401,9 @@ public class DatabaseManager {
 
     /**
      * Gets list of all events.
-     * @author speakerchef
+     *
      * @param callback
+     * @author speakerchef
      */
     public void getEventList(DbCallback callback) {
         eventsRef.get()
@@ -420,14 +424,14 @@ public class DatabaseManager {
      * @param eventId
      * @param callback
      */
-    public void getSingleEvent(String eventId, DbCallback callback){
+    public void getSingleEvent(String eventId, DbCallback callback) {
         eventsRef
                 .document(eventId)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()){
+                        if (documentSnapshot.exists()) {
                             Map<String, Object> eventWithId = documentSnapshot.getData();
                             eventWithId.put("id", documentSnapshot.getId());
                             callback.onSuccess(eventWithId);
@@ -442,8 +446,9 @@ public class DatabaseManager {
 
     /**
      * This method gets events by their ID.
-     * @author Soaiba
+     *
      * @param callback
+     * @author Soaiba
      */
     public void getEventsByIds(List<String> eventIds, DbCallback callback) {
         List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
@@ -507,11 +512,12 @@ public class DatabaseManager {
 
     /**
      * This method updates status of event.
-     * @author Soaiba
-     * @param eventId id of event we are updating.
-     * @param userId id of user whose event we are updating.
+     *
+     * @param eventId   id of event we are updating.
+     * @param userId    id of user whose event we are updating.
      * @param newStatus updated status.
      * @param callback
+     * @author Soaiba
      */
     public void updateEventStatus(String eventId, String userId, String newStatus, DbCallback callback) {
         enrollsRef
@@ -539,10 +545,11 @@ public class DatabaseManager {
 
     /**
      * Adds user to an event waitlist
-     * @author speakerchef
+     *
      * @param eventId
      * @param userId
      * @param callback
+     * @author speakerchef
      */
     public void joinWaitlist(String eventId, String userId, DbCallback callback) {
         Map<String, Object> enrollData = new HashMap<>();
@@ -557,15 +564,16 @@ public class DatabaseManager {
 
     /**
      * Gets all facilities from database
+     *
      * @param callback
      */
-    public void getAllFacilities(RetrieveData callback){
+    public void getAllFacilities(RetrieveData callback) {
         final ArrayList<Map<String, Object>> facilityList = new ArrayList();
         facilityRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()){
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> facility = document.getData();
                         facilityList.add(facility);
                     }
@@ -577,9 +585,10 @@ public class DatabaseManager {
 
     /**
      * Grab all events from database
+     *
      * @param callback
      */
-    public void getAllEvents(RetrieveData callback){
+    public void getAllEvents(RetrieveData callback) {
         final ArrayList<Map<String, Object>> eventList = new ArrayList();
         eventsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             /**
@@ -588,8 +597,8 @@ public class DatabaseManager {
              */
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()){
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> event = document.getData();
                         eventList.add(event);
                     }
@@ -601,10 +610,11 @@ public class DatabaseManager {
 
     /**
      * Update profile information
-     * @author speakerchef
+     *
      * @param deviceId
      * @param updates
      * @param callback
+     * @author speakerchef
      */
     public void updateProfile(String deviceId, Map<String, Object> updates, DbCallback callback) {
         usersRef.document(deviceId)
@@ -615,11 +625,12 @@ public class DatabaseManager {
 
     /**
      * Update facility profile information
-     * @author speakerchef
+     *
      * @param facilityId
      * @param name
      * @param address
      * @param callback
+     * @author speakerchef
      */
     public void updateFacility(String facilityId, String name, String address, DbCallback callback) {
         Map<String, Object> updates = new HashMap<>();
@@ -634,9 +645,10 @@ public class DatabaseManager {
 
     /**
      * Queries a single facility
-     * @author speakerchef
+     *
      * @param facilityId
      * @param callback
+     * @author speakerchef
      */
     public void getFacility(String facilityId, DbCallback callback) {
         facilityRef.document(facilityId)
@@ -651,7 +663,7 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
-    public void getOrganizerEvents(String deviceId, DbCallback callback){
+    public void getOrganizerEvents(String deviceId, DbCallback callback) {
         usersRef
                 .document(deviceId)
                 .get()
@@ -659,8 +671,8 @@ public class DatabaseManager {
                     if (!documentSnapshot.exists()) {
                         callback.onError(new Exception("ERROR: User not found"));
                     } else {
-                        ArrayList<Map<String,Object>> currentEvents = (ArrayList<Map<String,Object>>)documentSnapshot.get("events");
-                        if (currentEvents == null){
+                        ArrayList<Map<String, Object>> currentEvents = (ArrayList<Map<String, Object>>) documentSnapshot.get("events");
+                        if (currentEvents == null) {
                             currentEvents = new ArrayList<>();
                         }
                         callback.onSuccess(currentEvents);
@@ -672,10 +684,11 @@ public class DatabaseManager {
 
     /**
      * updates event details
-     * @author speakerchef
+     *
      * @param eventId
      * @param updates
      * @param callback
+     * @author speakerchef
      */
     public void updateEvent(String eventId, String userId, Map<String, Object> updates, DbCallback callback) {
         usersRef.document(userId)
@@ -707,9 +720,10 @@ public class DatabaseManager {
 
     /**
      * Gets the list of all the users on the waitlist of an event.
-     * @author speakerchef
+     *
      * @param eventId
      * @param callback
+     * @author speakerchef
      */
     public void getWaitlistEntrants(String eventId, DbCallback callback) {
         enrollsRef
@@ -746,14 +760,15 @@ public class DatabaseManager {
 
     /**
      * Gets the list of all users attending an event.
-     * @author speakerchef (edited by mylayambao)
+     *
      * @param eventId
      * @param callback
+     * @author speakerchef (edited by mylayambao)
      */
     public void getAttendingEntrants(String eventId, DbCallback callback) {
         enrollsRef
                 .whereEqualTo("eventId", eventId)
-                .whereEqualTo("status", "Attending")
+                .whereEqualTo("status", "Accepted")
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     ArrayList<Map<String, Object>> attendingEntrants = new ArrayList<>();
@@ -785,9 +800,10 @@ public class DatabaseManager {
 
     /**
      * Gets the list of all users invited to an event.
-     * @author speakerchef (edited by mylayambao)
+     *
      * @param eventId
      * @param callback
+     * @author speakerchef (edited by mylayambao)
      */
     public void getInvitedEntrants(String eventId, DbCallback callback) {
         enrollsRef
@@ -824,9 +840,10 @@ public class DatabaseManager {
 
     /**
      * Gets the list of all cancelled entrants for an event
-     * @author speakerchef (edited by mylayambao)
+     *
      * @param eventId
      * @param callback
+     * @author speakerchef (edited by mylayambao)
      */
     public void getCancelledEntrants(String eventId, DbCallback callback) {
         enrollsRef
@@ -860,7 +877,7 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(callback::onError);
 
-        }
+    }
 
 
     /**

@@ -1,87 +1,55 @@
 package com.example.quokka_event.models.event;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
-
-import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.DatabaseManager;
-import com.example.quokka_event.controllers.EventDetailsActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * executes lottery when event deadline is reached
+ * Executes lottery upon receiving a broadcast
+ * @author speakerchef
  */
 public class LotteryChecker extends BroadcastReceiver {
     private static final String TAG = "LotteryChecker";
-    private static final String CHANNEL_ID = "lottery_notifications";
+    private static final String TYPE_REGULAR = "regular";
+    private static final String TYPE_REPLACEMENT = "replacement";
 
     /**
-     * Creates notification channel for Android O and above
-     * @reference https://developer.android.com/develop/ui/views/notifications/channels
+     * Upon receiving a broadcast, lottery is run based on available slots
+     * and type of lottery
+     * @param context
+     * @param intent
      */
-    private void createNotificationChannel(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Lottery Notifications";
-            String description = "Notifications for event lottery results";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    /**
-     * Sends notification to selected participant
-     */
-    private void sendInviteNotification(Context context, String userId, String eventId, String eventName) {
-        Intent intent = new Intent(context, EventDetailsActivity.class);
-        intent.putExtra("eventId", eventId);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
-                PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("Event Invitation")
-                .setContentText("You've been invited to participate in " + eventName)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(userId.hashCode(), builder.build());
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         String eventId = intent.getStringExtra("eventId");
         String eventName = intent.getStringExtra("eventName");
-        final int maxSpots = intent.getIntExtra("maxParticipants", 0);
+        String lotteryType = intent.getStringExtra("lotteryType");
+        final long maxSpots = intent.getLongExtra("maxParticipants", 0);
 
         if (eventId == null || maxSpots <= 0) {
-            Log.e(TAG, "Invalid event data received");
+            Log.e(TAG, "Invalid event data received" + eventId + maxSpots);
             return;
         }
-
-        createNotificationChannel(context);
+        if (!lotteryType.equals(TYPE_REGULAR) && !lotteryType.equals(TYPE_REPLACEMENT)){
+            Log.e(TAG, "onReceive: Invalid lottery type" + lotteryType );
+            return;
+        }
+        
         DatabaseManager db = DatabaseManager.getInstance(context);
 
         db.getEnrolls(eventId, new DbCallback() {
+            /**
+             * Gets all entrants to find those who've already been invited
+             * @author speakerchef
+             * @param result
+             */
             @Override
             public void onSuccess(Object result) {
                 ArrayList<Map<String, Object>> currentParticipants = (ArrayList<Map<String, Object>>) result;
@@ -94,14 +62,20 @@ public class LotteryChecker extends BroadcastReceiver {
                     }
                 }
 
-                final int availableSpots = maxSpots - acceptedCount;
+                final long availableSpots = maxSpots - acceptedCount;
+                final long spotsToFill = lotteryType.equals(TYPE_REGULAR) ? availableSpots : 1;
+
+                Log.d(TAG, "Max slots: " + spotsToFill);
                 if (availableSpots <= 0) {
                     Log.e(TAG, "No spots available for lottery");
                     return;
                 }
 
-                // Get waitlist and run lottery
-                db.getEnrolls(eventId, new DbCallback() {
+                db.getWaitlistEntrants(eventId, new DbCallback() {
+                    /**
+                     * Gets all entrants who are waiting to be passed into the lottery
+                     * @param result
+                     */
                     @Override
                     public void onSuccess(Object result) {
                         ArrayList<Map<String, Object>> waitlistEntrants = (ArrayList<Map<String, Object>>) result;
@@ -110,9 +84,8 @@ public class LotteryChecker extends BroadcastReceiver {
                             Log.e(TAG, "No users in waitlist");
                             return;
                         }
-
                         Lottery lottery = new Lottery();
-                        ArrayList<Map<String, Object>> winners = lottery.runLottery(availableSpots, waitlistEntrants);
+                        ArrayList<Map<String, Object>> winners = lottery.runLottery(spotsToFill, waitlistEntrants);
 
                         // Update status for winners
                         for (Map<String, Object> winner : winners) {
@@ -123,7 +96,7 @@ public class LotteryChecker extends BroadcastReceiver {
                                     @Override
                                     public void onSuccess(Object result) {
                                         // Send notification to winner
-                                        sendInviteNotification(context, userId, eventId, eventName);
+//                                        sendInviteNotification(context, userId, eventId, eventName);
                                         Log.d(TAG, "Successfully invited user: " + userId);
                                     }
 

@@ -1,4 +1,5 @@
 package com.example.quokka_event.controllers;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,7 +28,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * Manages the event creation and editing interface with Firebase integration, event validation, and image upload
@@ -300,6 +300,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
     /**
      * Called from listener from overviewfragment.java to set event name
+     *
      * @param eventTitle
      */
     @Override
@@ -309,6 +310,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
     /**
      * Called from listener from DetailsFragment.java to set event date
+     *
      * @param eventDate
      */
     @Override
