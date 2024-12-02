@@ -47,7 +47,7 @@ public class NotificationPageActivity extends AppCompatActivity {
         // Views
         notificationsRecyclerView = findViewById(R.id.notifications_recycler_view);
         notificationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        notificationPageAdapter = new NotificationPageAdapter(notificationList);
+        notificationPageAdapter = new NotificationPageAdapter(notificationList, true);
         notificationsRecyclerView.setAdapter(notificationPageAdapter);
 
         // Buttons
@@ -56,14 +56,49 @@ public class NotificationPageActivity extends AppCompatActivity {
             finish();
         });
 
-        loadNotifications();
+        fetchNotifsEnabled();
+    }
+
+    /**
+     * This method checks if user's notifications are enabled.
+     * @author Soaiba
+     */
+    private void fetchNotifsEnabled() {
+        String deviceId = auth.getCurrentUser().getUid();
+        db.getUserData(new DbCallback() {
+            @Override
+            /**
+             * This method checks if user's notifications are enabled.
+             * @author Soaiba
+             */
+            public void onSuccess(Object result) {
+                Map<String, Object> userData = (Map<String, Object>) result;
+
+                Boolean notifsEnabled = (Boolean) userData.get("notifications");
+                if (notifsEnabled == null)
+                    notifsEnabled = false;
+
+                Log.d("NotificationPage", "Notifications enabled: " + notifsEnabled);
+                loadNotifications(notifsEnabled);
+            }
+
+            @Override
+            /**
+             * This method shows an error if users notifications preference could not be found.
+             * @author Soaiba
+             */
+            public void onError(Exception e) {
+                Log.e("NotificationPage", "Error fetching user data", e);
+                loadNotifications(false);
+            }
+        }, deviceId);
     }
 
     /**
      * This method loads notifications from the database for the user.
      * @author Soaiba
      */
-    private void loadNotifications() {
+    private void loadNotifications(boolean notifsEnabled) {
         String deviceId = auth.getCurrentUser().getUid();
         Log.d("DeviceId", "Device ID: " + deviceId);
 
@@ -87,6 +122,7 @@ public class NotificationPageActivity extends AppCompatActivity {
                     Notification notification = new Notification(notifId, title, message, eventId, null, null);
                     notificationList.add(notification);
                 }
+                notificationPageAdapter.setNotifsEnabled(notifsEnabled);
                 notificationPageAdapter.notifyDataSetChanged();
                 Log.d("Adapter", "Notified adapter. Item count: " + notificationPageAdapter.getItemCount());
             }
