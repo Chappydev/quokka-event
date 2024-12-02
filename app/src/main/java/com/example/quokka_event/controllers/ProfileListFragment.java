@@ -27,6 +27,7 @@ import java.util.Map;
 public class ProfileListFragment extends Fragment implements ViewButtonListener {
     private ArrayList<Map<String, Object>> profileList;
     private ProfileAdapter adapter;
+    private DatabaseManager db;
 
     /**
      * Create list of all profiles as a fragment to be displayed
@@ -39,11 +40,12 @@ public class ProfileListFragment extends Fragment implements ViewButtonListener 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.all_profiles_fragment, container, false);
         RecyclerView profilesRecyclerView = view.findViewById(R.id.admin_profile_recycler);
-        DatabaseManager db = DatabaseManager.getInstance(getContext());
+        db = DatabaseManager.getInstance(getContext());
         profileList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         profilesRecyclerView.setLayoutManager(layoutManager);
         adapter = new ProfileAdapter(profileList, this);
+        profilesRecyclerView.setAdapter(adapter);
         db.getAllProfiles(new DatabaseManager.RetrieveData() {
             /**
              * After {@link DatabaseManager} grabs all the profiles from database,
@@ -53,12 +55,31 @@ public class ProfileListFragment extends Fragment implements ViewButtonListener 
             @Override
             public void onDataLoaded(ArrayList<Map<String, Object>> list) {
                 profileList.addAll(list);
-                adapter.setLocalDataSet(profileList);
-                profilesRecyclerView.setAdapter(adapter);
+                adapter.setLocalDataSet(list);
+                adapter.notifyDataSetChanged();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        db.getAllProfiles(new DatabaseManager.RetrieveData() {
+            /**
+             * After {@link DatabaseManager} grabs all the profiles from database,
+             * set the profile list to ProfileAdapter and set adapter to the recyclerview.
+             * @param list
+             */
+            @Override
+            public void onDataLoaded(ArrayList<Map<String, Object>> list) {
+                profileList.addAll(list);
+                adapter.setLocalDataSet(list);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     /**

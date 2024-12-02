@@ -2,6 +2,7 @@ package com.example.quokka_event.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,9 @@ import com.example.quokka_event.views.ViewButtonListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 /**
  * This class displays a list of events to the admin. Admins can also view details.
@@ -22,6 +25,7 @@ import java.util.Map;
 public class AdminBrowseEventsActivity extends AppCompatActivity implements ViewButtonListener {
     private ArrayList<Map<String, Object>> eventList;
     private AdminEventsAdapter adapter;
+    private DatabaseManager db;
 
     /**
      * Sets up the RecyclerView and initialize the event list from firebase
@@ -32,17 +36,18 @@ public class AdminBrowseEventsActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_browse_events);
         RecyclerView eventRecyclerView = findViewById(R.id.admin_events_list);
-        DatabaseManager db = DatabaseManager.getInstance(this);
+        db = DatabaseManager.getInstance(this);
         eventList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         eventRecyclerView.setLayoutManager(layoutManager);
         adapter = new AdminEventsAdapter(eventList, this);
+        eventRecyclerView.setAdapter(adapter);
         db.getAllEvents(new DatabaseManager.RetrieveData() {
             @Override
             public void onDataLoaded(ArrayList<Map<String, Object>> list) {
                 eventList.addAll(list);
                 adapter.setLocalDataSet(list);
-                eventRecyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -55,6 +60,7 @@ public class AdminBrowseEventsActivity extends AppCompatActivity implements View
     public void viewButtonClick(int pos) {
         Intent activity = new Intent(AdminBrowseEventsActivity.this, AdminEventTabsActivity.class);
         activity.putExtra("event", (Serializable) eventList.get(pos));
+        activity.putExtra("index", pos);
         startActivity(activity);
 
     }

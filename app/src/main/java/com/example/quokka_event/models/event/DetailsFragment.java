@@ -88,7 +88,6 @@ public class DetailsFragment extends Fragment {
         confirmChangeSeatButton = view.findViewById(R.id.confirm_change_seat_button);
         waitlistCapEditText = view.findViewById(R.id.edittext_wl_cap);
         limitWaitlistCheckBox = view.findViewById(R.id.waitlist_limit_checkbox);
-        limitParticipantCheckBox = view.findViewById(R.id.limit_participant_checkbox);
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
         remainSeatTextView = view.findViewById(R.id.event_seats_label);
         geolocationSwitch = view.findViewById(R.id.geolocation_switch);
@@ -159,7 +158,11 @@ public class DetailsFragment extends Fragment {
             public void onClick(View view) {
                 // forgive me for the if else mess
                 String maxParticipant = participantCapEditText.getText().toString();
+                Log.d("sfkjadlf", "onClick: "+maxParticipant);
+                Log.d("sfkjadlf", "onClick: "+maxParticipant.isEmpty());
+                Log.d("sfkjadlf", "onClick: "+maxParticipant.length());
                 String maxWaitlist = waitlistCapEditText.getText().toString();
+
 
                 Log.d("Change seats", "onClick: " + maxParticipant + " " + maxWaitlist);
 
@@ -207,8 +210,12 @@ public class DetailsFragment extends Fragment {
                 Log.d("Participant limit", "onClick: " + participantLimit);
 
                 if (!limitWaitlistCheckBox.isChecked()){ waitlistLimit = Integer.MAX_VALUE;}
-                int remainingSeat = participantLimit - currentNumParticipants;
-                remainSeatTextView.setText(Integer.toString(participantLimit));
+
+                if (waitlistLimit == Integer.MAX_VALUE) {
+                    remainSeatTextView.setText("Max");
+                } else {
+                    remainSeatTextView.setText(Integer.toString(waitlistLimit));
+                }
                 if (participantLimit != 0){
                     listener.setCapacity(waitlistLimit, participantLimit);
                 }
@@ -231,6 +238,7 @@ public class DetailsFragment extends Fragment {
     void setButtonsVisibility(int v){
 //        limitWaitlistCheckBox.setVisibility(v);
 //        waitlistCapEditText.setVisibility(v);
+
     }
 
     /**

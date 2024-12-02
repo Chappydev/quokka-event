@@ -29,6 +29,7 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.organizer.Facility;
+import com.example.quokka_event.views.Toolbar;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -74,6 +75,8 @@ public class UserProfilePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.user_edit_profile);
+
+        Toolbar.initializeToolbar(findViewById(R.id.topToolbar), this);
 
         user = User.getInstance(this.getApplicationContext());
         db = DatabaseManager.getInstance(this);

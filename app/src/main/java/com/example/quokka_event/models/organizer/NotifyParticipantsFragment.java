@@ -125,6 +125,21 @@ public class NotifyParticipantsFragment extends DialogFragment {
              */
             @Override
             public void onClick(View view) {
+                String message = notificationText.getText().toString().trim();
+                String title = notificationTitle.getText().toString().trim();
+
+                // ensure there is a message
+                if (message.isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a notification message!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // ensure there is a title
+                if (title.isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a notification title!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Notification notification = new Notification();
 
                 // set the recipients

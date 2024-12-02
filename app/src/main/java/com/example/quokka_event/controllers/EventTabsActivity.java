@@ -20,6 +20,7 @@ import com.example.quokka_event.models.event.DetailsFragment;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.event.EventLotteryManager;
 import com.example.quokka_event.models.event.OverviewFragment;
+import com.example.quokka_event.views.Toolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,11 +61,12 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setRegistrationDeadline(currentDate);
         event.setDescription("");
         event.setMaxWaitlist(Integer.MAX_VALUE);
-        event.setMaxParticipants(Integer.MAX_VALUE);
         event.setGeolocationEnabled(false);
+        event.setMaxParticipants(Integer.MIN_VALUE);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
+        Toolbar.initializeToolbar(findViewById(R.id.organizerToolbar), this);
 
         // firebase storage
         firebaseStorage = FirebaseStorage.getInstance();
@@ -118,8 +120,9 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                     return;
                 }
 
+
                 // Valid Entry Logic
-                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null) {
+                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null || maxParticipants == Integer.MIN_VALUE) {
                     Toast.makeText(EventTabsActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -355,8 +358,12 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
      */
     @Override
     public void setCapacity(int waitlistCap, int partCap) {
+        Log.d("setCapacity", "setCapacity: "+partCap);
+        Log.d("setCapacity", "setCapacity: "+waitlistCap);
         event.setMaxWaitlist(waitlistCap);
         event.setMaxParticipants(partCap);
+        Log.d("setCapacity", "setCapacity: "+event.getMaxParticipants());
+        Log.d("setCapacity", "setCapacity: "+event.getMaxWaitlist());
     }
 
     @Override

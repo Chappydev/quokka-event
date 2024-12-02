@@ -15,6 +15,7 @@ import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.event.EventAdapter;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.views.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +45,7 @@ public class MyEventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_my_events_page);
+        //Toolbar.initializeToolbar(findViewById(R.id.topToolbar), this);
 
         // Initialize RecyclerView and adapter
         recyclerView = findViewById(R.id.event_list_recycler_view);

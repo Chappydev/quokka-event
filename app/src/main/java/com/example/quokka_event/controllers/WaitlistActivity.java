@@ -18,6 +18,7 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.entrant.EventManager;
 import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.views.Toolbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -61,7 +62,7 @@ public class WaitlistActivity extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
-
+        Toolbar.initializeToolbar(findViewById(R.id.toolbar2), this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

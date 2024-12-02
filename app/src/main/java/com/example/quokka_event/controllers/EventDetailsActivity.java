@@ -15,6 +15,7 @@ import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.event.LotteryChecker;
+import com.example.quokka_event.views.Toolbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -46,6 +47,9 @@ public class EventDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_join_details);
+        Toolbar.initializeToolbar(findViewById(R.id.toolbar2), this);
+
+
         dbManager = DatabaseManager.getInstance(this);
 
         // Get user
@@ -91,8 +95,6 @@ public class EventDetailsActivity extends AppCompatActivity {
         locationText.setText("Location: " + eventLocation);
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
         statusText.setText("Status: " + status);
-
-
 
         // Set button visibility based on status
         setButtonVisibility(status, acceptButton, denyButton, leaveButton);
