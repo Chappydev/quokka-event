@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +20,10 @@ import com.example.quokka_event.UserProfilePageActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Map;
@@ -104,12 +108,49 @@ public class BrowseProfileDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Object result) {
                         Log.d("db","user deleted!");
-                        startBrowseProfiles();
+                        if (profileImageRef == null) {
+                            startBrowseProfiles();
+                            return;
+                        }
+
+                        profileImageRef.delete()
+                                .addOnFailureListener(new OnFailureListener() {
+                                    /**
+                                     * Deal with errors and then return to browse profiles
+                                     * @param e
+                                     */
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        if (!(e instanceof StorageException) || ((StorageException) e).getErrorCode() == StorageException.ERROR_OBJECT_NOT_FOUND) {
+                                            Log.e("BrowseProfileDetailsActivity", "delete button onFailure: ", e);
+                                            Toast.makeText(BrowseProfileDetailsActivity.this,
+                                                    "Something went wrong deleting the associated image",
+                                                    Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Log.e("BrowseProfileDetailsActivity", "Image is linked but doesn't exist: delete button onFailure: ", e);
+                                        }
+                                        startBrowseProfiles();
+                                    }
+                                })
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    /**
+                                     * Return to browse profiles on success
+                                     * @param unused
+                                     */
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        startBrowseProfiles();
+                                    }
+                                });
                     }
 
+                    /**
+                     * Log error
+                     * @param exception
+                     */
                     @Override
                     public void onError(Exception exception) {
-
+                        Log.e("BrowseProfileDetailsActivity", "onError: ", exception);
                     }
                 });
             }
