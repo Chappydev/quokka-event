@@ -1086,47 +1086,48 @@ public class DatabaseManager {
     }
 
     /**
-     * Fetches notifications for a specific user based on deviceId.
-     * @param deviceId the deviceId of the current user
-     * @param callback callback to handle the notifications
+     * This method gets notifications for user based on deviceId.
+     * @param deviceId the deviceId of the user
+     * @param callback
+     * @author Soaiba
      */
     public void getUserNotifications(String deviceId, DbCallback callback) {
-        // Log query details
         Log.d("Database", "Querying notifications for deviceId: " + deviceId);
 
+//        notificationsRef.get().addOnSuccessListener(querySnapshot -> {
+//            Log.d("Firestore", "Total notifications: " + querySnapshot.size());
+//            for (DocumentSnapshot doc : querySnapshot) {
+//                Log.d("Firestore", "Notification: " + doc.getData());
+//            }
+//        });
+
         notificationsRef
-                .whereArrayContains("recipients.deviceId", deviceId)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-
-                    // Log query success
-                    Log.d("Database", "Query successful, documents found: " + querySnapshot.size());
-
-                    List<Map<String, Object>> notificationList = new ArrayList<>();
-                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                        // Log each document being processed
-                        Log.d("Database", "Processing document: " + document.getId());
-
-                        Map<String, Object> notificationData = document.getData();
-                        notificationData.put("notificationId", document.getId());
-                        notificationList.add(notificationData);
+                    Log.d("Firestore", "Query returned " + querySnapshot.size() + " notifications.");
+                    List<Map<String, Object>> filteredNotificationList = new ArrayList<>();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        Map<String, Object> notificationData = doc.getData();
+                        List<Map<String, Object>> recipients = (List<Map<String, Object>>) notificationData.get("recipients");
+                        if (recipients != null) {
+                            for (Map<String, Object> recipient : recipients) {
+                                String recipientDeviceId = (String) recipient.get("deviceId");
+                                if (deviceId.equals(recipientDeviceId)) {
+                                    notificationData.put("notificationId", doc.getId());
+                                    filteredNotificationList.add(notificationData);
+                                    break;
+                                }
+                            }
+                        }
                     }
-
-                    // Log final notification list size
-                    Log.d("Database", "Notification list size after processing: " + notificationList.size());
-
-                    // Pass data to callback
-                    callback.onSuccess(notificationList);
+                    Log.d("Firestore", "Filtered notifications count: " + filteredNotificationList.size());
+                    callback.onSuccess(filteredNotificationList);
                 })
                 .addOnFailureListener(e -> {
-                    // Log query failure
                     Log.e("Database", "Query failed", e);
-
-                    // Pass error to callback
                     callback.onError(e);
                 });
     }
-
 }
 
 

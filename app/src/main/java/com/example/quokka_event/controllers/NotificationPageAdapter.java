@@ -24,25 +24,23 @@ public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPa
     @NonNull
     @Override
     public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.notification_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_item, parent, false);
         return new NotificationViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         Notification notification = notifications.get(position);
-
-        // Log notification data being bound to the view
-        Log.d("Adapter", "Binding notification: " + notification.getNotifTitle() + ", " + notification.getNotifMessage());
-
         holder.title.setText(notification.getNotifTitle());
         holder.message.setText(notification.getNotifMessage());
+        Log.d("Adapter", "Binding notification: " + notification.getNotifTitle() + ", " + notification.getNotifMessage());
+        Log.d("Adapter", "Title View: " + holder.title);
+        Log.d("Adapter", "Message View: " + holder.message);
     }
-
 
     @Override
     public int getItemCount() {
+        Log.d("Adapter", "Item count in adapter: " + notifications.size());
         return notifications.size();
     }
 
