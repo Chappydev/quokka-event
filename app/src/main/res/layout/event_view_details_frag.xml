@@ -138,7 +138,7 @@
 
     <Switch
         android:id="@+id/geolocation_switch"
-        android:layout_width="380dp"
+        android:layout_width="260dp"
         android:layout_height="70dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
