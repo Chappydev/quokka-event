@@ -1009,7 +1009,7 @@ public class DatabaseManager {
      */
     public void deleteEventPoster(String eventId, DbCallback callback){
         db.collection("Events").document(eventId)
-                .update("posterPath", FieldValue.delete())
+                .update("posterImagePath", FieldValue.delete())
                 .addOnSuccessListener(response -> callback.onSuccess(null))
                 .addOnFailureListener(callback::onError);
     }
