@@ -848,7 +848,7 @@ public class DatabaseManager {
     public void getCancelledEntrants(String eventId, DbCallback callback) {
         enrollsRef
                 .whereEqualTo("eventId", eventId)
-                .whereEqualTo("status", "Cancelled")
+                .whereEqualTo("status", "Declined")
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     ArrayList<Map<String, Object>> cancelledEntrants = new ArrayList<>();

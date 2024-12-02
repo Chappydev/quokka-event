@@ -141,6 +141,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         drawButton = findViewById(R.id.draw_lottery_button);
         drawButton.setOnClickListener(v -> {
             Log.d("Lottery", "money money");
+            Toast.makeText(this, "Starting lottery...", Toast.LENGTH_SHORT).show();
             runLottery();
         });
 

@@ -29,4 +29,5 @@
     <string name="person_icon_description">person icon</string>
     <string name="profile_picture">Profile Picture</string>
     <string name="delete_image">Delete Image</string>
+    <string name="leave">LEAVE</string>
 </resources>

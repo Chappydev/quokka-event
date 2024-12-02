@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
+import com.example.quokka_event.models.Notification;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -57,7 +59,7 @@ public class LotteryChecker extends BroadcastReceiver {
 
                 // accepted participants
                 for (Map<String, Object> participant : currentParticipants) {
-                    if ("Accepted".equals(participant.get("status"))) {
+                    if ("Accepted".equals(participant.get("status")) || "Invited".equals(participant.get("status"))) {
                         acceptedCount++;
                     }
                 }
@@ -65,7 +67,9 @@ public class LotteryChecker extends BroadcastReceiver {
                 final long availableSpots = maxSpots - acceptedCount;
                 final long spotsToFill = lotteryType.equals(TYPE_REGULAR) ? availableSpots : 1;
 
-                Log.d(TAG, "Max slots: " + spotsToFill);
+                Log.d(TAG, "Max slots: " + maxSpots);
+                Log.d(TAG, "Spots to Fill: " + spotsToFill);
+                Log.d(TAG, "AcceptedCount: " + acceptedCount);
                 if (availableSpots <= 0) {
                     Log.e(TAG, "No spots available for lottery");
                     return;
@@ -96,8 +100,27 @@ public class LotteryChecker extends BroadcastReceiver {
                                     @Override
                                     public void onSuccess(Object result) {
                                         // Send notification to winner
-//                                        sendInviteNotification(context, userId, eventId, eventName);
+                                        Notification notification = new Notification();
+                                        notification.setRecipients(waitlistEntrants);
+                                        notification.setNotifMessage("You have been invited to participate in " + eventName + "! Please decide if you would like to accept or deny this invitation.");
+                                        notification.setNotifTitle("You have an invitation!");
+                                        notification.setEventId(eventId);
+                                        db.addNotification(notification, new DbCallback() {
+                                            @Override
+                                            public void onSuccess(Object result) {
+                                                Log.d(TAG, "onSuccess: Users notified!");
+                                                Toast.makeText(context.getApplicationContext(), "We have notified your invited users!", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onError(Exception exception) {
+                                                Log.d(TAG, "onError: Unable to notify users!");
+                                                Toast.makeText(context.getApplicationContext(), "Sorry, we were unable to notify your users.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
                                         Log.d(TAG, "Successfully invited user: " + userId);
+                                        Toast.makeText(context.getApplicationContext(), "Successfully invited users!", Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override
