@@ -32,7 +32,7 @@ import java.util.Date;
 /**
  * Manages the event creation and editing interface with Firebase integration, event validation, and image upload
  */
-public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener, DetailsFragment.detailsListener {
+public class EventTabsActivity extends AppCompatActivity implements OverviewFragment.overviewEditListener, DetailsFragment.detailsListener, DetailsFragment.geolocationListener {
     Button saveButton;
     Button cancelButton;
     Event event;
@@ -61,6 +61,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setDescription("");
         event.setMaxWaitlist(Integer.MAX_VALUE);
         event.setMaxParticipants(Integer.MIN_VALUE);
+        event.setGeolocationEnabled(false);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
@@ -107,10 +108,18 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 String location = event.getEventLocation();
                 Date eventDate = event.getEventDate();
                 Date registrationDate = event.getRegistrationDeadline();
-                int maxEntrants = event.getMaxParticipants();
+                long maxEntrants = event.getMaxWaitlist();
+                int maxParticipants = event.getMaxParticipants();
+
+                Log.d("max p", "onClick: " + maxParticipants);
+
+                if (maxParticipants == 0){
+                    Toast.makeText(EventTabsActivity.this, "Please enter a participant limit!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Valid Entry Logic
-                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null || maxEntrants == Integer.MIN_VALUE) {
+                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null || maxParticipants == Integer.MIN_VALUE) {
                     Toast.makeText(EventTabsActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -352,6 +361,11 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setMaxParticipants(partCap);
         Log.d("setCapacity", "setCapacity: "+event.getMaxParticipants());
         Log.d("setCapacity", "setCapacity: "+event.getMaxWaitlist());
+    }
+
+    @Override
+    public void setGeolocation(Boolean geolocationEnabled) {
+        event.setGeolocationEnabled(geolocationEnabled);
     }
 }
 

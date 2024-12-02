@@ -138,6 +138,7 @@ public class QrScannerPageActivity extends AppCompatActivity {
         showActivity.putExtra("registrationDeadline", registrationDeadline.toDate());
         showActivity.putExtra("maxWaitlist", (int)(long) eventMap.get("maxWaitlist"));
         showActivity.putExtra("posterImagePath", (String) eventMap.get("posterImagePath"));
+        showActivity.putExtra("geolocationEnabled", (Boolean) eventMap.get("geolocationEnabled"));
         QrScannerPageActivity.this.startActivity(showActivity);
     }
 }

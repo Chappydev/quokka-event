@@ -19,7 +19,7 @@ public class Event {
     private int maxParticipants;
     private int maxWaitlist;
     private String description;
-
+    private Boolean geolocationEnabled;
     private ArrayList<ProfileSystem> participantList;
     private ArrayList<ProfileSystem> waitList;
     private ArrayList<ProfileSystem> cancelledParticipants;
@@ -46,7 +46,7 @@ public class Event {
      * @param description           event description field
      * @author idk???
      */
-    public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<ProfileSystem> participantList, ArrayList<ProfileSystem> waitList, ArrayList<ProfileSystem> cancelledParticipants) {
+    public Event(String eventID, String eventName, Date eventDate, Date registrationDeadline, String eventLocation, int maxParticipants, int maxWaitlist, ArrayList<ProfileSystem> participantList, ArrayList<ProfileSystem> waitList, ArrayList<ProfileSystem> cancelledParticipants, Boolean geolocationEnabled) {
         this.eventID = eventID;
         this.eventName = eventName;
         this.eventDate = eventDate;
@@ -58,9 +58,19 @@ public class Event {
         this.waitList = waitList;
         this.cancelledParticipants = cancelledParticipants;
         this.description = "";
+        this.geolocationEnabled = geolocationEnabled;
     }
 
-    public Event() {}
+    public Event() {
+    }
+
+    public Boolean getGeolocationEnabled() {
+        return geolocationEnabled;
+    }
+
+    public void setGeolocationEnabled(Boolean geolocationEnabled) {
+        this.geolocationEnabled = geolocationEnabled;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -126,9 +136,13 @@ public class Event {
         this.maxWaitlist = maxWaitlist;
     }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public String getDescription(){ return this.description; }
+    public String getDescription() {
+        return this.description;
+    }
 
 
     public ArrayList<ProfileSystem> getParticipantList() {
@@ -149,13 +163,21 @@ public class Event {
         //TODO update database
     }
 
-    public StorageReference getPosterImageRef() {return posterImageRef;}
+    public StorageReference getPosterImageRef() {
+        return posterImageRef;
+    }
 
-    public void setPosterImageRef(StorageReference posterImageRef) {this.posterImageRef = posterImageRef;}
+    public void setPosterImageRef(StorageReference posterImageRef) {
+        this.posterImageRef = posterImageRef;
+    }
 
-    public String getPosterImage() {return posterImage;}
+    public String getPosterImage() {
+        return posterImage;
+    }
 
-    public void setPosterImage(String posterImage) {this.posterImage = posterImage;}
+    public void setPosterImage(String posterImage) {
+        this.posterImage = posterImage;
+    }
 
     public ArrayList<ProfileSystem> getCancelledParticipants() {
         return cancelledParticipants;

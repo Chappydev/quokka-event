@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +31,10 @@ public class DetailsFragment extends Fragment {
     CheckBox limitWaitlistCheckBox;
     EditText waitlistCapEditText;
     EditText participantCapEditText;
+    CheckBox limitParticipantCheckBox;
     Boolean isWaitlistLimit;
     Boolean isParticipantLimit;
+    Switch geolocationSwitch;
 
 
     int participantLimit;
@@ -46,8 +49,12 @@ public class DetailsFragment extends Fragment {
         void setCapacity(int waitlistCap, int partCap);
     }
 
-    private detailsListener listener;
+    public interface geolocationListener{
+        void setGeolocation(Boolean geolocationEnabled);
+    }
 
+    private detailsListener listener;
+    private geolocationListener geolocationListener;
     /**
      * Required empty public constructor
      */
@@ -59,6 +66,7 @@ public class DetailsFragment extends Fragment {
         Log.d("FragmentDebug", "Context class: " + context.getClass().getName());
         if(context instanceof OverviewFragment.overviewEditListener){
             listener = (detailsListener) context;
+            geolocationListener = (geolocationListener) context;
         } else {
             throw new RuntimeException(context + "must implement overeditListener");
         }
@@ -82,14 +90,26 @@ public class DetailsFragment extends Fragment {
         limitWaitlistCheckBox = view.findViewById(R.id.waitlist_limit_checkbox);
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
         remainSeatTextView = view.findViewById(R.id.event_seats_label);
+        geolocationSwitch = view.findViewById(R.id.geolocation_switch);
 
         // setting defaults to max values
-        participantLimit = Integer.MAX_VALUE;
         waitlistLimit = Integer.MAX_VALUE;
         remainSeatTextView.setText("Max");
         listener.setCapacity(waitlistLimit, participantLimit);
 
+        changeSeatButton.setVisibility(View.GONE);
+        limitWaitlistCheckBox.setVisibility(View.VISIBLE);
+        limitParticipantCheckBox.setVisibility(View.GONE);
+        participantCapEditText.setVisibility(View.VISIBLE);
+        confirmChangeSeatButton.setVisibility(View.VISIBLE);
+        waitlistCapEditText.setVisibility(View.GONE);
+        participantCapEditText.setText("");
+
         setButtonsVisibility(View.GONE);
+
+        geolocationSwitch.setOnCheckedChangeListener((v, isChecked) -> {
+            geolocationListener.setGeolocation(isChecked);
+        });
 
 
         limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -143,20 +163,51 @@ public class DetailsFragment extends Fragment {
                 Log.d("sfkjadlf", "onClick: "+maxParticipant.length());
                 String maxWaitlist = waitlistCapEditText.getText().toString();
 
-                if ((maxParticipant.isEmpty()) ||
-                        (maxWaitlist.isEmpty() && limitWaitlistCheckBox.isChecked()) ){
-                    displayWarning("Please enter a number");
+
+                Log.d("Change seats", "onClick: " + maxParticipant + " " + maxWaitlist);
+
+                if (!limitWaitlistCheckBox.isChecked()) {
+                    if (maxParticipant.isEmpty()){
+                        displayWarning("Please enter a participant limit!");
+                        return;
+                    }
+                    remainSeatTextView.setText(maxParticipant);
+                    waitlistLimit = Integer.MAX_VALUE;
+                    listener.setCapacity(waitlistLimit, Integer.parseInt(maxParticipant));
+                    Toast.makeText(getContext(), "capacity updated", Toast.LENGTH_LONG).show();
+                    setButtonsVisibility(View.GONE);
+//                    changeSeatButton.setVisibility(View.VISIBLE);
                     return;
                 }
 
-                participantLimit = Integer.parseInt(maxParticipant);
+
+                if ((maxWaitlist.isEmpty() && limitWaitlistCheckBox.isChecked()) ){
+                    displayWarning("Please enter a valid number!");
+                    return;
+                }
+
+                if (maxParticipant.isEmpty()){
+                    displayWarning("You must enter a participant limit!");
+                    return;
+                }
+
+                if (Long.parseLong(maxParticipant) > Integer.MAX_VALUE) {
+                    displayWarning("Please enter a smaller number!");
+                    return;
+                }
+
                 if (limitWaitlistCheckBox.isChecked()){
+                    participantLimit = Integer.parseInt(maxParticipant);
                     waitlistLimit = Integer.parseInt(maxWaitlist);
-                    if (participantLimit > waitlistLimit){
-                        displayWarning("Cannot set capacity greater than number of people in waitlist!");
+                    if (waitlistLimit < participantLimit){
+                        displayWarning("Cannot set waitlist limit lower than event capacity!");
                         return;
                     }
                 }
+                waitlistLimit = Integer.parseInt(maxWaitlist);
+                participantLimit = Integer.parseInt(maxParticipant);
+
+                Log.d("Participant limit", "onClick: " + participantLimit);
 
                 if (!limitWaitlistCheckBox.isChecked()){ waitlistLimit = Integer.MAX_VALUE;}
 
@@ -183,10 +234,8 @@ public class DetailsFragment extends Fragment {
      * @param v the visibility
      */
     void setButtonsVisibility(int v){
-        confirmChangeSeatButton.setVisibility(v);
-        limitWaitlistCheckBox.setVisibility(v);
-        waitlistCapEditText.setVisibility(v);
-        participantCapEditText.setVisibility(v);
+//        limitWaitlistCheckBox.setVisibility(v);
+//        waitlistCapEditText.setVisibility(v);
     }
 
     /**

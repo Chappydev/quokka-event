@@ -65,6 +65,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private ImageView qrImage;
     private String currentEventId;
     private boolean isEditMode = false;
+    private Boolean geolocationEnabled;
     private FirebaseAuth auth;
     private Button notifyParticipantsButton;
     private Button mapButton;
@@ -122,6 +123,8 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         currentEventId = getIntent().getStringExtra("eventId");
         eventName = getIntent().getStringExtra("eventName");
         maxSlots = getIntent().getLongExtra("maxParticipants", 0);
+        geolocationEnabled = getIntent().getBooleanExtra("geolocationEnabled", false);
+
         if (currentEventId != null) {
             loadEventDetails(currentEventId);
         } else {
@@ -132,6 +135,10 @@ public class EventDetailsViewActivity extends AppCompatActivity {
 
 
         mapButton = findViewById(R.id.view_map_button);
+        if (!geolocationEnabled){
+            mapButton.setVisibility(View.GONE);
+        }
+
         mapButton.setOnClickListener(v -> {
             Intent intent = new Intent(EventDetailsViewActivity.this, EntrantMapActivity.class);
             intent.putExtra("eventId", currentEventId);
