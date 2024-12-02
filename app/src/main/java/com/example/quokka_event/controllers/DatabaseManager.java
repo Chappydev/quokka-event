@@ -1084,6 +1084,49 @@ public class DatabaseManager {
                 })
                 .addOnFailureListener(e -> callback.onError(e));
     }
+
+    /**
+     * Fetches notifications for a specific user based on deviceId.
+     * @param deviceId the deviceId of the current user
+     * @param callback callback to handle the notifications
+     */
+    public void getUserNotifications(String deviceId, DbCallback callback) {
+        // Log query details
+        Log.d("Database", "Querying notifications for deviceId: " + deviceId);
+
+        notificationsRef
+                .whereArrayContains("recipients.deviceId", deviceId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+
+                    // Log query success
+                    Log.d("Database", "Query successful, documents found: " + querySnapshot.size());
+
+                    List<Map<String, Object>> notificationList = new ArrayList<>();
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        // Log each document being processed
+                        Log.d("Database", "Processing document: " + document.getId());
+
+                        Map<String, Object> notificationData = document.getData();
+                        notificationData.put("notificationId", document.getId());
+                        notificationList.add(notificationData);
+                    }
+
+                    // Log final notification list size
+                    Log.d("Database", "Notification list size after processing: " + notificationList.size());
+
+                    // Pass data to callback
+                    callback.onSuccess(notificationList);
+                })
+                .addOnFailureListener(e -> {
+                    // Log query failure
+                    Log.e("Database", "Query failed", e);
+
+                    // Pass error to callback
+                    callback.onError(e);
+                });
+    }
+
 }
 
 

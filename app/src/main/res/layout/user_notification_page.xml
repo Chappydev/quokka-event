@@ -62,73 +62,13 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <TableLayout
-        android:id="@+id/tableLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notifications_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:divider="#FB9365"
-        android:showDividers="middle"
-        android:stretchColumns="*"
-        app:layout_constraintTop_toBottomOf="@id/topToolbar">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:padding="16dp"
-                android:text="Invitation!"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="Read"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="Sender"
-                android:textColor="#000000" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:padding="16dp"
-                android:text="New Event!"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="Unread"
-                android:textColor="#FF0000" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="Sender"
-                android:textColor="#000000" />
-        </TableRow>
-
-    </TableLayout>
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/back_button_bottom"
