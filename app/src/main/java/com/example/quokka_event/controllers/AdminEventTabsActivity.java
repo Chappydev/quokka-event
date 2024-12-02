@@ -22,6 +22,7 @@ import java.util.Map;
  */
 public class AdminEventTabsActivity extends AppCompatActivity {
     Map<String, Object> event_details;
+    private int  currIndex;
     Button backButton;
     Button deleteButton;
 
@@ -38,6 +39,7 @@ public class AdminEventTabsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             event_details = (Map<String, Object>) extras.get("event");
+            currIndex = (int) extras.get("index");
         }
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
@@ -93,6 +95,14 @@ public class AdminEventTabsActivity extends AppCompatActivity {
      */
     public Map<String, Object> getEventDetails(){
         return event_details;
+    }
+
+    /**
+     * Set event details
+     * @return Map with all event details
+     */
+    public int getCurrentIndex(){
+        return currIndex;
     }
 
     /**
