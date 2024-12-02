@@ -58,10 +58,10 @@ public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPa
         Log.d("Adapter", "Title View: " + holder.title.getText());
         Log.d("Adapter", "Message View: " + holder.message.getText());
 
-        // Pass eventId to event details page
+        // Bring to user's events page
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), EventDetailsActivity.class);
-            intent.putExtra("event_id", notification.getEventId());
+            Intent intent = new Intent(v.getContext(), MyEventsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             v.getContext().startActivity(intent);
         });
     }
