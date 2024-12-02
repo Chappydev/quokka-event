@@ -54,10 +54,10 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         setContentView(R.layout.event_tabs);
         event = new Event();
         Date currentDate = new Date();
-        event.setEventName("Event");
-        event.setEventLocation("Location");
-        event.setEventDate(currentDate);
-        event.setRegistrationDeadline(currentDate);
+        event.setEventName("");
+        event.setEventLocation("");
+        //event.setEventDate();
+        //event.setRegistrationDeadline();
         event.setDescription("");
         event.setMaxWaitlist(Integer.MAX_VALUE);
         event.setMaxParticipants(Integer.MAX_VALUE);
@@ -107,15 +107,16 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 String location = event.getEventLocation();
                 Date eventDate = event.getEventDate();
                 Date registrationDate = event.getRegistrationDeadline();
+                String description = event.getDescription();
                 int maxEntrants = event.getMaxWaitlist();
 
                 // Valid Entry Logic
-                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null) {
+                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null || description.trim().isEmpty()) {
                     Toast.makeText(EventTabsActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (name.length() > 100) {
-                    Toast.makeText(EventTabsActivity.this, "Please limit book name to 50 characters", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EventTabsActivity.this, "Please limit event name to 100 characters", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -142,7 +143,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                         return;
                     }
                 } catch (Exception e) {
-                    Toast.makeText(EventTabsActivity.this, "An unexpected error occurred. Please check your input.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EventTabsActivity.this, "Error: Please check your input", Toast.LENGTH_SHORT).show();
                     Log.e("DateValidation", "Error validating dates");
                     return;
                 }
@@ -155,7 +156,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                     @Override
                     public void onSuccess(Object result)
                     {
-                        String eventID = result.toString(); // firebase id for the evnt
+                        String eventID = result.toString(); // firebase id for the event
                         event.setEventID(eventID);
                         Log.d("ImageDebug", eventID);
                         Toast.makeText(EventTabsActivity.this, "Event created successfully!", Toast.LENGTH_SHORT).show();

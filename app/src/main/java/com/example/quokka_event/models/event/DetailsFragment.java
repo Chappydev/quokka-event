@@ -169,7 +169,7 @@ public class DetailsFragment extends Fragment {
                         waitlistLimit = Integer.MAX_VALUE;
                         remainSeatTextView.setText("Max");
                         listener.setCapacity(waitlistLimit, participantLimit);
-                        Toast.makeText(getContext(), "capacity updated", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Capacity Updated", Toast.LENGTH_LONG).show();
                         setButtonsVisibility(View.GONE);
                         changeSeatButton.setVisibility(View.VISIBLE);
                         return;
@@ -202,13 +202,13 @@ public class DetailsFragment extends Fragment {
                 if (!limitParticipantCheckBox.isChecked()) {
                     participantLimit = Integer.MAX_VALUE;
                     remainSeatTextView.setText("Max");
-                    Toast.makeText(getContext(), "capacity updated", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Capacity Updated", Toast.LENGTH_LONG).show();
                     return;
                 }
                 int remainingSeat = participantLimit - currentNumParticipants;
                 remainSeatTextView.setText(Integer.toString(remainingSeat));
                 listener.setCapacity(waitlistLimit, participantLimit);
-                Toast.makeText(getContext(), "capacity updated", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Capacity Updated", Toast.LENGTH_LONG).show();
 //                setButtonsVisibility(View.INVISIBLE);
             }
 
