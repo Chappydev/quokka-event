@@ -24,6 +24,7 @@ import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.MyEventsActivity;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.ProfileSystem;
+import com.example.quokka_event.views.Toolbar;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -105,30 +106,14 @@ public class MainActivity extends AppCompatActivity {
             initUser(currentUser.getUid());
         }
 
+        Toolbar.initializeToolbar(findViewById(R.id.topToolbar), this);
+
         // Switch the activity to MyEventsActivity when the myEventsButton is clicked
         myEventButton = findViewById(R.id.my_events_button);
         myEventButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent showActivity = new Intent(MainActivity.this, MyEventsActivity.class);
                 startActivity(showActivity);
-            }
-        });
-
-        // Switch the activity to the NotificationPageActivity when the bell icon is clicked
-        final ImageButton bellButton = findViewById(R.id.bell);
-        bellButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, NotificationPageActivity.class);
-                MainActivity.this.startActivity(showActivity);
-            }
-        });
-
-        // Switch the activity to the UserProfilePageActivity when the person icon is clicked
-        final ImageButton profileButton = findViewById(R.id.profile);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent showActivity = new Intent(MainActivity.this, UserProfilePageActivity.class);
-                MainActivity.this.startActivity(showActivity);
             }
         });
 
