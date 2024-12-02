@@ -165,7 +165,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                         EventLotteryManager elm = new EventLotteryManager();
                         long deadline = event.getRegistrationDeadline().getTime();
                         elm.deadlineLottery(getApplicationContext(), event,deadline);
-                        finish();
+                        //finish();
 
                         // check if there is an image to upload
                         if (imageUri != null) {
