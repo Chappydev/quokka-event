@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
@@ -52,6 +53,7 @@ public class OverviewFragment extends Fragment {
     FirebaseStorage firebaseStorage;
     Uri image;
     Button uploadImageButton;
+    Button deletePosterButton;
     ImageView posterImage;
     // Initialize Firebase Storage
 
@@ -75,7 +77,7 @@ public class OverviewFragment extends Fragment {
         void setLocation(String location);
         void setDeadline(Date deadline);
         void setDescription(String description);
-        void setImageUri(Uri imageUri);
+        void setImageUri(@Nullable Uri imageUri);
     }
 
     private overviewEditListener listener;
@@ -123,6 +125,7 @@ public class OverviewFragment extends Fragment {
         descriptionEditText = view.findViewById(R.id.event_description);
         posterImage = view.findViewById(R.id.poster_image);
         uploadImageButton = view.findViewById(R.id.upload_poster);
+        deletePosterButton = view.findViewById(R.id.delete_poster);
 
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
             @Override
@@ -208,6 +211,17 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 openDeviceGallery();
+            }
+        });
+
+        deletePosterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                posterImage.setImageDrawable(null);
+                image = null;
+                if(listener instanceof EventTabsActivity){
+                    listener.setImageUri(null);
+                }
             }
         });
 

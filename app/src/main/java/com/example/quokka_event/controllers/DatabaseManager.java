@@ -360,7 +360,7 @@ public class DatabaseManager {
                                 @Override
                                 public void accept(QueryDocumentSnapshot queryDocumentSnapshot) {
                                     Map<String, Object> event = queryDocumentSnapshot.getData();
-                                    Task<DocumentSnapshot> task = eventsRef.document(queryDocumentSnapshot.getId())
+                                    Task<DocumentSnapshot> task = eventsRef.document((String) event.get("eventId"))
                                             .get()
                                             .addOnFailureListener(e -> Log.e("DB", "grabbing event details for getUserEventList: ", e));
                                     taskList.add(task);
@@ -389,10 +389,21 @@ public class DatabaseManager {
                                                     }
                                                     payload.add(dataCopy);
                                                 }
-                                            });
-                                            callback.onSuccess(payload);
-                                        }
-                                    });
+
+                                                payload.add(dataCopy);
+                                            }
+                                        });
+                                        callback.onSuccess(payload);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("DB", "getting events from the enrolls data onFailure: ", e);
+                                        callback.onError(e);
+                                    }
+                                });
+
                         }
                     }
                 })
@@ -1023,7 +1034,7 @@ public class DatabaseManager {
      */
     public void deleteEventPoster(String eventId, DbCallback callback){
         db.collection("Events").document(eventId)
-                .update("posterPath", FieldValue.delete())
+                .update("posterImagePath", FieldValue.delete())
                 .addOnSuccessListener(response -> callback.onSuccess(null))
                 .addOnFailureListener(callback::onError);
     }

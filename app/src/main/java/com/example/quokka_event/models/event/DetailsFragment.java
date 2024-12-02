@@ -33,7 +33,6 @@ public class DetailsFragment extends Fragment {
     EditText participantCapEditText;
     Boolean isWaitlistLimit;
     Boolean isParticipantLimit;
-    Button notifyParticipantsButton;
 
 
     int participantLimit;
@@ -85,7 +84,6 @@ public class DetailsFragment extends Fragment {
         limitParticipantCheckBox = view.findViewById(R.id.limit_participant_checkbox);
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
         remainSeatTextView = view.findViewById(R.id.event_seats_label);
-        notifyParticipantsButton = view.findViewById(R.id.notify_participants_button);
 
         // setting defaults to max values
         participantLimit = Integer.MAX_VALUE;
@@ -95,16 +93,6 @@ public class DetailsFragment extends Fragment {
 
         setButtonsVisibility(View.GONE);
 
-//        notifyParticipantsButton.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View view) {
-//                NotifyParticipantsFragment notifyParticipantsFragment = new NotifyParticipantsFragment(event);
-//                notifyParticipantsFragment.show(getChildFragmentManager(), "notify participant");
-//            }
-//
-//
-//        });
 
         limitWaitlistCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             /**

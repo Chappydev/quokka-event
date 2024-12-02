@@ -145,7 +145,6 @@ public class NotifySelectedFragment extends DialogFragment {
 
 
         sendButton.setOnClickListener(new View.OnClickListener() {
-
             /**
              * Creates a notification when the send button is clicked.
              * @author mylayambao
@@ -153,12 +152,47 @@ public class NotifySelectedFragment extends DialogFragment {
              */
             @Override
             public void onClick(View view) {
-                Log.d("Notif", "selectedParticipants: " + selectedParticipants);
+                String message = notificationText.getText().toString().trim();
+                String title = notificationTitle.getText().toString().trim();
+
+                // ensure there is a message
+                if (message.isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a notification message!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // ensure there is a title
+                if (title.isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a notification title!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Notification notification = new Notification();
-                notification.setRecipients(selectedParticipants);
                 notification.setNotifMessage(notificationText.getText().toString());
                 notification.setNotifTitle(notificationTitle.getText().toString());
                 notification.setEventId(currentEventId);
+
+                if (selectedParticipants == null || selectedParticipants.isEmpty()) {
+                    Toast.makeText(getContext(), "No participants selected", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // filter participants where "notifications" is true
+                ArrayList<Map<String, Object>> filteredRecipients = new ArrayList<>();
+                for (Map<String, Object> participant : selectedParticipants) {
+                    Object notificationsEnabled = participant.get("notifications");
+                    if (notificationsEnabled instanceof Boolean && (Boolean) notificationsEnabled) {
+                        filteredRecipients.add(participant);
+                    }
+                }
+
+                if (filteredRecipients.isEmpty()) {
+                    Toast.makeText(getContext(), "No participants have notifications enabled", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Log.d("Notif", "Filtered Recipients: " + filteredRecipients);
+                notification.setRecipients(filteredRecipients);
 
                 // set the recipients
                 db.addNotification(notification, new DbCallback() {

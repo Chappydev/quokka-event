@@ -250,6 +250,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 chooseImage();
                 fetchAndApplyImage(currentEventId, posterPic);
+
             }
 
 
@@ -631,12 +632,11 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     Glide.with(EventDetailsViewActivity.this)
                             .load(uri)
                             .into(imageView);
+                    imageView.setVisibility(View.VISIBLE);
                 })
                 .addOnFailureListener(e -> {
+                    imageView.setVisibility(View.GONE);
                     Log.e("FetchImage", "Failed to load image for event: " + eventId, e);
-                    Toast.makeText(EventDetailsViewActivity.this,
-                            "Unable to load poster image",
-                            Toast.LENGTH_SHORT).show();
                 });
     }
 
