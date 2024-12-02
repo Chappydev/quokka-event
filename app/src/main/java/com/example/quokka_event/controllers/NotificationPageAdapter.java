@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,13 @@ public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPa
         Log.d("Adapter", "Binding notification: " + notification.getNotifTitle() + ", " + notification.getNotifMessage());
         Log.d("Adapter", "Title View: " + holder.title.getText());
         Log.d("Adapter", "Message View: " + holder.message.getText());
+
+        // Pass eventId to event details page
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EventDetailsActivity.class);
+            intent.putExtra("event_id", notification.getEventId());
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
