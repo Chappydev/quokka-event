@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.quokka_event.R;
 import com.example.quokka_event.models.Notification;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,14 +21,40 @@ import java.util.List;
  */
 public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPageAdapter.NotificationViewHolder> {
     private List<Notification> notifications;
+    private List<Notification> visibleNotifs = new ArrayList<>();
+    private boolean notifsEnabled;
 
     /**
      * This method is a constructor for NotificationPageAdapter.
      * @param notifications notifications to display
+     * @param notifsEnabled if user's notifications are enabled
      * @author Soaiba
      */
-    public NotificationPageAdapter(List<Notification> notifications) {
+    public NotificationPageAdapter(List<Notification> notifications, boolean notifsEnabled) {
         this.notifications = notifications;
+        this.notifsEnabled = notifsEnabled;
+        setNotifVisibility();
+    }
+
+    /**
+     * This method updates the visibility of notifications.
+     * @param notifsEnabled if user's notifications are enabled
+     * @author Soaiba
+     */
+    public void setNotifsEnabled(boolean notifsEnabled) {
+        this.notifsEnabled = notifsEnabled;
+        setNotifVisibility();
+    }
+
+    /**
+     * This method sets notifications based on visibility flag.
+     * @author Soaiba
+     */
+    private void setNotifVisibility() {
+        visibleNotifs.clear();
+        if (notifsEnabled) {
+            visibleNotifs.addAll(notifications);
+        }
     }
 
     @NonNull
@@ -51,7 +78,7 @@ public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPa
      * @author Soaiba
      */
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
-        Notification notification = notifications.get(position);
+        Notification notification = visibleNotifs.get(position);
         holder.title.setText(notification.getNotifTitle());
         holder.message.setText(notification.getNotifMessage());
         Log.d("Adapter", "Binding notification: " + notification.getNotifTitle() + ", " + notification.getNotifMessage());
@@ -74,7 +101,7 @@ public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPa
      */
     public int getItemCount() {
         Log.d("Adapter", "Item count in adapter: " + notifications.size());
-        return notifications.size();
+        return visibleNotifs.size();
     }
 
     /**
