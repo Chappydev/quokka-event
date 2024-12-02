@@ -46,6 +46,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_join_details);
+
         dbManager = DatabaseManager.getInstance(this);
 
         // Get user
@@ -91,8 +92,6 @@ public class EventDetailsActivity extends AppCompatActivity {
         locationText.setText("Location: " + eventLocation);
         organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
         statusText.setText("Status: " + status);
-
-
 
         // Set button visibility based on status
         setButtonVisibility(status, acceptButton, denyButton, leaveButton);

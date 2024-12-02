@@ -122,6 +122,8 @@ public class AdminEventsAdapter extends RecyclerView.Adapter<AdminEventsAdapter.
      * @param data new data set
      */
     public void setLocalDataSet(ArrayList<Map<String, Object>> data) {
+        localDataSet.clear();
+        localDataSet.addAll(data);
         localDataSet = data;
     }
 }
