@@ -14,6 +14,7 @@ import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.waitlistlottery.OrganizerDrawFragment;
 import com.example.quokka_event.models.event.LotteryChecker;
+import com.example.quokka_event.views.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Map;
