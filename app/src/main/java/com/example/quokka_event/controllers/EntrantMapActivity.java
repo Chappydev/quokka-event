@@ -50,7 +50,7 @@ public class EntrantMapActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // Get entrants for this event and plot their locations
-        db.getWaitlistEntrants(eventId, new DbCallback() {
+        db.getEnrolls(eventId, new DbCallback() {
             @Override
             public void onSuccess(Object result) {
                 ArrayList<Map<String, Object>> entrants = (ArrayList<Map<String, Object>>) result;
