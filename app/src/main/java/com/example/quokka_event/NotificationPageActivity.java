@@ -13,6 +13,7 @@ import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.Notification;
 
+import com.example.quokka_event.views.Toolbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class NotificationPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_notification_page);
+
+        Toolbar.initializeToolbar(findViewById(R.id.topToolbar), this);
 
         // Database
         db = DatabaseManager.getInstance(this);

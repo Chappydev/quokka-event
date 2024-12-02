@@ -126,6 +126,9 @@ public class OverviewFragment extends Fragment {
         uploadImageButton = view.findViewById(R.id.upload_poster);
         deletePosterButton = view.findViewById(R.id.delete_poster);
 
+        uploadImageButton.setVisibility(View.GONE);
+        deletePosterButton.setVisibility(View.GONE);
+
         getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener(){
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
