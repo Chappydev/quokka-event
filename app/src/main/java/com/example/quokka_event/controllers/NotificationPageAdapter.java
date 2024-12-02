@@ -34,8 +34,8 @@ public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPa
         holder.title.setText(notification.getNotifTitle());
         holder.message.setText(notification.getNotifMessage());
         Log.d("Adapter", "Binding notification: " + notification.getNotifTitle() + ", " + notification.getNotifMessage());
-        Log.d("Adapter", "Title View: " + holder.title);
-        Log.d("Adapter", "Message View: " + holder.message);
+        Log.d("Adapter", "Title View: " + holder.title.getText());
+        Log.d("Adapter", "Message View: " + holder.message.getText());
     }
 
     @Override
