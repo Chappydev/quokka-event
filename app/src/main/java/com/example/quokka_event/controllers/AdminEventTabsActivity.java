@@ -124,6 +124,7 @@ public class AdminEventTabsActivity extends AppCompatActivity {
 
         // Add debug lottery button
         Button debugLotteryButton = findViewById(R.id.debug_lottery_button);
+        debugLotteryButton.setVisibility(View.GONE);
         debugLotteryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
