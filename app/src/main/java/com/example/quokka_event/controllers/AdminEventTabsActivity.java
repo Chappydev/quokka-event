@@ -111,6 +111,7 @@ public class AdminEventTabsActivity extends AppCompatActivity {
                                         }
                                     });
                         }
+                        returnToEventList();
                     }
 
                     @Override
