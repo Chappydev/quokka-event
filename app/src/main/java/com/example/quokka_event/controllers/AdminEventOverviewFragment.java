@@ -36,6 +36,7 @@ public class AdminEventOverviewFragment extends Fragment {
     TextView timeTextView;
     TextView deadlineTextView;
     ImageView posterPic;
+    Button uploadImageButton;
     Button deleteImageButton;
     String currentEventId;
     FirebaseStorage storage;
@@ -64,6 +65,8 @@ public class AdminEventOverviewFragment extends Fragment {
         locationTextView = view.findViewById(R.id.event_location_label);
         deadlineTextView = view.findViewById(R.id.event_deadline_label);
         posterPic = view.findViewById(R.id.poster_image);
+        uploadImageButton = view.findViewById(R.id.upload_poster);
+        uploadImageButton.setVisibility(View.GONE);
         deleteImageButton = view.findViewById(R.id.delete_poster);
 
         AdminEventTabsActivity activity = (AdminEventTabsActivity) getActivity();

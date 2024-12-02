@@ -54,6 +54,7 @@ public class MyEventsActivity extends AppCompatActivity {
             intent.putExtra("event_name", event.getEventName());
             intent.putExtra("event_date", event.getEventDate().getTime());
             intent.putExtra("event_location", event.getEventLocation());
+            intent.putExtra("maxParticipants", (long) event.getMaxParticipants());
             intent.putExtra("status", eventStatusMap.get(event.getEventID()));
             startActivity(intent);
         });

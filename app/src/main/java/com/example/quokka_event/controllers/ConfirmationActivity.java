@@ -35,7 +35,7 @@ public class ConfirmationActivity extends AppCompatActivity{
             confirmationMessage.setText("You have joined " + eventName + "!");
         } else if ("Deny".equals(messageType)) {
             confirmationMessage.setText("You denied invitation to " + eventName + " :(");
-        } else if ("Cancel".equals(messageType)) {
+        } else if ("Leave".equals(messageType)) {
             confirmationMessage.setText("You have unjoined the waitlist to " + eventName + ".");
         } else if ("JoinWaitlist".equals(messageType)) {
             confirmationMessage.setText("You have joined the waitlist for " + eventName + "!");

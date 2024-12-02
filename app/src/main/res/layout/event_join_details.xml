@@ -149,10 +149,10 @@
             android:text="@string/deny_button" />
 
         <Button
-            android:id="@+id/cancel_button"
+            android:id="@+id/leave_button"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="@string/cancel_button" />
+            android:text="@string/leave" />
 
         <Button
             android:id="@+id/back_button"
