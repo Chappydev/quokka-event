@@ -22,8 +22,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * This activity displays information about events for users to waitlist for.
@@ -130,21 +133,43 @@ public class WaitlistActivity extends AppCompatActivity {
                             .setTitle("Join an event with Geolocation.")
                             .setMessage("This event has geolocation enabled. Would you still like to join?")
                             .setPositiveButton("Yes", (dialog, which) -> {
-                                db.joinWaitlist(event.getEventID(), User.getInstance(WaitlistActivity.this).getDeviceID(), new DbCallback() {
+                                String userId = User.getInstance(WaitlistActivity.this).getDeviceID();
+                                db.getEnrolls(event.getEventID(), new DbCallback() {
                                     @Override
                                     public void onSuccess(Object result) {
-                                        Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(WaitlistActivity.this, ConfirmationActivity.class);
-                                        intent.putExtra("message_type", "JoinWaitlist");
-                                        intent.putExtra("event_name", event.getEventName());
+                                        ArrayList<Map<String, Object>> data = (ArrayList<Map<String, Object>>) result;
+                                        for (Map<String,Object> instance : data){
+                                            String user = (String) instance.get("deviceId");
+                                            Log.d("geg", "user: " + user);
+                                            Log.d("geg", "userID: " + userId);
+                                            Log.d("geg", "Instance: " + instance);
+                                            if (Objects.equals(user, userId)){
+                                                Toast.makeText(WaitlistActivity.this, "You are already part of this event!", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                        }
+                                        db.joinWaitlist(event.getEventID(), userId, new DbCallback() {
+                                            @Override
+                                            public void onSuccess(Object result) {
+                                                Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(WaitlistActivity.this, ConfirmationActivity.class);
+                                                intent.putExtra("message_type", "JoinWaitlist");
+                                                intent.putExtra("event_name", event.getEventName());
 
-                                        startActivity(intent);
+                                                startActivity(intent);
+                                            }
+
+                                            @Override
+                                            public void onError(Exception exception) {
+                                                Log.e("DB", "WaitlistActivity onError: ", exception);
+                                                Toast.makeText(WaitlistActivity.this, "Something went wrong adding you to the waitlist", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     }
 
                                     @Override
                                     public void onError(Exception exception) {
-                                        Log.e("DB", "WaitlistActivity onError: ", exception);
-                                        Toast.makeText(WaitlistActivity.this, "Something went wrong adding you to the waitlist", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(WaitlistActivity.this, "An unknown error occurred", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             })
@@ -155,21 +180,40 @@ public class WaitlistActivity extends AppCompatActivity {
                             .show();
 
                 } else {
-                    db.joinWaitlist(event.getEventID(), User.getInstance(WaitlistActivity.this).getDeviceID(), new DbCallback() {
+                    String userId = User.getInstance(WaitlistActivity.this).getDeviceID();
+                    db.getEnrolls(event.getEventID(), new DbCallback() {
                         @Override
                         public void onSuccess(Object result) {
-                            Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(WaitlistActivity.this, ConfirmationActivity.class);
-                            intent.putExtra("message_type", "JoinWaitlist");
-                            intent.putExtra("event_name", event.getEventName());
+                            ArrayList<Map<String, Object>> data = (ArrayList<Map<String, Object>>) result;
+                            for (Map<String,Object> instance : data){
+                                String user = (String) instance.get("deviceId");
+                                if (user == userId){
+                                    Toast.makeText(WaitlistActivity.this, "You are already part of this event!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
+                            db.joinWaitlist(event.getEventID(), userId, new DbCallback() {
+                                @Override
+                                public void onSuccess(Object result) {
+                                    Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(WaitlistActivity.this, ConfirmationActivity.class);
+                                    intent.putExtra("message_type", "JoinWaitlist");
+                                    intent.putExtra("event_name", event.getEventName());
 
-                            startActivity(intent);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onError(Exception exception) {
+                                    Log.e("DB", "WaitlistActivity onError: ", exception);
+                                    Toast.makeText(WaitlistActivity.this, "Something went wrong adding you to the waitlist", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
 
                         @Override
                         public void onError(Exception exception) {
-                            Log.e("DB", "WaitlistActivity onError: ", exception);
-                            Toast.makeText(WaitlistActivity.this, "Something went wrong adding you to the waitlist", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WaitlistActivity.this, "An unknown error occurred", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
