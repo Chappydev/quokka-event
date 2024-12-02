@@ -79,6 +79,7 @@ public class OrganizerEventsAdapter extends RecyclerView.Adapter<OrganizerEvents
             intent.putExtra("eventId", (String) event.get("eventId"));
             intent.putExtra("eventName", (String) event.get("eventName"));
             intent.putExtra("maxParticipants", (long) event.get("maxParticipants"));
+            intent.putExtra("geolocationEnabled", (Boolean) event.get("geolocationEnabled"));
             context.startActivity(intent);
         });
     }

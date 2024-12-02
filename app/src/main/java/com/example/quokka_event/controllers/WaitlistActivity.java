@@ -1,5 +1,6 @@
 package com.example.quokka_event.controllers;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,10 +13,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.quokka_event.QrScannerPageActivity;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.models.ProfileSystem;
 import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.entrant.EventManager;
 import com.example.quokka_event.models.event.Event;
@@ -23,8 +22,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -77,6 +74,7 @@ public class WaitlistActivity extends AppCompatActivity {
             event.setRegistrationDeadline((Date) extras.get("registrationDeadline"));
             event.setMaxWaitlist((int) extras.get("maxWaitlist"));
             event.setPosterImage((String) extras.get("posterImagePath"));
+            event.setGeolocationEnabled(getIntent().getBooleanExtra("geolocationEnabled", false));
         }
 
         // Initialize views and buttons
@@ -127,22 +125,54 @@ public class WaitlistActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                db.joinWaitlist(event.getEventID(), User.getInstance(WaitlistActivity.this).getDeviceID(), new DbCallback() {
-                    @Override
-                    public void onSuccess(Object result) {
-                        Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(WaitlistActivity.this, ConfirmationActivity.class);
-                        intent.putExtra("message_type", "JoinWaitlist");
-                        intent.putExtra("event_name", event.getEventName());
-                        startActivity(intent);
-                    }
+                if (event.getGeolocationEnabled()){
+                    new AlertDialog.Builder(WaitlistActivity.this)
+                            .setTitle("Join an event with Geolocation.")
+                            .setMessage("This event has geolocation enabled. Would you still like to join?")
+                            .setPositiveButton("Yes", (dialog, which) -> {
+                                db.joinWaitlist(event.getEventID(), User.getInstance(WaitlistActivity.this).getDeviceID(), new DbCallback() {
+                                    @Override
+                                    public void onSuccess(Object result) {
+                                        Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(WaitlistActivity.this, ConfirmationActivity.class);
+                                        intent.putExtra("message_type", "JoinWaitlist");
+                                        intent.putExtra("event_name", event.getEventName());
 
-                    @Override
-                    public void onError(Exception exception) {
-                        Log.e("DB", "WaitlistActivity onError: ", exception);
-                        Toast.makeText(WaitlistActivity.this, "Something went wrong adding you to the waitlist", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onError(Exception exception) {
+                                        Log.e("DB", "WaitlistActivity onError: ", exception);
+                                        Toast.makeText(WaitlistActivity.this, "Something went wrong adding you to the waitlist", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            })
+                            .setNegativeButton("No", (dialog, which) -> {
+                                dialog.dismiss();
+                                finish();
+                            })
+                            .show();
+
+                } else {
+                    db.joinWaitlist(event.getEventID(), User.getInstance(WaitlistActivity.this).getDeviceID(), new DbCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            Toast.makeText(WaitlistActivity.this, "You joined the waitlist for '" + event.getEventName() + "'", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(WaitlistActivity.this, ConfirmationActivity.class);
+                            intent.putExtra("message_type", "JoinWaitlist");
+                            intent.putExtra("event_name", event.getEventName());
+
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+                            Log.e("DB", "WaitlistActivity onError: ", exception);
+                            Toast.makeText(WaitlistActivity.this, "Something went wrong adding you to the waitlist", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
 

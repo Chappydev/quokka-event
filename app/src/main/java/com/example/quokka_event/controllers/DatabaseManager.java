@@ -229,6 +229,7 @@ public class DatabaseManager {
         eventPayload.put("maxParticipants", event.getMaxParticipants());
         eventPayload.put("maxWaitlist", event.getMaxWaitlist());
         eventPayload.put("description", event.getDescription());
+        eventPayload.put("geolocationEnabled", event.getGeolocationEnabled());
 
         // Pushing the payload to the collection
         usersRef
