@@ -1,4 +1,5 @@
 package com.example.quokka_event.controllers;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.event.DetailsFragment;
 import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.models.event.EventLotteryManager;
 import com.example.quokka_event.models.event.OverviewFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -148,13 +150,20 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 String deviceId = auth.getCurrentUser().getUid();
 
                 // Save the event to the database first
-                db.addEvent(event, deviceId, new DbCallback() {
+                db.addEvent(event, deviceId, new DbCallback()
+                {
                     @Override
-                    public void onSuccess(Object result) {
+                    public void onSuccess(Object result)
+                    {
                         String eventID = result.toString(); // firebase id for the evnt
                         event.setEventID(eventID);
                         Log.d("ImageDebug", eventID);
                         Toast.makeText(EventTabsActivity.this, "Event created successfully!", Toast.LENGTH_SHORT).show();
+
+                        EventLotteryManager elm = new EventLotteryManager();
+                        long deadline = event.getRegistrationDeadline().getTime();
+                        elm.deadlineLottery(getApplicationContext(), event,deadline);
+                        finish();
 
                         // check if there is an image to upload
                         if (imageUri != null) {
@@ -194,58 +203,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                                         Toast.makeText(EventTabsActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
                                         Log.e("Firebase", "Image upload error", e);
                                     });
-//            @Override
-//            public void onClick(View view) {
-//                if (imageUri != null) {
-//                    String eventID = event.getEventID();
-//                    StorageReference imageRef = storageReference.child("Events/" + System.currentTimeMillis() + ".jpg");
 //
-//                    // Upload the image to Firebase Storage
-//                    imageRef.putFile(imageUri)
-//                            .addOnSuccessListener(taskSnapshot -> {
-//                                Log.d("ImageDebug", "File uploaded successfully.");
-//                                // Get the download URL after upload
-//                                imageRef.getDownloadUrl()
-//                                        .addOnSuccessListener(downloadUrl -> {
-//                                            String imagePath = downloadUrl.toString();
-//                                            Log.d("ImageDebug", "Download URL: " + imagePath);
-//                                            // Link image to event in fb
-//                                            db.addImageToEvent(eventID, imagePath, new DbCallback() {
-//                                                @Override
-//                                                public void onSuccess(Object result) {
-//                                                    Log.d("DB", "Image linked to event successfully!");
-//                                                    String deviceId = auth.getCurrentUser().getUid();
-//                                                    db.addEvent(event, deviceId, new DbCallback() {
-//                                                        @Override
-//                                                        public void onSuccess(Object result) {
-//                                                            Toast.makeText(EventTabsActivity.this, "Event created successfully with image", Toast.LENGTH_SHORT).show();
-//                                                            finish();
-//                                                        }
-//
-//                                                        @Override
-//                                                        public void onError(Exception exception) {
-//                                                            Toast.makeText(EventTabsActivity.this, "Error creating event", Toast.LENGTH_SHORT).show();
-//                                                            Log.e("DB", "Error creating event", exception);
-//                                                        }
-//                                                    });
-//                                                }
-//
-//                                                @Override
-//                                                public void onError(Exception exception) {
-//                                                    Toast.makeText(EventTabsActivity.this, "Failed to link image to event", Toast.LENGTH_SHORT).show();
-//                                                    Log.e("DB", "Error linking image", exception);
-//                                                }
-//                                            });
-//                                        })
-//                                        .addOnFailureListener(e -> {
-//                                            Toast.makeText(EventTabsActivity.this, "Failed to get image URL", Toast.LENGTH_SHORT).show();
-//                                            Log.e("Firebase", "Error getting download URL", e);
-//                                        });
-//                            })
-//                            .addOnFailureListener(e -> {
-//                                Toast.makeText(EventTabsActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
-//                                Log.e("Firebase", "Image upload error", e);
-//                            });
                         } else {
                             String deviceId = auth.getCurrentUser().getUid();
                             db.addEvent(event, deviceId, new DbCallback() {
@@ -278,34 +236,6 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 });
             }
         });
-
-
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String deviceId = auth.getCurrentUser().getUid();
-//                db.addEvent(event, deviceId, new DbCallback() {
-//                    @Override
-//                    public void onSuccess(Object result) {
-//                        Log.d("DB", "added Event: " + event.getEventName() + " to database");
-//                        Toast.makeText(EventTabsActivity.this,
-//                                "Event created successfully",
-//                                Toast.LENGTH_SHORT).show();
-//
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onError(Exception exception) {
-//                        Log.e("DB", "Error creating event: ", exception);
-//                        Toast.makeText(EventTabsActivity.this,
-//                                "Error creating event",
-//                                Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                db.addImageToEvent(event.getEventID(), );
-//            }
-//        });
 
         cancelButton.setOnClickListener(v -> {
             finish();
@@ -370,6 +300,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
     /**
      * Called from listener from overviewfragment.java to set event name
+     *
      * @param eventTitle
      */
     @Override
@@ -379,6 +310,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
     /**
      * Called from listener from DetailsFragment.java to set event date
+     *
      * @param eventDate
      */
     @Override
@@ -418,3 +350,4 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setMaxParticipants(partCap);
     }
 }
+

@@ -1,7 +1,7 @@
 package com.example.quokka_event.controllers;
 
-import android.app.AlertDialog;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,26 +17,19 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.quokka_event.R;
-import com.example.quokka_event.UserProfilePageActivity;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
-import com.example.quokka_event.models.User;
 import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.models.event.LotteryChecker;
 import com.example.quokka_event.models.organizer.EventEntrantsPage;
 import com.example.quokka_event.models.organizer.NotifyParticipantsFragment;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -77,6 +70,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private Button mapButton;
     private Button generateQrButton;
     private Button deleteQrButton;
+    private Button drawButton;
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private StorageReference eventImageRef;
@@ -84,6 +78,8 @@ public class EventDetailsViewActivity extends AppCompatActivity {
     private Event event;
     private Button uploadImageButton;
     private Button deleteImageButton;
+    private String eventName;
+    private long maxSlots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +120,8 @@ public class EventDetailsViewActivity extends AppCompatActivity {
 
         // Get event ID from intent
         currentEventId = getIntent().getStringExtra("eventId");
+        eventName = getIntent().getStringExtra("eventName");
+        maxSlots = getIntent().getLongExtra("maxParticipants", 0);
         if (currentEventId != null) {
             loadEventDetails(currentEventId);
         } else {
@@ -138,6 +136,13 @@ public class EventDetailsViewActivity extends AppCompatActivity {
             Intent intent = new Intent(EventDetailsViewActivity.this, EntrantMapActivity.class);
             intent.putExtra("eventId", currentEventId);
             startActivity(intent);
+        });
+
+        drawButton = findViewById(R.id.draw_lottery_button);
+        drawButton.setOnClickListener(v -> {
+            Log.d("Lottery", "money money");
+            Toast.makeText(this, "Starting lottery...", Toast.LENGTH_SHORT).show();
+            runLottery();
         });
 
         /**
@@ -664,5 +669,17 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         } else {
             Toast.makeText(EventDetailsViewActivity.this, "No poster to remove", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    void runLottery() {
+        Log.d("Lottery", "runLottery: running" + currentEventId + " " + eventName + " " + maxSlots);
+        Intent intent = new Intent(this, LotteryChecker.class);
+        Log.d("Lottery", "runLottery: running" + currentEventId + " " + eventName + " " + maxSlots);
+        intent.putExtra("eventId", currentEventId);
+        intent.putExtra("eventName", eventName);
+        intent.putExtra("maxParticipants", maxSlots);
+        intent.putExtra("lotteryType", "regular");
+        LotteryChecker lotteryChecker = new LotteryChecker();
+        lotteryChecker.onReceive(this, intent);
     }
 }

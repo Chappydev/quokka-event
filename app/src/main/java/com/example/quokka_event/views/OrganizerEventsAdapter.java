@@ -12,15 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.EventDetailsViewActivity;
-import com.example.quokka_event.controllers.EventTabsActivity;
-import com.example.quokka_event.models.event.Event;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class OrganizerEventsAdapter extends RecyclerView.Adapter<OrganizerEventsAdapter.ViewHolder> {
     private ArrayList<Map<String, Object>> localDataSet;
@@ -80,6 +77,8 @@ public class OrganizerEventsAdapter extends RecyclerView.Adapter<OrganizerEvents
             Context context = v.getContext();
             Intent intent = new Intent(context, EventDetailsViewActivity.class);
             intent.putExtra("eventId", (String) event.get("eventId"));
+            intent.putExtra("eventName", (String) event.get("eventName"));
+            intent.putExtra("maxParticipants", (long) event.get("maxParticipants"));
             context.startActivity(intent);
         });
     }

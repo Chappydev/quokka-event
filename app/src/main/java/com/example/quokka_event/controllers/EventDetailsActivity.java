@@ -3,7 +3,6 @@ package com.example.quokka_event.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.User;
+import com.example.quokka_event.models.event.LotteryChecker;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -29,6 +29,8 @@ import java.util.Locale;
 public class EventDetailsActivity extends AppCompatActivity {
     private DatabaseManager dbManager;
     private String eventId;
+    private String eventName;
+    private long maxSlots;
     private User user;
     private String userId;
     private ImageView posterView;
@@ -53,6 +55,8 @@ public class EventDetailsActivity extends AppCompatActivity {
 
         // Get data from Intent
         eventId = getIntent().getStringExtra("event_id");
+        eventName = getIntent().getStringExtra("event_name");
+        maxSlots = getIntent().getLongExtra("maxParticipants", 0);
         String eventName = getIntent().getStringExtra("event_name");
         Date eventDate = new Date(getIntent().getLongExtra("event_date", -1));
         String eventLocation = getIntent().getStringExtra("event_location");
@@ -78,7 +82,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         // Initialize buttons
         Button acceptButton = findViewById(R.id.accept_button);
         Button denyButton = findViewById(R.id.deny_button);
-        Button cancelButton = findViewById(R.id.cancel_button);
+        Button leaveButton = findViewById(R.id.leave_button);
         Button backButton = findViewById(R.id.back_button);
 
         // Display data
@@ -90,7 +94,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         statusText.setText("Status: " + status);
 
         // Set button visibility based on status
-        setButtonVisibility(status, acceptButton, denyButton, cancelButton);
+        setButtonVisibility(status, acceptButton, denyButton, leaveButton);
 
         // Set click listeners for the buttons
         acceptButton.setOnClickListener(v -> {
@@ -129,6 +133,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                 public void onSuccess(Object response) {
                     Toast.makeText(EventDetailsActivity.this, "You have denied the invitation to '" + eventName + "'", Toast.LENGTH_SHORT).show();
                     goToConfirm("Deny", eventName);
+                    runLottery();
+
                 }
 
                 @Override
@@ -144,7 +150,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             });
         });
 
-        cancelButton.setOnClickListener(v -> {
+        leaveButton.setOnClickListener(v -> {
             DatabaseManager.getInstance(this).updateEventStatus(eventId, userId, "Unjoined", new DbCallback() {
                 @Override
                 /**
@@ -154,7 +160,7 @@ public class EventDetailsActivity extends AppCompatActivity {
                  */
                 public void onSuccess(Object response) {
                     Toast.makeText(EventDetailsActivity.this, "You have canceled your waitlist spot in '" + eventName + "'", Toast.LENGTH_SHORT).show();
-                    goToConfirm("Cancel", eventName);
+                    goToConfirm("Leave", eventName);
                     removeEvent();
                 }
 
@@ -261,5 +267,17 @@ public class EventDetailsActivity extends AppCompatActivity {
                             "Unable to load poster image",
                             Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    void runLottery() {
+        Log.d("Lottery", "runLottery: running" + eventId + " " + eventName + " " + maxSlots);
+        Intent intent = new Intent(this, LotteryChecker.class);
+        Log.d("Lottery", "runLottery: running" + eventId + " " + eventName + " " + maxSlots);
+        intent.putExtra("eventId", eventId);
+        intent.putExtra("eventName", eventName);
+        intent.putExtra("maxParticipants", maxSlots);
+        intent.putExtra("lotteryType", "replacement");
+        LotteryChecker lotteryChecker = new LotteryChecker();
+        lotteryChecker.onReceive(this, intent);
     }
 }
