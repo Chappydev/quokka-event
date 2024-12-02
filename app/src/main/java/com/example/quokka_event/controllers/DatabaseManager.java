@@ -331,11 +331,57 @@ public class DatabaseManager {
      * @author speakerchef
      */
     public void deleteFacility(String facilityId, DbCallback callback) {
+        ArrayList<Task<Void>> deleteTasks = new ArrayList<>();
+        usersRef
+                .whereEqualTo("facilityId", facilityId)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        for (DocumentSnapshot doc : documentSnapshots){
+                            Task<Void> task = doc.getReference().update("event", new ArrayList<>());
+                            deleteTasks.add(task);
+                        }
+                    }
+                });
+        eventsRef
+                .whereEqualTo("facilityId", facilityId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        for (DocumentSnapshot doc : documentSnapshots){
+                            enrollsRef.whereEqualTo("eventId", (String) doc.get("eventId")).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot documentSnapshots) {
+                                    for (DocumentSnapshot doc : documentSnapshots){
+                                        Task<Void> delTask = doc.getReference().delete();
+                                        deleteTasks.add(delTask);
+                                    }
+                                }
+                            }).addOnFailureListener(e -> callback.onError(e));
+                            Task<Void> task = doc.getReference().delete();
+                            deleteTasks.add(task);
+
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+
         facilityRef
                 .document(facilityId)
-                .delete()
-                .addOnSuccessListener(response -> callback.onSuccess(response))
-                .addOnFailureListener(exception -> callback.onError(exception));
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Task<Void> deleteFacility = documentSnapshot.getReference().delete();
+                        deleteTasks.add(deleteFacility);
+                        Tasks.whenAllComplete()
+                                .addOnSuccessListener(response -> callback.onSuccess(response))
+                                .addOnFailureListener(exception -> callback.onError(exception));
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(e));
+
     }
 
     /**
@@ -670,6 +716,11 @@ public class DatabaseManager {
                 .addOnFailureListener(exception -> callback.onError(exception));
     }
 
+    /**
+     * Get all events by organizer
+     * @param deviceId
+     * @param callback
+     */
     public void getOrganizerEvents(String deviceId, DbCallback callback) {
         usersRef
                 .document(deviceId)
