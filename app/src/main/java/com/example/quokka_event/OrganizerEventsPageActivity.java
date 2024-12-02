@@ -17,6 +17,7 @@ import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.controllers.EventTabsActivity;
 import com.example.quokka_event.views.OrganizerEventsAdapter;
+import com.example.quokka_event.views.Toolbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class OrganizerEventsPageActivity extends AppCompatActivity {
         setContentView(R.layout.organizer_events_page);
         db = DatabaseManager.getInstance(this);
         auth = FirebaseAuth.getInstance();
+        Toolbar.initializeToolbar(findViewById(R.id.organizerToolbar), this);
 
         // Switch the activity to the NotificationPageActivity when the bell icon is clicked
         final ImageButton bellButton = findViewById(R.id.bell);

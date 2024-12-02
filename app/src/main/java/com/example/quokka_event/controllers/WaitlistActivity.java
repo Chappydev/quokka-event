@@ -65,6 +65,7 @@ public class WaitlistActivity extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+        Toolbar.initializeToolbar(findViewById(R.id.toolbar2), this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

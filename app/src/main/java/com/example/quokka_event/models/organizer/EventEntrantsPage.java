@@ -26,6 +26,7 @@ import com.example.quokka_event.models.event.EventCancelledFragment;
 import com.example.quokka_event.models.event.EventInvitedFragment;
 import com.example.quokka_event.models.event.EventWaitlistFragment;
 import com.example.quokka_event.models.event.OverviewFragment;
+import com.example.quokka_event.views.Toolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -73,7 +74,7 @@ public class EventEntrantsPage extends AppCompatActivity implements EventWaitlis
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         backButton = findViewById(R.id.back_button);
         notifyButton = findViewById(R.id.notift_selected_button);
-
+        Toolbar.initializeToolbar(findViewById(R.id.organizerToolbar), this);
         ViewPagerAdapterEventEntrant adapter = new ViewPagerAdapterEventEntrant(this, eventId);
         viewPager.setAdapter(adapter);
 

@@ -20,6 +20,7 @@ import com.example.quokka_event.models.event.DetailsFragment;
 import com.example.quokka_event.models.event.Event;
 import com.example.quokka_event.models.event.EventLotteryManager;
 import com.example.quokka_event.models.event.OverviewFragment;
+import com.example.quokka_event.views.Toolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,6 +65,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
+        Toolbar.initializeToolbar(findViewById(R.id.organizerToolbar), this);
 
         // firebase storage
         firebaseStorage = FirebaseStorage.getInstance();
