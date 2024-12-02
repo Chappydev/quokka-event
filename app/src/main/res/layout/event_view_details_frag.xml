@@ -10,7 +10,7 @@
         android:id="@+id/edittext_wl_cap"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="24dp"
         android:ems="10"
@@ -27,7 +27,7 @@
         android:id="@+id/waitlist_limit_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Limit waitlist?"
+        android:text="Limit Waitlist"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Limit Participants?"
+        android:text="Limit Participants"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,11 +66,11 @@
         android:id="@+id/event_waitlist_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:paddingTop="40dp"
-        android:paddingBottom="30dp"
-        android:text="Wait List Length:"
-        android:textSize="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:text="Waitlist Length:"
+        android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -113,10 +113,10 @@
 
     <Button
         android:id="@+id/change_seat_button"
-        android:layout_width='wrap_content'
+        android:layout_width='180dp'
         android:layout_height="wrap_content"
         android:background="@drawable/event_view_button"
-        android:text="Change Available Seats"
+        android:text="Change Availability"
         android:textColor="@color/organizer_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

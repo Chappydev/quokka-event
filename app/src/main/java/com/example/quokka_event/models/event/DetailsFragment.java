@@ -207,6 +207,7 @@ public class DetailsFragment extends Fragment {
                 Log.d("Participant limit", "onClick: " + participantLimit);
 
                 if (!limitWaitlistCheckBox.isChecked()){ waitlistLimit = Integer.MAX_VALUE;}
+
                 int remainingSeat = participantLimit - currentNumParticipants;
                 remainSeatTextView.setText(Integer.toString(participantLimit));
                 if (participantLimit != 0){

@@ -114,7 +114,6 @@ public class OverviewFragment extends Fragment {
         // Inflate the layout for this frag
         View view = inflater.inflate(R.layout.event_view_overview_frag, container, false);
 
-
         editNameButton = view.findViewById(R.id.edit_title_button);
         editDTLButton = view.findViewById(R.id.edit_dtl_button);
         eventNameTextView = view.findViewById(R.id.event_title_label);

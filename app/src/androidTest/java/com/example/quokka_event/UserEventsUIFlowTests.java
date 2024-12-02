@@ -1,24 +1,16 @@
 package com.example.quokka_event;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.is;
-
-import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,12 +37,10 @@ public class UserEventsUIFlowTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Rule
-    public ActivityScenarioRule<MainActivity> scenario = new
-            ActivityScenarioRule<MainActivity>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<MainActivity>(MainActivity.class);
 
     /**
      * ESPRESSO TEST
@@ -60,13 +50,11 @@ public class UserEventsUIFlowTests {
      */
     @Test
     public void testActivity(){
-
         // Click on the My Events button
         onView(withId(R.id.my_events_button)).perform(click());
 
         // Check the Activity has changed
         onView(withId(R.id.event_list_recycler_view)).check(matches(isDisplayed()));
-
     }
 
     /**
@@ -85,7 +73,6 @@ public class UserEventsUIFlowTests {
 
         // Check the Activity has changed
         onView(withId(R.id.my_events_button)).check(matches(isDisplayed()));
-
     }
 
     /**
@@ -97,15 +84,14 @@ public class UserEventsUIFlowTests {
     @Test
     public void testEventDetails() throws InterruptedException {
         // Click on the My Events button
-
         onView(withId(R.id.my_events_button)).perform(click());
         Thread.sleep(10000);
+
         // Click on an event
         onView(withId(R.id.event_list_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
         // Check the Activity has changed
         onView(withId(R.id.event_name_text)).check(matches(isDisplayed()));
-
     }
 }
