@@ -103,9 +103,10 @@ public class MyEventsActivity extends AppCompatActivity {
                     String eventLocation = (String) eventData.get("eventLocation");
                     int maxParticipants = ((Long) eventData.get("maxParticipants")).intValue();
                     int maxWaitlist = ((Long) eventData.get("maxWaitlist")).intValue();
+                    Boolean geolocationEnabled = (Boolean) eventData.get("geolocationEnabled");
 
                     Event event = new Event(eventId, eventName, eventDate, registrationDeadline, eventLocation,
-                            maxParticipants, maxWaitlist, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                            maxParticipants, maxWaitlist, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), geolocationEnabled);
                     eventList.add(event);
                 }
                 adapter.notifyDataSetChanged();
@@ -195,13 +196,13 @@ public class MyEventsActivity extends AppCompatActivity {
                     String eventLocation = (String) eventDataMap.get("eventLocation");
                     int maxParticipants = ((Long) eventDataMap.get("maxParticipants")).intValue();
                     int maxWaitlist = ((Long) eventDataMap.get("maxWaitlist")).intValue();
-
+                    Boolean geolocationEnabled = (Boolean) eventDataMap.get("geolocationEnabled");
                     // Status for event i
                     String status = eventStatusMap.get(eventId);
 
                     // Add the event to eventList
                     Event event = new Event(eventId, eventName, eventDate, registrationDeadline, eventLocation,
-                            maxParticipants, maxWaitlist, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                            maxParticipants, maxWaitlist, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), geolocationEnabled);
                     eventList.add(event);
                 }
                 adapter.notifyDataSetChanged();
