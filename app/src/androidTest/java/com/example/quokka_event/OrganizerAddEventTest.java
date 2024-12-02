@@ -4,11 +4,13 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.PickerActions.setDate;
 import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
 import android.widget.DatePicker;
@@ -27,13 +29,19 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class) @LargeTest
 
-public class NotifyParticipantsFragTest {
+/**
+ *
+ */
+public class OrganizerAddEventTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> scenario = new
             ActivityScenarioRule<MainActivity>(MainActivity.class);
 
-    // Test the activity switched (ESPRESSO TEST)
+    /**
+     * Espresso test that checks that the activity is switched.
+     * @author mylayambao
+     */
     @Test
     public void testActivity(){
         Intents.init();
@@ -45,6 +53,10 @@ public class NotifyParticipantsFragTest {
         Intents.release();
     }
 
+    /**
+     * Espresso test that adds an event. (MUST HAVE A FACILITY)
+     * @author mylayambao
+     */
     @Test
     public void testAddEvent(){
         Intents.init();
@@ -72,11 +84,13 @@ public class NotifyParticipantsFragTest {
         onView(withText("Date:")).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2024, 12, 30));
         onView(withText("OK")).perform(click());
-        // Click on the text with "Deadline:" and choose the number 31
         onView(withText("Deadline:")).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2024, 12, 31));
-        onView(withText("OK")).perform(click()); // Click on the text with "Location:" and type "Here" onView(withText("Location:")).perform(click()); onView(withId(R.id.location_input)).perform(typeText("Here")); onView(withText("Save")).perform(click());
-
+        onView(withText("OK")).perform(click());
+        onView(withText("Location:")).perform(click()).perform(typeText("Here"));
+        onView(withText("CONFIRM")).perform(click());
+        onView(withId(R.id.event_description)).perform(click()).perform(typeText("Description"));
+        onView(withText("CONFIRM")).perform(click());
     }
 
 }
