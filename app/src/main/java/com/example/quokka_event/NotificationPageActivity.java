@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Activity for displaying entrant's notifications
+ * This activity displays user's notifications.
  */
 public class NotificationPageActivity extends AppCompatActivity {
     private RecyclerView notificationsRecyclerView;
@@ -31,38 +31,87 @@ public class NotificationPageActivity extends AppCompatActivity {
     private Button backButton;
 
     @Override
+    /**
+     * This method initializes views, and gets notifications from the database.
+     * @param savedInstanceState
+     * @author Soaiba
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_notification_page);
 
+        // Database
         db = DatabaseManager.getInstance(this);
         auth = FirebaseAuth.getInstance();
 
+        // Views
         notificationsRecyclerView = findViewById(R.id.notifications_recycler_view);
         notificationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        notificationPageAdapter = new NotificationPageAdapter(notificationList);
+        notificationPageAdapter = new NotificationPageAdapter(notificationList, true);
         notificationsRecyclerView.setAdapter(notificationPageAdapter);
 
+        // Buttons
         backButton = findViewById(R.id.back_button_bottom);
         backButton.setOnClickListener(v -> {
             finish();
         });
 
-        loadNotifications();
+        fetchNotifsEnabled();
     }
 
-    private void loadNotifications() {
+    /**
+     * This method checks if user's notifications are enabled.
+     * @author Soaiba
+     */
+    private void fetchNotifsEnabled() {
         String deviceId = auth.getCurrentUser().getUid();
-        Log.e("DeviceId", "Device ID: " + deviceId);
+        db.getUserData(new DbCallback() {
+            @Override
+            /**
+             * This method checks if user's notifications are enabled.
+             * @author Soaiba
+             */
+            public void onSuccess(Object result) {
+                Map<String, Object> userData = (Map<String, Object>) result;
+
+                Boolean notifsEnabled = (Boolean) userData.get("notifications");
+                if (notifsEnabled == null)
+                    notifsEnabled = false;
+
+                Log.d("NotificationPage", "Notifications enabled: " + notifsEnabled);
+                loadNotifications(notifsEnabled);
+            }
+
+            @Override
+            /**
+             * This method shows an error if users notifications preference could not be found.
+             * @author Soaiba
+             */
+            public void onError(Exception e) {
+                Log.e("NotificationPage", "Error fetching user data", e);
+                loadNotifications(false);
+            }
+        }, deviceId);
+    }
+
+    /**
+     * This method loads notifications from the database for the user.
+     * @author Soaiba
+     */
+    private void loadNotifications(boolean notifsEnabled) {
+        String deviceId = auth.getCurrentUser().getUid();
+        Log.d("DeviceId", "Device ID: " + deviceId);
 
         db.getUserNotifications(deviceId, new DbCallback() {
             @Override
+            /**
+             * This method loads notifications from the database for the user.
+             * @author Soaiba
+             */
             public void onSuccess(Object result) {
-                Log.d("Database", "Query successful, processing notifications...");
                 List<Map<String, Object>> notifications = (List<Map<String, Object>>) result;
                 Log.d("Notifications", "Fetched notifications: " + notifications);
                 notificationList.clear();
-                Log.d("Notifications", "Fetched notifications after clear: " + notifications);
 
                 for (int i = 0; i < notifications.size(); i++) {
                     Map<String, Object> notifData = notifications.get(i);
@@ -73,16 +122,18 @@ public class NotificationPageActivity extends AppCompatActivity {
                     Notification notification = new Notification(notifId, title, message, eventId, null, null);
                     notificationList.add(notification);
                 }
-                Log.d("Notifications", "Notification list size: " + notificationList.size());
+                notificationPageAdapter.setNotifsEnabled(notifsEnabled);
                 notificationPageAdapter.notifyDataSetChanged();
                 Log.d("Adapter", "Notified adapter. Item count: " + notificationPageAdapter.getItemCount());
             }
 
             @Override
+            /**
+             * This method throws an error if loading notifications fail
+             */
             public void onError(Exception e) {
                 Log.e("Notifications", "Error fetching notifications", e);
             }
         });
     }
-
 }
