@@ -118,30 +118,51 @@ public class NotifyParticipantsFragment extends DialogFragment {
 
         sendButton.setOnClickListener(new View.OnClickListener() {
 
+            /**
+             * Gets the recipients and creates a notification when the send button is clicked.
+             * @author mylayambao
+             * @param view view
+             */
             @Override
             public void onClick(View view) {
                 Notification notification = new Notification();
 
-//                // check if there is a message filled out
-//                if (!notification.setNotifMessage(notificationText.getText().toString())){
-//                    notificationText.setError("Must enter a message for your notification!");
-//                    return;
-//                }
                 // set the recipients
                 int spinnerPos = recipientSpinner.getSelectedItemPosition();
                 Log.d("spinner", String.valueOf(spinnerPos));
                 ArrayList<Map<String, Object>> recipients = new ArrayList<>();
                 if(spinnerPos == 1){
                     db.getAttendingEntrants(currentEventId, new DbCallback() {
+                        /**
+                         * If the list of  entrants is succesfully retrieved, send the notif to participants who opted in for notifications.
+                         * @param result attending entrants
+                         */
                         @Override
                         public void onSuccess(Object result) {
-                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            ArrayList<Map<String, Object>> participants = (ArrayList<Map<String, Object>>) result;
+                            // filter participants based on "notifications" being true
+                            for (Map<String, Object> participant : participants) {
+                                Object notificationsEnabled = participant.get("notifications");
+                                if (notificationsEnabled instanceof Boolean && (Boolean) notificationsEnabled) {
+                                    // Add participant to recipients if notifications are enabled
+                                    recipients.add(participant);
+                                }
+                            }
+                            // dont create a notification with no recipents
+                            if (recipients.isEmpty()) {
+                                Toast.makeText(getContext(), "No entrants with notifications enabled", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             notification.setRecipients(recipients);
                             notification.setNotifMessage(notificationText.getText().toString());
                             notification.setNotifTitle(notificationTitle.getText().toString());
                             notification.setEventId(currentEventId);
                             //String deviceId = auth.getCurrentUser().getUid();
                             db.addNotification(notification, new DbCallback() {
+                                /**
+                                 * Creates the notification.
+                                 * @param result notification
+                                 */
                                 @Override
                                 public void onSuccess(Object result) {
                                     Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
@@ -149,6 +170,11 @@ public class NotifyParticipantsFragment extends DialogFragment {
                                             "Notification Sent Successfully",
                                             Toast.LENGTH_SHORT).show();
                                 }
+
+                                /**
+                                 * Indicates there was an error creating a notification.
+                                 * @param exception exception
+                                 */
                                 @Override
                                 public void onError(Exception exception) {
                                     Log.e("DB", "Error Sending Notification: ", exception);
@@ -160,6 +186,11 @@ public class NotifyParticipantsFragment extends DialogFragment {
                             });
 
                         }
+
+                        /**
+                         * Indicates there is an error fetching the entrants.
+                         * @param exception
+                         */
                         @Override
                         public void onError(Exception exception) {
                             Log.e("DB", "Error Fetching Attending Entrants: ", exception);
@@ -171,15 +202,36 @@ public class NotifyParticipantsFragment extends DialogFragment {
                     });
                 } else if(spinnerPos == 2) {
                     db.getCancelledEntrants(currentEventId, new DbCallback() {
+                        /**
+                         * If the list of  entrants is succesfully retrieved, send the notif to participants who opted in for notifications.
+                         * @param result attending entrants
+                         */
                         @Override
                         public void onSuccess(Object result) {
-                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            ArrayList<Map<String, Object>> participants = (ArrayList<Map<String, Object>>) result;
+                            // filter participants based on "notifications" being true
+                            for (Map<String, Object> participant : participants) {
+                                Object notificationsEnabled = participant.get("notifications");
+                                if (notificationsEnabled instanceof Boolean && (Boolean) notificationsEnabled) {
+                                    // Add participant to recipients if notifications are enabled
+                                    recipients.add(participant);
+                                }
+                            }
+                            // dont create a notification with no recipents
+                            if (recipients.isEmpty()) {
+                                Toast.makeText(getContext(), "No entrants with notifications enabled", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             notification.setRecipients(recipients);
                             notification.setNotifMessage(notificationText.getText().toString());
                             notification.setNotifTitle(notificationTitle.getText().toString());
                             notification.setEventId(currentEventId);
                             //String deviceId = auth.getCurrentUser().getUid();
                             db.addNotification(notification, new DbCallback() {
+                                /**
+                                 * Creates the notification.
+                                 * @param result notification
+                                 */
                                 @Override
                                 public void onSuccess(Object result) {
                                     Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
@@ -187,6 +239,10 @@ public class NotifyParticipantsFragment extends DialogFragment {
                                             "Notification Sent Successfully",
                                             Toast.LENGTH_SHORT).show();
                                 }
+                                /**
+                                 * Indicates there was an error creating a notification.
+                                 * @param exception exception
+                                 */
                                 @Override
                                 public void onError(Exception exception) {
                                     Log.e("DB", "Error Sending Notification: ", exception);
@@ -198,6 +254,10 @@ public class NotifyParticipantsFragment extends DialogFragment {
                             });
 
                         }
+                        /**
+                         * Indicates there is an error fetching the entrants.
+                         * @param exception
+                         */
                         @Override
                         public void onError(Exception exception) {
                             Log.e("DB", "Error Fetching Cancelled Entrants: ", exception);
@@ -209,15 +269,36 @@ public class NotifyParticipantsFragment extends DialogFragment {
                     });
                 } else if (spinnerPos == 3) {
                     db.getWaitlistEntrants(currentEventId, new DbCallback() {
+                        /**
+                         * If the list of  entrants is succesfully retrieved, send the notif to participants who opted in for notifications.
+                         * @param result attending entrants
+                         */
                         @Override
                         public void onSuccess(Object result) {
-                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            ArrayList<Map<String, Object>> participants = (ArrayList<Map<String, Object>>) result;
+                            // filter participants based on "notifications" being true
+                            for (Map<String, Object> participant : participants) {
+                                Object notificationsEnabled = participant.get("notifications");
+                                if (notificationsEnabled instanceof Boolean && (Boolean) notificationsEnabled) {
+                                    // Add participant to recipients if notifications are enabled
+                                    recipients.add(participant);
+                                }
+                            }
+                            // dont create a notification with no recipents
+                            if (recipients.isEmpty()) {
+                                Toast.makeText(getContext(), "No entrants with notifications enabled", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             notification.setRecipients(recipients);
                             notification.setNotifMessage(notificationText.getText().toString());
                             notification.setNotifTitle(notificationTitle.getText().toString());
                             notification.setEventId(currentEventId);
                             //String deviceId = auth.getCurrentUser().getUid();
                             db.addNotification(notification, new DbCallback() {
+                                /**
+                                 * Creates the notification.
+                                 * @param result notification
+                                 */
                                 @Override
                                 public void onSuccess(Object result) {
                                     Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
@@ -225,6 +306,10 @@ public class NotifyParticipantsFragment extends DialogFragment {
                                             "Notification Sent Successfully",
                                             Toast.LENGTH_SHORT).show();
                                 }
+                                /**
+                                 * Indicates there was an error creating a notification.
+                                 * @param exception exception
+                                 */
                                 @Override
                                 public void onError(Exception exception) {
                                     Log.e("DB", "Error Sending Notification: ", exception);
@@ -236,6 +321,10 @@ public class NotifyParticipantsFragment extends DialogFragment {
                             });
 
                         }
+                        /**
+                         * Indicates there is an error fetching the entrants.
+                         * @param exception
+                         */
                         @Override
                         public void onError(Exception exception) {
                             Log.e("DB", "Error Fetching Waitlist Entrants: ", exception);
@@ -247,15 +336,36 @@ public class NotifyParticipantsFragment extends DialogFragment {
                     });
                 } else if (spinnerPos == 4){
                     db.getInvitedEntrants(currentEventId, new DbCallback() {
+                        /**
+                         * If the list of  entrants is succesfully retrieved, send the notif to participants who opted in for notifications.
+                         * @param result attending entrants
+                         */
                         @Override
                         public void onSuccess(Object result) {
-                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            ArrayList<Map<String, Object>> participants = (ArrayList<Map<String, Object>>) result;
+                            // filter participants based on "notifications" being true
+                            for (Map<String, Object> participant : participants) {
+                                Object notificationsEnabled = participant.get("notifications");
+                                if (notificationsEnabled instanceof Boolean && (Boolean) notificationsEnabled) {
+                                    // Add participant to recipients if notifications are enabled
+                                    recipients.add(participant);
+                                }
+                            }
+                            // dont create a notification with no recipents
+                            if (recipients.isEmpty()) {
+                                Toast.makeText(getContext(), "No entrants with notifications enabled", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             notification.setRecipients(recipients);
                             notification.setNotifMessage(notificationText.getText().toString());
                             notification.setNotifTitle(notificationTitle.getText().toString());
                             notification.setEventId(currentEventId);
                             //String deviceId = auth.getCurrentUser().getUid();
                             db.addNotification(notification, new DbCallback() {
+                                /**
+                                 * Creates the notification.
+                                 * @param result notification
+                                 */
                                 @Override
                                 public void onSuccess(Object result) {
                                     Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
@@ -263,6 +373,10 @@ public class NotifyParticipantsFragment extends DialogFragment {
                                             "Notification Sent Successfully",
                                             Toast.LENGTH_SHORT).show();
                                 }
+                                /**
+                                 * Indicates there was an error creating a notification.
+                                 * @param exception exception
+                                 */
                                 @Override
                                 public void onError(Exception exception) {
                                     Log.e("DB", "Error Sending Notification: ", exception);
@@ -274,6 +388,10 @@ public class NotifyParticipantsFragment extends DialogFragment {
                             });
 
                         }
+                        /**
+                         * Indicates there is an error fetching the entrants.
+                         * @param exception
+                         */
                         @Override
                         public void onError(Exception exception) {
                             Log.e("DB", "Error Fetching Invited Entrants: ", exception);
@@ -285,15 +403,36 @@ public class NotifyParticipantsFragment extends DialogFragment {
                     });
                 } else if (spinnerPos == 0) {
                     db.getAllEntrants(currentEventId, new DbCallback() {
+                        /**
+                         * If the list of  entrants is succesfully retrieved, send the notif to participants who opted in for notifications.
+                         * @param result attending entrants
+                         */
                         @Override
                         public void onSuccess(Object result) {
-                            recipients.addAll((ArrayList<Map<String,Object>>)result);
+                            ArrayList<Map<String, Object>> participants = (ArrayList<Map<String, Object>>) result;
+                            // filter participants based on "notifications" being true
+                            for (Map<String, Object> participant : participants) {
+                                Object notificationsEnabled = participant.get("notifications");
+                                if (notificationsEnabled instanceof Boolean && (Boolean) notificationsEnabled) {
+                                    // Add participant to recipients if notifications are enabled
+                                    recipients.add(participant);
+                                }
+                            }
+                            // dont create a notification with no recipents
+                            if (recipients.isEmpty()) {
+                                Toast.makeText(getContext(), "No entrants with notifications enabled", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             notification.setRecipients(recipients);
                             notification.setNotifMessage(notificationText.getText().toString());
                             notification.setNotifTitle(notificationTitle.getText().toString());
                             notification.setEventId(currentEventId);
                             //String deviceId = auth.getCurrentUser().getUid();
                             db.addNotification(notification, new DbCallback() {
+                                /**
+                                 * Creates the notification.
+                                 * @param result notification
+                                 */
                                 @Override
                                 public void onSuccess(Object result) {
                                     Log.d("DB", "Sent Notification: " + notification.getNotifTitle() + " to database");
@@ -301,6 +440,10 @@ public class NotifyParticipantsFragment extends DialogFragment {
                                             "Notification Sent Successfully",
                                             Toast.LENGTH_SHORT).show();
                                 }
+                                /**
+                                 * Indicates there was an error creating a notification.
+                                 * @param exception exception
+                                 */
                                 @Override
                                 public void onError(Exception exception) {
                                     Log.e("DB", "Error Sending Notification: ", exception);
@@ -312,6 +455,10 @@ public class NotifyParticipantsFragment extends DialogFragment {
                             });
 
                         }
+                        /**
+                         * Indicates there is an error fetching the entrants.
+                         * @param exception
+                         */
                         @Override
                         public void onError(Exception exception) {
                             Log.e("DB", "Error Fetching All Entrants: ", exception);
