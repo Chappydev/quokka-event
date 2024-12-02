@@ -1,6 +1,6 @@
 <resources>
     <!-- Labels -->
-    <string name="app_name">quokka-event</string>
+    <string name="app_name">QuokkaQR</string>
     <string name="event_name">Event Name</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
