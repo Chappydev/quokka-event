@@ -14,21 +14,41 @@ import com.example.quokka_event.models.Notification;
 
 import java.util.List;
 
+/**
+ * This method is an adapter for the RecyclerView that displays notifications.
+ */
 public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPageAdapter.NotificationViewHolder> {
     private List<Notification> notifications;
 
+    /**
+     * This method is a constructor for NotificationPageAdapter.
+     * @param notifications notifications to display
+     * @author Soaiba
+     */
     public NotificationPageAdapter(List<Notification> notifications) {
         this.notifications = notifications;
     }
 
     @NonNull
     @Override
+    /**
+     * This method creates a new item view for the RecyclerView.
+     * @param parent
+     * @param viewType
+     * @author Soaiba
+     */
     public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_item, parent, false);
         return new NotificationViewHolder(view);
     }
 
     @Override
+    /**
+     * This method updates the RecyclerView item with notifications.
+     * @param holder holds the views for the notification item.
+     * @param position position of notification in the list.
+     * @author Soaiba
+     */
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         Notification notification = notifications.get(position);
         holder.title.setText(notification.getNotifTitle());
@@ -39,14 +59,28 @@ public class NotificationPageAdapter extends RecyclerView.Adapter<NotificationPa
     }
 
     @Override
+    /**
+     * This method returns the number of notifications in the list.
+     * @author Soaiba
+     * @return list size
+     */
     public int getItemCount() {
         Log.d("Adapter", "Item count in adapter: " + notifications.size());
         return notifications.size();
     }
 
+    /**
+     * This class is a class to hold the views for a notification.
+     * @author Soaiba
+     */
     static class NotificationViewHolder extends RecyclerView.ViewHolder {
         TextView title, message;
 
+        /**
+         * This method sets up the views for the notification item.
+         * @param itemView layout of the notification item
+         * @author Soaiba
+         */
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.notification_title);
