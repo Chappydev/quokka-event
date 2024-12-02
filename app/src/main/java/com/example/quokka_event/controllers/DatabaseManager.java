@@ -338,8 +338,10 @@ public class DatabaseManager {
                     @Override
                     public void onSuccess(QuerySnapshot documentSnapshots) {
                         for (DocumentSnapshot doc : documentSnapshots){
-                            Task<Void> task = doc.getReference().update("event", new ArrayList<>());
+                            Task<Void> task = doc.getReference().update("events", FieldValue.delete());
+                            Task<Void> deltask = doc.getReference().update("facilityId", FieldValue.delete());
                             deleteTasks.add(task);
+                            deleteTasks.add(deltask);
                         }
                     }
                 });
