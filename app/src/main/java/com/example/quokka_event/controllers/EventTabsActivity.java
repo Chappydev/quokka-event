@@ -60,7 +60,7 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
         event.setRegistrationDeadline(currentDate);
         event.setDescription("");
         event.setMaxWaitlist(Integer.MAX_VALUE);
-        event.setMaxParticipants(Integer.MAX_VALUE);
+        event.setMaxParticipants(Integer.MIN_VALUE);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
@@ -107,10 +107,10 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                 String location = event.getEventLocation();
                 Date eventDate = event.getEventDate();
                 Date registrationDate = event.getRegistrationDeadline();
-                int maxEntrants = event.getMaxWaitlist();
+                int maxEntrants = event.getMaxParticipants();
 
                 // Valid Entry Logic
-                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null) {
+                if (name.trim().isEmpty() || location.trim().isEmpty() || eventDate == null || registrationDate == null || maxEntrants == Integer.MIN_VALUE) {
                     Toast.makeText(EventTabsActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -346,8 +346,12 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
      */
     @Override
     public void setCapacity(int waitlistCap, int partCap) {
+        Log.d("setCapacity", "setCapacity: "+partCap);
+        Log.d("setCapacity", "setCapacity: "+waitlistCap);
         event.setMaxWaitlist(waitlistCap);
         event.setMaxParticipants(partCap);
+        Log.d("setCapacity", "setCapacity: "+event.getMaxParticipants());
+        Log.d("setCapacity", "setCapacity: "+event.getMaxWaitlist());
     }
 }
 

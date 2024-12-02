@@ -29,7 +29,6 @@ public class DetailsFragment extends Fragment {
     Button confirmChangeSeatButton;
     CheckBox limitWaitlistCheckBox;
     EditText waitlistCapEditText;
-    CheckBox limitParticipantCheckBox;
     EditText participantCapEditText;
     Boolean isWaitlistLimit;
     Boolean isParticipantLimit;
@@ -81,7 +80,6 @@ public class DetailsFragment extends Fragment {
         confirmChangeSeatButton = view.findViewById(R.id.confirm_change_seat_button);
         waitlistCapEditText = view.findViewById(R.id.edittext_wl_cap);
         limitWaitlistCheckBox = view.findViewById(R.id.waitlist_limit_checkbox);
-        limitParticipantCheckBox = view.findViewById(R.id.limit_participant_checkbox);
         participantCapEditText = view.findViewById(R.id.edittext_entrant_cap);
         remainSeatTextView = view.findViewById(R.id.event_seats_label);
 
@@ -114,27 +112,6 @@ public class DetailsFragment extends Fragment {
             }
         });
 
-        limitParticipantCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            /**
-             * Show participantCapEditText if limitParticipantCheckBox is checked.
-             * @param compoundButton
-             * @param isChecked
-             */
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                isParticipantLimit = isChecked;
-                if (isChecked) {
-                    participantCapEditText.setVisibility(View.VISIBLE);
-                    participantCapEditText.setText("");
-                } else {
-                    participantCapEditText.setVisibility(View.GONE);
-                    participantLimit = Integer.MAX_VALUE;
-                    participantCapEditText.setText(String.valueOf(Integer.MAX_VALUE));
-                    remainSeatTextView.setText("Max");
-                }
-            }
-        });
-
 
         changeSeatButton.setOnClickListener(new View.OnClickListener() {
             /**
@@ -161,52 +138,33 @@ public class DetailsFragment extends Fragment {
             public void onClick(View view) {
                 // forgive me for the if else mess
                 String maxParticipant = participantCapEditText.getText().toString();
+                Log.d("sfkjadlf", "onClick: "+maxParticipant);
+                Log.d("sfkjadlf", "onClick: "+maxParticipant.isEmpty());
+                Log.d("sfkjadlf", "onClick: "+maxParticipant.length());
                 String maxWaitlist = waitlistCapEditText.getText().toString();
 
-                if (!limitParticipantCheckBox.isChecked()) {
-                    participantLimit = Integer.MAX_VALUE;
-                    if (!limitWaitlistCheckBox.isChecked()) {
-                        waitlistLimit = Integer.MAX_VALUE;
-                        remainSeatTextView.setText("Max");
-                        listener.setCapacity(waitlistLimit, participantLimit);
-                        Toast.makeText(getContext(), "capacity updated", Toast.LENGTH_LONG).show();
-                        setButtonsVisibility(View.GONE);
-                        changeSeatButton.setVisibility(View.VISIBLE);
-                        return;
-                    }
-                }
-
-                if ( (maxParticipant.isEmpty() && limitParticipantCheckBox.isChecked()) ||
+                if ((maxParticipant.isEmpty()) ||
                         (maxWaitlist.isEmpty() && limitWaitlistCheckBox.isChecked()) ){
                     displayWarning("Please enter a number");
                     return;
                 }
+
+                participantLimit = Integer.parseInt(maxParticipant);
                 if (limitWaitlistCheckBox.isChecked()){
-                    participantLimit = Integer.parseInt(maxParticipant);
                     waitlistLimit = Integer.parseInt(maxWaitlist);
-                    if (participantLimit < waitlistLimit){
-                        displayWarning("Cannot set capacity lower than number of people in waitlist!");
-                        return;
-                    }
-                }
-                if (limitParticipantCheckBox.isChecked()){
-                    waitlistLimit = Integer.parseInt(maxWaitlist);
-                    participantLimit = Integer.parseInt(maxParticipant);
-                    if (participantLimit < waitlistLimit){
-                        displayWarning("Cannot set capacity lower than current number of people registered!");
+                    if (participantLimit > waitlistLimit){
+                        displayWarning("Cannot set capacity greater than number of people in waitlist!");
                         return;
                     }
                 }
 
                 if (!limitWaitlistCheckBox.isChecked()){ waitlistLimit = Integer.MAX_VALUE;}
-                if (!limitParticipantCheckBox.isChecked()) {
-                    participantLimit = Integer.MAX_VALUE;
+
+                if (waitlistLimit == Integer.MAX_VALUE) {
                     remainSeatTextView.setText("Max");
-                    Toast.makeText(getContext(), "capacity updated", Toast.LENGTH_LONG).show();
-                    return;
+                } else {
+                    remainSeatTextView.setText(Integer.toString(waitlistLimit));
                 }
-                int remainingSeat = participantLimit - currentNumParticipants;
-                remainSeatTextView.setText(Integer.toString(remainingSeat));
                 listener.setCapacity(waitlistLimit, participantLimit);
                 Toast.makeText(getContext(), "capacity updated", Toast.LENGTH_LONG).show();
 //                setButtonsVisibility(View.INVISIBLE);
@@ -227,7 +185,6 @@ public class DetailsFragment extends Fragment {
     void setButtonsVisibility(int v){
         confirmChangeSeatButton.setVisibility(v);
         limitWaitlistCheckBox.setVisibility(v);
-        limitParticipantCheckBox.setVisibility(v);
         waitlistCapEditText.setVisibility(v);
         participantCapEditText.setVisibility(v);
     }
