@@ -386,6 +386,10 @@ public class EventDetailsViewActivity extends AppCompatActivity {
 
         int capacity = "Unlimited".equals(capacityText) ? Integer.MAX_VALUE : Integer.parseInt(capacityText);
         int waitlist = "Unlimited".equals(waitlistText) ? Integer.MAX_VALUE : Integer.parseInt(waitlistText);
+        if (waitlist < capacity) {
+            displayWarning("Cannot set capacity greater than number of people in waitlist!");
+            return;
+        }
         updates.put("maxParticipants", capacity);
         updates.put("maxWaitlist", waitlist);
         updates.put("description", eventDescriptionEdit.getText().toString().trim());
@@ -681,5 +685,16 @@ public class EventDetailsViewActivity extends AppCompatActivity {
         intent.putExtra("lotteryType", "regular");
         LotteryChecker lotteryChecker = new LotteryChecker();
         lotteryChecker.onReceive(this, intent);
+    }
+
+    /**
+     * A function to display a warning message.
+     * @param warningMessage
+     */
+    void displayWarning(String warningMessage){
+        new AlertDialog.Builder(this).setTitle("Warning")
+                .setMessage(warningMessage)
+                .setNegativeButton("OK", null)
+                .show();
     }
 }
