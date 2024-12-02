@@ -465,7 +465,7 @@ public class EventDetailsViewActivity extends AppCompatActivity {
                     eventTimeLabel.setText("Time: " + timeFormat.format(eventDate));
                     eventLocationLabel.setText("Location: " + eventData.get("eventLocation"));
                     long maxCapacity = (long) eventData.get("maxParticipants");
-                    long maxWaitlist = (long) eventData.get("maxParticipants");
+                    long maxWaitlist = (long) eventData.get("maxWaitlist");
                     String qrHash = (String) eventData.get("qrHash");
 
                     // clean display if capacity is maxed
