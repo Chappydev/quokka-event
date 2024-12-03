@@ -99,25 +99,6 @@ public class LotteryChecker extends BroadcastReceiver {
                                 db.updateEventStatus(eventId, userId, "Invited", new DbCallback() {
                                     @Override
                                     public void onSuccess(Object result) {
-                                        // Send notification to winner
-                                        Notification notification = new Notification();
-                                        notification.setRecipients(waitlistEntrants);
-                                        notification.setNotifMessage("You have been invited to participate in " + eventName + "! Please decide if you would like to accept or deny this invitation.");
-                                        notification.setNotifTitle("You have an invitation!");
-                                        notification.setEventId(eventId);
-                                        db.addNotification(notification, new DbCallback() {
-                                            @Override
-                                            public void onSuccess(Object result) {
-                                                Log.d(TAG, "onSuccess: Users notified!");
-                                                Toast.makeText(context.getApplicationContext(), "We have notified your invited users!", Toast.LENGTH_SHORT).show();
-                                            }
-
-                                            @Override
-                                            public void onError(Exception exception) {
-                                                Log.d(TAG, "onError: Unable to notify users!");
-                                                Toast.makeText(context.getApplicationContext(), "Sorry, we were unable to notify your users.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
 
                                         Log.d(TAG, "Successfully invited user: " + userId);
                                         Toast.makeText(context.getApplicationContext(), "Successfully invited users!", Toast.LENGTH_SHORT).show();
@@ -130,6 +111,26 @@ public class LotteryChecker extends BroadcastReceiver {
                                 });
                             }
                         }
+
+                        // Send notification to winner
+                        Notification notification = new Notification();
+                        notification.setRecipients(winners);
+                        notification.setNotifMessage("You have been invited to participate in " + eventName + "! Please decide if you would like to accept or deny this invitation.");
+                        notification.setNotifTitle("You have an invitation!");
+                        notification.setEventId(eventId);
+                        db.addNotification(notification, new DbCallback() {
+                            @Override
+                            public void onSuccess(Object result) {
+                                Log.d(TAG, "onSuccess: Users notified!");
+                                Toast.makeText(context.getApplicationContext(), "We have notified your invited users!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+                                Log.d(TAG, "onError: Unable to notify users!");
+                                Toast.makeText(context.getApplicationContext(), "Sorry, we were unable to notify your users.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
