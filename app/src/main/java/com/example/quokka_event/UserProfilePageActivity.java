@@ -21,7 +21,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.quokka_event.controllers.DatabaseManager;
 import com.example.quokka_event.controllers.GlideApp;
@@ -265,9 +264,11 @@ public class UserProfilePageActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid email!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!(phone != "" && validPhoneNumber(phone))) {
-            Toast.makeText(this, "Please enter a valid 8-10 digit phone number!", Toast.LENGTH_SHORT).show();
-            return;
+        if (!phone.isEmpty()) {
+            if (!validPhoneNumber(phone)){
+                Toast.makeText(this, "Please enter a valid 8-10 digit phone number!", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         Map<String, Object> updates = new HashMap<>();
