@@ -18,6 +18,7 @@ import com.example.quokka_event.R;
 import com.example.quokka_event.controllers.dbutil.DbCallback;
 import com.example.quokka_event.models.event.DetailsFragment;
 import com.example.quokka_event.models.event.Event;
+import com.example.quokka_event.models.event.EventLotteryManager;
 import com.example.quokka_event.models.event.OverviewFragment;
 import com.example.quokka_event.views.Toolbar;
 import com.google.android.material.tabs.TabLayout;
@@ -171,9 +172,9 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                         Log.d("ImageDebug", eventID);
                         Toast.makeText(EventTabsActivity.this, "Event created successfully!", Toast.LENGTH_SHORT).show();
 
-//                        EventLotteryManager elm = new EventLotteryManager();
-//                        long deadline = event.getRegistrationDeadline().getTime();
-//                        elm.deadlineLottery(getApplicationContext(), event,deadline);
+                        EventLotteryManager elm = new EventLotteryManager();
+                        long deadline = event.getRegistrationDeadline().getTime();
+                        elm.deadlineLottery(getApplicationContext(), event,deadline);
                         //finish();
 
                         // check if there is an image to upload
