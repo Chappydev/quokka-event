@@ -168,7 +168,6 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                     {
                         String eventID = result.toString(); // firebase id for the event
                         event.setEventID(eventID);
-                        Log.d("ImageDebug", eventID);
                         Toast.makeText(EventTabsActivity.this, "Event created successfully!", Toast.LENGTH_SHORT).show();
 
 //                        EventLotteryManager elm = new EventLotteryManager();
@@ -195,7 +194,6 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                                                         @Override
                                                         public void onSuccess(Object result) {
                                                             Toast.makeText(EventTabsActivity.this, "Image linked to event successfully!", Toast.LENGTH_SHORT).show();
-                                                            finish(); // Close the activity
                                                         }
 
                                                         @Override
@@ -215,28 +213,8 @@ public class EventTabsActivity extends AppCompatActivity implements OverviewFrag
                                         Log.e("Firebase", "Image upload error", e);
                                     });
 //
-                        } else {
-                            String deviceId = auth.getCurrentUser().getUid();
-                            db.addEvent(event, deviceId, new DbCallback() {
-                                @Override
-                                public void onSuccess(Object result) {
-                                    Log.d("DB", "added Event: " + event.getEventName() + " to database");
-                                    Toast.makeText(EventTabsActivity.this,
-                                            "Event created successfully without poster",
-                                            Toast.LENGTH_SHORT).show();
-
-                                    finish();
-                                }
-
-                                @Override
-                                public void onError(Exception exception) {
-                                    Log.e("DB", "Error creating event: ", exception);
-                                    Toast.makeText(EventTabsActivity.this,
-                                            "Error creating event",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
                         }
+                        finish(); // Close the activity
                     }
 
                     @Override
