@@ -167,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
                         (Boolean) map.get("organizer"),
                         (Boolean) map.get("admin")
                 );
-                Log.d("DB", "onCreate: " + user.getDeviceID());
                 isAdmin = user.isAdmin();
                 showAdminButton(isAdmin);
 
