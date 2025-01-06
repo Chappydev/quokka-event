@@ -68,7 +68,10 @@ public class WaitlistActivity extends AppCompatActivity {
         Toolbar.initializeToolbar(findViewById(R.id.toolbar2), this);
 
         Bundle extras = getIntent().getExtras();
+        Log.d("DB", "onSuccess: " + extras.get("facilityName"));
+
         if (extras != null) {
+            Log.d("DB", "onSuccess: " + extras);
             event = new Event();
             event.setEventDate((Date) extras.get("eventDate"));
             event.setEventLocation((String) extras.get("eventLocation"));
@@ -79,6 +82,7 @@ public class WaitlistActivity extends AppCompatActivity {
             event.setMaxWaitlist((int) extras.get("maxWaitlist"));
             event.setPosterImage((String) extras.get("posterImagePath"));
             event.setGeolocationEnabled(getIntent().getBooleanExtra("geolocationEnabled", false));
+            event.setOrganizerName((String) extras.get("facilityName"));
         }
 
         // Initialize views and buttons
@@ -106,7 +110,11 @@ public class WaitlistActivity extends AppCompatActivity {
         dateText.setText("Date: " + formattedDate);
         timeText.setText("Time: " + formattedTime);
         locationText.setText("Location: " + event.getEventLocation());
-        organizerText.setText("Organizer: TBD"); // TODO: Update once organizer data is available
+        if (event.getOrganizerName() != null) {
+            organizerText.setText("Organizer: " + event.getOrganizerName());
+        } else {
+            organizerText.setText("Organizer: null");
+        }
 
         // display the image if there is one
         String posterPath = event.getPosterImage();

@@ -15,6 +15,7 @@ public class Event {
     private Date eventDate;
     private Date registrationDeadline;
     private String eventLocation;
+    private String organizerName;
     //private Organizer organizer;
     private int maxParticipants;
     private int maxWaitlist;
@@ -169,6 +170,14 @@ public class Event {
 
     public void setPosterImageRef(StorageReference posterImageRef) {
         this.posterImageRef = posterImageRef;
+    }
+
+    public String getOrganizerName() {
+        return organizerName;
+    }
+
+    public void setOrganizerName(String organizerName) {
+        this.organizerName = organizerName;
     }
 
     public String getPosterImage() {
