@@ -134,6 +134,7 @@ public class QrScannerPageActivity extends AppCompatActivity {
         showActivity.putExtra("eventDate", eventDate.toDate());
         showActivity.putExtra("eventLocation", (String) eventMap.get("eventLocation"));
         showActivity.putExtra("eventName", (String) eventMap.get("eventName"));
+        showActivity.putExtra("facilityName", (String) eventMap.get("facilityName"));
         showActivity.putExtra("maxParticipants", (int)(long) eventMap.get("maxParticipants"));
         showActivity.putExtra("registrationDeadline", registrationDeadline.toDate());
         showActivity.putExtra("maxWaitlist", (int)(long) eventMap.get("maxWaitlist"));

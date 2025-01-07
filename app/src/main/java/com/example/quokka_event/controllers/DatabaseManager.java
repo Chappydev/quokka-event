@@ -1201,7 +1201,31 @@ public class DatabaseManager {
                         DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
                         Map<String, Object> data = documentSnapshot.getData();
                         data.put("eventId", documentSnapshot.getId());
-                        callback.onSuccess(data);
+
+                        if (!(data.get("facilityId") instanceof String)) {
+                            callback.onError(new Exception("No facility id found"));
+                        }
+                        // add facility data to event
+                        facilityRef.document((String) data.get("facilityId"))
+                                .get()
+                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        if (documentSnapshot.exists()) {
+                                            Map<String, Object> facilityData = documentSnapshot.getData();
+                                            data.put("facilityName", facilityData.get("facilityName"));
+                                        } else {
+                                            data.put("facilityName", null);
+                                        }
+                                        callback.onSuccess(data);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        callback.onError(e);
+                                    }
+                                });
                     } else {
                         callback.onError(new Exception("No event found"));
                     }
